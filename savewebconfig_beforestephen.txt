@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+
+
+  <configSections>
+    <sectionGroup name="fleetMonitor.security">
+      <section name="provider" type="Bombardier.FleetMonitor.Security.Provider.Configuration.ProviderConfigurationSection" allowLocation="true" allowDefinition="Everywhere" />
+      <section name="client" type="Bombardier.FleetMonitor.Security.Provider.Configuration.ClientConfigurationSection" allowLocation="true" allowDefinition="Everywhere" />
+    </sectionGroup>
+  </configSections>
+
+  <fleetMonitor.security>
+    <provider>
+      <!--authorization type="Bombardier.FleetMonitor.Security.Generic.Provider.Authorization" cache="1" /-->
+      <authorization type="Bombardier.FleetMonitor.Security.Stub.Provider.Authorization" cache="1" />
+    </provider>
+
+    <!--<client
+    authority="https://localhost:44301"
+    internalAuthority="https://localhost:44301"
+    id="fleetmonitor"
+    responseType="id_token token"
+    scope="openid profile email webapi"
+    loginPage="/loginPrompt.html"
+    logoutRedirect="/index.html" />-->
+    <client authority="https://localhost/Security.IdServer.Web/"
+        internalAuthority="https://localhost/Security.IdServer.Web/"
+        id="fleetmonitor"
+        responseType="id_token token"
+        scope="openid profile email webapi"
+        loginPage="/Portal.Web/loginPrompt.html"
+        logoutRedirect="/Portal.Web/index.html" />
+  </fleetMonitor.security>
+
+
+
+
+
+  <appSettings>
+    <add key="googleMapsApiVersion" value="3.26" />
+    <!-- AUTH TYPE VALID VALUES: "KEY", "CLIENT_ID"-->
+    <add key="googleMapsAuthType" value="KEY" />
+    <!-- EITHER THE KEY OR THE CLIENTID -->
+    <add key="googleMapsAuthValue" value="AIzaSyC2uRh_iDDfxo1BsGLnwpkiChHpnloqXrQ" />
+
+    <!-- CCUT PLUGIN -->
+    <add key="muParserLocation" value="./x64/muParser.dll" />
+
+    <add key="TokenLifetimeInMinutes" value="5" />
+    <add key="webpages:Version" value="3.0.0.0" />
+    <add key="webpages:Enabled" value="false" />
+    <add key="ClientValidationEnabled" value="true" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+
+    <add key="TSSP_xsd_path" value="tssp-config.xsd" />
+    <add key="IPTCOM_xsd_path" value="iptcom-config.xsd" />
+    <add key="CSTSTA_xsd_path" value="CstSta_V2-0-0-3.xsd" />
+    <add key="Baseline_xsd_path" value="tu_rule_baseline.xsd" />
+    <add key="DiaDef_xsd_path" value="tu_dia_def.xsd" />
+    <add key="Rule_xsd_path" value="tu_rule.xsd" />
+    <add key="EnableConsistValidation" value="false" />
+    <add key="CommunicationMode" value="WCF" />
+    <add key="DR_MAX_SIGNALS" value="300" />
+    <add key="DR_REMOTE_MOD_ALLOWED" value="YES" />
+    <add key="TimeZone" value="Europe/London" />
+    <add key="RECORDING_SIGNALS_URL" value="https://fm.bt.ab2ls.ch:8080/Portal.web/SOLrServices/"/>
+    <add key="FM_ROOT_URL" value="https://localhost:44300/api/"/>
+    <add key="CCUT_ROOT_URL" value="https://fm.bt.ab2ls.ch:8080/CcutManager/"/>
+
+    <!-- Security keys -->
+    <add key="OSAF.Authority" value="https://localhost:44300/"/>
+    <add key="OSAF.AuthZ" value="https://localhost:44301/api/external/security/"/>
+    <add key="OSAF.ClientId" value="fleetmonitor"/>
+  </appSettings>
+
+  <system.web>
+    <compilation debug="true" targetFramework="4.5.2" />
+    <httpRuntime targetFramework="4.5.2" maxRequestLength="2147483647" />
+  </system.web>
+
+  <system.webServer>
+    <directoryBrowse enabled="true" />
+    <handlers>
+      <remove name="ExtensionlessUrlHandler-Integrated-4.0" />
+      <remove name="OPTIONSVerbHandler" />
+      <remove name="TRACEVerbHandler" />
+      <add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb="*" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" />
+    </handlers>
+    <rewrite>
+      <rules>
+        <rule name="ReverseProxyInboundRule1" stopProcessing="true">
+          <match url="TimoneServices/(.*)" />
+          <action type="Rewrite" url="http://10.0.0.155:8080/timone-services/{R:1}" />
+        </rule>
+        <rule name="SolRServices" stopProcessing="true">
+          <match url="SOLrServices/(.*)" />
+          <action type="Rewrite" url="http://10.0.0.93:8080/signaldata-services/{R:1}" />
+        </rule>
+      </rules>
+    </rewrite>
+    <security>
+      <requestFiltering>
+        <requestLimits maxAllowedContentLength="2147483647" />
+      </requestFiltering>
+    </security>
+    <staticContent>
+      <remove fileExtension="*.json" />
+      <!--<mimeMap fileExtension=".json" mimeType="text/plain" />-->
+    </staticContent>
+  </system.webServer>
+
+
+  <system.serviceModel>
+    <bindings>
+      <basicHttpBinding>
+        <binding name="BasicHttpBinding_IRawDataService" maxBufferSize="2147483647" maxBufferPoolSize="2147483647" maxReceivedMessageSize="2147483647">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+        </binding>
+
+        <binding name="FMBasicHttpBinding" closeTimeout="00:05:00" openTimeout="00:05:00" receiveTimeout="00:10:00" sendTimeout="00:05:00" allowCookies="false" bypassProxyOnLocal="false" hostNameComparisonMode="StrongWildcard" maxBufferSize="2147483647" maxBufferPoolSize="2147483647" maxReceivedMessageSize="2147483647" messageEncoding="Text" textEncoding="utf-8" transferMode="Buffered" useDefaultWebProxy="true">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <security mode="None">
+            <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+            <message clientCredentialType="UserName" algorithmSuite="Default" />
+          </security>
+        </binding>
+
+        <binding name="BasicHttpBinding_ICcutWcfService" />
+
+        <binding name="BasicHttpBinding_IPamService" maxBufferSize="2147483647" maxBufferPoolSize="2147483647" maxReceivedMessageSize="2147483647">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+        </binding>
+
+      </basicHttpBinding>
+
+      <netNamedPipeBinding>
+        <binding name="NetNamedPipeBinding_IFileRepository" closeTimeout="00:01:00" openTimeout="00:01:00" receiveTimeout="00:01:00" sendTimeout="00:01:00" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="600000000" transferMode="Buffered" maxBufferSize="600000000">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <security mode="None">
+            <transport protectionLevel="None" />
+          </security>
+        </binding>
+      </netNamedPipeBinding>
+
+      <wsHttpBinding>
+        <binding name="WSHttpBinding_IFileRepository" closeTimeout="00:01:00" openTimeout="00:01:00" receiveTimeout="00:01:00" sendTimeout="00:01:00" bypassProxyOnLocal="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="20000000" messageEncoding="Mtom" textEncoding="utf-8" useDefaultWebProxy="true" allowCookies="false">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <reliableSession ordered="true" inactivityTimeout="00:10:00" enabled="false" />
+          <security mode="None">
+            <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+            <message clientCredentialType="None" establishSecurityContext="false" />
+          </security>
+        </binding>
+        <binding name="WSHttpBinding_ISymtreeService" closeTimeout="00:03:00" openTimeout="00:03:00" receiveTimeout="00:03:00" sendTimeout="00:03:00" bypassProxyOnLocal="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="40000000" messageEncoding="Mtom" textEncoding="utf-8" useDefaultWebProxy="true" allowCookies="false">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <reliableSession ordered="true" inactivityTimeout="00:10:00" enabled="false" />
+          <security mode="None">
+            <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+            <message clientCredentialType="None" establishSecurityContext="false" />
+          </security>
+        </binding>
+
+        <binding name="FMWSHttpBinding" closeTimeout="00:03:00" openTimeout="00:03:00" receiveTimeout="00:03:00" sendTimeout="00:03:00" bypassProxyOnLocal="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="40000000" messageEncoding="Mtom" textEncoding="utf-8" useDefaultWebProxy="true" allowCookies="false">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <reliableSession ordered="true" inactivityTimeout="00:10:00" enabled="false" />
+          <security mode="None">
+            <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+            <message clientCredentialType="None" establishSecurityContext="false" />
+          </security>
+        </binding>
+
+        <binding name="WSHttpBinding_IFileSessionsIFileTypes" closeTimeout="00:01:00" openTimeout="00:01:00" receiveTimeout="00:01:00" sendTimeout="00:01:00" bypassProxyOnLocal="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="20000000" messageEncoding="Mtom" textEncoding="utf-8" useDefaultWebProxy="true" allowCookies="false">
+          <readerQuotas maxDepth="32" maxStringContentLength="61441" maxArrayLength="10005000" maxBytesPerRead="4096" maxNameTableCharCount="16384" />
+          <reliableSession ordered="true" inactivityTimeout="00:10:00" enabled="false" />
+          <security mode="None">
+            <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+            <message clientCredentialType="None" establishSecurityContext="false" />
+          </security>
+        </binding>
+
+      </wsHttpBinding>
+
+
+
+    </bindings>
+
+    <client>
+      <!-- Authorization -->
+      <endpoint address="http://localhost:2307/PolicyService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Bombardier.FleetMonitor.Security.Wcf.Contracts.Services.IPolicyService" name="BasicHttpBinding_IPolicyService" />
+      <endpoint address="http://localhost:2307/UserService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Bombardier.FleetMonitor.Security.Wcf.Contracts.Services.IUserService" name="BasicHttpBinding_IUserService" />
+      <endpoint address="http://localhost:2307/RoleService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Bombardier.FleetMonitor.Security.Wcf.Contracts.Services.IRoleService" name="BasicHttpBinding_IRoleService" />
+      <endpoint address="http://localhost:2307/ClientService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Bombardier.FleetMonitor.Security.Wcf.Contracts.Services.IClientService" name="BasicHttpBinding_IClientService" />
+
+      <!-- ARLEM Plugin -->
+      <endpoint address="http://localhost:57869/ArlemService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IArlemService" contract="BT.Arlem.Wcf.Contract.IArlemService" />
+
+      <!--FAO SERVICES-->
+      <endpoint address="http://localhost:64190/FaoMetaData.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IFaoMetaDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.FaoMetaData.Services.IFaoMetaDataService" />
+
+      <!--METERS SERVICE-->
+      <endpoint address="http://counters.ab2ls.ch/Meters.Wcf.Test.Host/RawdataService.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IRawDataService" contract="RawDataService.IRawDataService" name="BasicHttpBinding_IRawDataService" />
+      <endpoint address="http://localhost:30381/RawDataService.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IRawDataService" contract="ServiceReferenceLocale.IRawDataService" name="BasicHttpBinding_IRawDataService" />
+
+      <!-- PAM SERVICE -->
+      <endpoint address="http://localhost:59476/PamService.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPamService" contract="Bombardier.FleetMonitor.Wcf.Contracts.PamService.IPamService" name="BasicHttpBinding_IPamService" />
+
+      <!-- RTS SERVICE -->
+      <endpoint address="http://localhost:8088/realtimeservice/" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IRealTimeService" contract="Bombardier.FleetMonitor.RTS.WCF.Contracts.IRealTimeService" />
+
+      <!-- Bearer service-->
+      <endpoint address="http://localhost:9546/bearerWS" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IBearerWS" contract="BearerInterface.IBearerWS" />
+      
+      <!-- APPLICATIONDATA SERVICES-->
+      <endpoint address="http://localhost:29124/ConnectionStatusDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IConnectionStatusService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IConnectionStatusService" />
+      <endpoint address="http://localhost:53221/CounterDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ICounterService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.ICounterService" />
+      <endpoint address="http://localhost:53221/EnvironmentDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IEnvironmentsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IEnvironmentsService" />
+      <endpoint address="http://localhost:53221/EventDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IEventsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IEventsService" />
+      <endpoint address="http://localhost:53221/ItemsToExporterService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IItemsToExporterService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IItemsToExporterService" />
+      <endpoint address="http://localhost:53221/VersionDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IVersionDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IVersionDataService" />
+      <endpoint address="http://localhost:53221/HandoverService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IHandoverService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IHandoverService" />
+
+      <endpoint address="http://localhost:53221/EnvironmentsMetaDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IEnvironmentsMetaDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IEnvironmentsMetaDataService" />
+      <endpoint address="http://localhost:53221/EventsMetaDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IEventsMetaDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IEventsMetaDataService" />
+      <endpoint address="http://localhost:53221/BaselinesService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IBaselinesService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IBaselinesService" />
+      <endpoint address="http://localhost:53221/CountersMetaDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ICountersMetaDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.ICountersMetaDataService" />
+      <endpoint address="http://localhost:53221/DiagnosticConfigurationsService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IDiagnosticConfigurationsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IDiagnosticConfigurationsService" />
+
+      <!-- SYSTEMDATA SERVICES-->
+      <endpoint address="http://localhost:29124/ExportRequestsService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IExportRequestsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IExportRequestsService" />
+      <endpoint address="http://localhost:29124/FilterDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IFilterDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IFilterDataService" />
+      <endpoint address="http://localhost:29124/InformUserDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IInformUserService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IInformUserService" />
+      <endpoint address="http://localhost:29124/UserService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IUserService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IUserService" />
+      <endpoint address="http://localhost:29124/ServicesStatusService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IServicesStatusService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IServicesStatusService" />
+      <endpoint address="http://localhost:29124/FileDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IFileService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IFileService" />
+      <endpoint address="http://localhost:29124/ContactGroupService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IContactGroupService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IContactGroupService" />
+      <endpoint address="http://localhost:29124/ConfigService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IConfigService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IConfigService" />
+      <endpoint address="http://localhost:29124/KPIService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IKPIService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IKPIService" />
+      <endpoint address="http://localhost:29124/FleetsService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_IFleetsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IFleetsService" />
+      <endpoint address="http://localhost:29124/ConnectionStatusConfigService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IConnectionStatusConfigService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IConnectionStatusConfigService" />
+      <endpoint address="http://localhost:29124/POIService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_IPOIService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IPOIService" />
+      <endpoint address="http://localhost:29124/WbsService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_IWbsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IWbsService" />
+      <endpoint address="http://localhost:29124/ScheduledMessageService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_IScheduledMessage" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IScheduledMessage" />
+
+
+
+      <!--<endpoint address="http://localhost:55277/ContactsService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IContactsService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IContactsService" />-->
+      <endpoint address="http://localhost:55277/RulesMetadataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IRulesMetaDataService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IRulesMetaDataService" />
+      <endpoint address="http://localhost:55277/AlertService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlertService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IAlertService" />
+      <endpoint address="http://localhost:55277/AlertRoleService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlertRoleService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IAlertRoleService" />
+      <endpoint address="http://localhost:55277/AlertPolicyService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlertPolicyService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IAlertPolicyService" />
+
+
+      <!-- STREAMING SERVICE-->
+      <endpoint address="http://localhost:55212/StreamingService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IStreamingService" contract="Bombardier.FleetMonitor.RTS.WCF.Contracts.IStreamingService" />
+      <endpoint address="http://localhost:55212/WCAService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IWCA" contract="Bombardier.FleetMonitor.WCA.Services.Messaging.IService" />
+
+      <endpoint address="http://localhost:8088/rtsConfigurationservice" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IConfigurationService" contract="Bombardier.FleetMonitor.RTS.WCF.Contracts.IRtsConfigurationService" />
+      <endpoint address="http://localhost:8088/RTSArchiveService" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IRTSArchiveService" contract="Bombardier.FleetMonitor.RTS.WCF.Contracts.IRTSArchiveService" />
+
+      <!-- TSSP CONFIGURATION SERVICE-->
+      <endpoint address="http://localhost:14725/tsspConfigurationservice/" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="TSSPConfigurationService" contract="Bombardier.FleetMonitor.Welcomer.Tssp.Wcf.Contracts.ITsspConfigurationService" />
+
+      <!-- TELEDIA RETRO SERVICE -->
+      <endpoint address="http://localhost:6227/TelediaMsgQueueService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ITelediaMsgQueueService" contract="Bombardier.FleetMonitor.Wcf.Contracts.TelediaRetro.ITelediaMsgQueueService" />
+
+      <endpoint address="http://10.0.0.104/Bombardier/Transport/Orbiflo/Common/FileRepositoryService/Service.svc" binding="wsHttpBinding" bindingConfiguration="WSHttpBinding_IFileRepository" contract="Http.Bombardier.Transport.Orbiflo.Common.FileRepository.Common.IFileRepository" name="WSHttpBinding_IFileRepository">
+        <identity>
+          <dns value="FileRepository_WcaServer" />
+        </identity>
+      </endpoint>
+      <endpoint address="net.pipe://10.0.0.104/Bombardier/Transport/Orbiflo/Common/FileRepositoryService/Service.svc" binding="netNamedPipeBinding" bindingConfiguration="NetNamedPipeBinding_IFileRepository" contract="Http.Bombardier.Transport.Orbiflo.Common.FileRepository.Common.IFileRepository" name="NetNamedPipeBinding_IFileRepository">
+        <identity>
+          <dns value="FileRepository_WcaServer" />
+        </identity>
+      </endpoint>
+
+      <!-- CSSDataRecorder SERVICE-->
+      <endpoint address="http://localhost:60717/CssDataRecorderService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ICssDataRecorderService" contract="Bombardier.FleetMonitor.CSSDataRecorder.Wcf.Contracts.ICssDataRecorderService" />
+      <endpoint address="http://localhost:60717/CssDataRecorderSignalService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ICssDataRecorderSignalService" contract="Bombardier.FleetMonitor.CSSDataRecorder.Wcf.Contracts.ICssDataRecorderSignalService" />
+      <endpoint address="http://localhost:60717/SymtreeService.svc" binding="wsHttpBinding" bindingConfiguration="WSHttpBinding_ISymtreeService" name="WSHttpBinding_ISymtreeService" contract="Bombardier.FleetMonitor.CSSDataRecorder.Wcf.Contracts.ISymtreeService" />
+      <endpoint address="http://localhost:60717/SymtreeSignalService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ISymtreeSignalService" contract="Bombardier.FleetMonitor.CSSDataRecorder.Wcf.Contracts.ISymtreeSignalService" />
+      <endpoint address="http://localhost:60717/LegacySignalervice.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ILegacySignalService" contract="Bombardier.FleetMonitor.CSSDataRecorder.Wcf.Contracts.ILegacySignalService" />
+
+      <!-- Smart Client -->
+      <endpoint address="http://localhost:34205/MetaDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ISmartClientMetaDataService" contract="Bombardier.FleetMonitor.SmartClient.Wcf.Contracts.IMetaDataService" />
+      <endpoint address="http://localhost:34205/AlarmHistoryService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlarmHistoryService" contract="Bombardier.FleetMonitor.SmartClient.Wcf.Contracts.IAlarmHistoryService" />
+      <endpoint address="http://localhost:34205/AlarmHistoryExportService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlarmHistoryExportService" contract="Bombardier.FleetMonitor.SmartClient.Wcf.Contracts.IAlarmHistoryExportService" />
+
+      <!-- Train Transfer -->
+      <endpoint address="http://localhost:62929/WcaFileSessionService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IWcaFileSessionService" contract="Bombardier.FleetMonitor.TrainTransfer.Wcf.Contracts.IWcaFileSessionService" />
+      <endpoint address="http://localhost:62929/FMFileUpload.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Bombardier.FleetMonitor.TrainTransfer.Wcf.Contracts.IFileUpload" name="BasicHttpBinding_IFileUpload" />
+
+      <!--Parser-->
+      <endpoint address="http://localhost:54043/ServiceScheduler.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Parser.WCF.Contracts.IServiceScheduler" name="BasicHttpBinding_IServiceScheduler" />
+      <endpoint address="http://localhost:54043/ServiceFile.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Parser.WCF.Contracts.IServiceFile" name="BasicHttpBinding_IServiceFile" />
+      <endpoint address="http://localhost:54043/ServiceJob.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Parser.WCF.Contracts.IServiceJob" name="BasicHttpBinding_IServiceJob" />
+      <endpoint address="http://localhost:54043/ServiceParsingTask.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Parser.WCF.Contracts.IServiceParsingTask" name="BasicHttpBinding_IServiceParsingTask" />
+      <endpoint address="http://localhost:54043/ServiceProcessingConfiguration.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Parser.WCF.Contracts.IServiceProcessingConfiguration" name="BasicHttpBinding_IServiceProcessingConfiguration" />
+      <endpoint address="http://localhost:54043/ServiceTarget.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Parser.WCF.Contracts.IServiceTarget" name="BasicHttpBinding_IServiceTarget" />
+      <endpoint address="http://localhost:54043/ServiceVariable.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Parser.WCF.Contracts.IServiceVariable" name="BasicHttpBinding_IServiceVariable" />           
+    </client>
+  </system.serviceModel>
+
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Http" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Nhibernate" publicKeyToken="aa95f207798dfdb4" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.0.4000" newVersion="4.0.0.4000" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Razor" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-7.0.0.0" newVersion="7.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="log4net" publicKeyToken="669e0ddf0bb1aa2a" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-1.2.14.0" newVersion="1.2.15.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Cors" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.IdentityModel.Tokens.Jwt" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.20622.1351" newVersion="4.0.20622.1351" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+</configuration>
+
+
+

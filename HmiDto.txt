@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bombardier.FleetMonitor.Dto.Hmi
+{
+    public class HmiConsistDto
+    {
+        public string Fleet { get; set; }
+        public string Name { get; set; }
+        public string Status { get; set; }
+        public bool CommProblem { get; set; }
+        public bool inService { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public DateTime? LastUpdate { get; set; }
+        public List<HmiCarDto> Cars { get; set; }
+        public List<HmiSystemDto> Systems { get; set; }
+        public List<HmiSignalDto> PositionSignals { get; set; }
+        public List<HmiSignalDto> HmiPanelSignals { get; set; }
+        public int[] PantographStatus { get; set; }
+        public bool IsoOK { get; set; }
+        public string AverageVoltage { get; set; }
+        public bool cabLeft { get; set; }
+        public bool cabRight { get; set; }
+    }
+
+    public class HmiCarDto
+    {
+        public int? Position { get; set; }
+        public string Status { get; set; }
+        public List<HmiDoorDto> DoorSideA { get; set; }
+        public List<HmiDoorDto> DoorSideB { get; set; }
+        public List<HmiDoorDto> DoorService { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public DateTime? LastUpdate { get; set; }
+    }
+
+    public class HmiSystemDto
+    {
+        public string Name { get; set; }
+        public string Status { get; set; }
+        public DateTime? LastUpdate { get; set; }
+    }
+
+    public class HmiSignalDto
+    {
+        public string Name { get; set; }
+        public object Value { get; set; }
+        public object RawValue { get; set; }
+        public string Status { get; set; }
+        public string Color { get; set; }
+        public string VisualizationType { get; set; }
+        public DateTime LastUpdate { get; set; }
+    }
+
+    public class HmiDoorDto
+    {
+        public string Name { get; set; }
+        public string Status { get; set; }
+        public string Signal { get; set; }
+        public bool Checked { get; set; }
+        public DateTime? LastUpdate { get; set; }
+        public string Mode { get; set; }
+        public string Color1 { get; set; }
+        public string Color2 { get; set; }
+    }
+}

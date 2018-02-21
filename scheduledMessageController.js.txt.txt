@@ -1,0 +1,158 @@
+app.controller("scheduledMessageController", function ($scope, $timeout,$http, $rootScope, $modal, standardFiltersFactory,userDataFactory, scheduledMessageService, notificationService, currentPageFactory,pageOptionFactory, busyService, $translate) {
+
+    $scope.timeoutPromise;
+    $scope.cancelTimeout = false;
+
+    var loadingData = false;
+    var currentFilters = null;
+    currentPageFactory.showPageOptions = true;
+    currentPageFactory.pageSize = 25;
+    $scope.standardFiltersFactory = standardFiltersFactory;
+    $scope.userDataFactory = userDataFactory;
+    $scope.loadingPanel = false;
+
+    var dataSourceX = new kendo.data.DataSource({
+        serverSorting: false,
+        pageSize: 25
+    });
+
+    $scope.grid = {
+        dataSource: dataSourceX,
+        resizable: true,
+        sortable: true,
+        scrollable: false,
+        reorderable: true,
+        filterable: true,
+
+        columns: [
+
+           {
+               field: "Guid",
+               title: $translate.instant('portalWeb.ScheduledMessage.GUID'),
+               width: "auto",
+
+           },
+           {
+               field: "StartTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.StartTime'),
+               type: "number",
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "EndTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.EndTime'),
+               width: "auto",
+
+           },
+           {
+               field: "Text",
+               title: $translate.instant('portalWeb.ScheduledMessage.Text'),
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "Author",
+               title: $translate.instant('portalWeb.ScheduledMessage.Author'),
+               type: "number",
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "CreationTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.CreationTime'),
+               width: "auto",
+
+           },
+           {
+               title: $translate.instant('portalWeb.ScheduledMessage.edit'),
+               command: [{
+                   text: "Edit", template: "<button  ng-click='onEditClick(dataItem)' class='btn btn-link btn-xs'><img src='../Content/images/edit.png'  width='20px' height='20px' /></button>"
+               }],
+               width: "15px"
+           },
+           {
+               title: $translate.instant('portalWeb.ScheduledMessage.delete'),
+               command: [{
+                   text: $translate.instant('portalWeb.ScheduledMessage.delete'),
+                   template: "<button   ng-click='deleteSignal(dataItem)' class='btn btn-link btn-xs'><img src='../Content/images/delete-256.png'  alt='Delete Consist' title= {{'portalWeb.ScheduledMessage.delete'|translate}}  width='20px' height='20px' /></button> "
+               }],
+               width: "15px"
+           }
+
+        ]
+    };
+
+    $scope.$on('LoadData', function (event, args) {
+        $scope.loadData();
+    });
+    
+    $scope.onEditClick = function (dataItem) {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: '../App/PlugIns/CSSDataRecorderPlugin/SymTreeImport/symtreeEdit.html',
+            controller: 'symtreeEditController',
+            size: 'md',  // sm, md, lg
+            resolve: {
+                dataItem: function () {
+                    return dataItem;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            if (result)
+                $scope.loadData();
+        });
+    }
+
+    $scope.deleteMessage = function (e) {
+
+        var msg = $translate.instant('portalWeb.ScheduledMessage.deleteMessageConfirmation');
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: '../App/PlugIns/CSSDataRecorderPlugin/SymTreeImport/symtreeDelete.html',
+            controller: 'symtreeDeleteController',
+            resolve: {
+                message: function () {
+                    return msg;
+                }
+            }
+
+        });
+
+        modalInstance.result.then(function (data) {
+            busyService.show();
+            symtreeService.deleteSymtree(e.Id).then(function (data) {
+                $scope.loadData();
+
+            }).finally(function () {
+                //$scope.loadingData = false;
+                busyService.hide();
+
+            });
+        });
+    }
+  
+    $scope.loadData = function () {
+      
+        busyService.show();
+        scheduledMessageService.getScheduledMessages(userDataFactory.username, scheduledMessageService.getCurrentTime()).then(function (data) {
+            $scope.grid.dataSource.data(data);
+        }).finally(function () {
+            busyService.hide();
+            if (!$scope.cancelTimeout)
+                $scope.timeoutPromise = $timeout(function () {
+                    $scope.loadData();
+                }, pageOptionFactory.delayUpdate * 1000);
+        });;
+        
+    };
+
+    //// Default load data
+    $scope.loadData(true);
+
+});

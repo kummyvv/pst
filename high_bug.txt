@@ -1,0 +1,236 @@
+Bug:17276: Exception in Events Chart in case of Car-WBS graph
+
+https://fm.bt.ab2ls.ch/Portal.Web/views/#/eventGraph
+ 
+Object reference not set to an instance is displayed for Car-WBS criteria.
+ 
+ 
+The same exception is displayed for By Count and By Duration Graphs.
+ 
+PFA
+
+
+
+eventGraphController: 371
+eventGraphController: 359
+
+eventsService:153
+
+
+working on critical bugs: EventDistribByCarCountWbs
+
+i worked on 26th bakrid at clients location
+
+i am travelling from Italy to India, business meetings
+
+i worked at client location 
+
+"     select de.DDSEventId as Id, prc.ProcessId as ProcessId, prc.Name as Processor, e.DescriptionResourceKeyId,        e.EventId as EventCode, de.VehiclePos as Car, c.Name as CarName, c.Type as CarType,         v.VehicleName as Consist,        ss.Name as Subsystem, ss.DefaultDescription as SubsystemDescription,         e.DefaultDescription as Description,        de.StartTime as StartDate, de.EndTime as EndDate, de.Duration as Duration, de.ExclusionState as ExclusionState,         pri.Id as Priority, pri.DefaultDescription as PriorityName, sev.Level as Level, sev.Colour as PriorityColour,            case sev.Level when 'INFO' then '#c3c3c3' when 'LOW' then '#c8bfe7' when 'MEDIUM' then '#fff200' when 'HIGH' then '#ff7f27' when 'CRITICAL' then '#ed1c24' end as Colour,        de.Trip as Trip, de.Latitude as Latitude, de.Longitude as Longitude, de.Speed as Speed,        de.Heading as Heading, de.Odometer as Odometer, e.EventId as EventId, e.Name as Name,         e.ErrorCode0 as FaultCode, e.ErrorCode0Name as ErrorCode0Name, e.ErrorCode0Descr as ErrorCode0Descr,         e.ErrorCode1 as ErrorCode1, e.ErrorCode1Name as ErrorCode1Name, e.ErrorCode1Descr as ErrorCode1Descr,        e.ErrorCode2 as ErrorCode2, e.ErrorCode2Name as ErrorCode2Name, e.ErrorCode2Descr as ErrorCode2Descr,        e.ErrorCode3 as ErrorCode3, e.ErrorCode3Name as ErrorCode3Name, e.ErrorCode3Descr as ErrorCode3Descr,        dc.PrjVersion as SoftwareVersion, mcgf.MCGFileName as MCGFileName, mcgcf.MCGFileName as McgClosingfileName,        de.VCUState as VcuState, de.DCUState as DcuState, de.Effort as Effort, wbs.WbsId as Wbs,        wbs.Description as WbsDescription, de.SourceType as SourceType, lr.Text as LocaleDescription,             CAST(GeoPosition as nvarchar(max)) as GeoPosition, ISNULL(p.ReferenceLocation, '') as ReferenceLocation, p.DistanceFromReferenceLocation         from DdsEvents de inner join        Vehicles v on de.PrjName = v.PrjName and de.VehicleName = v.VehicleName left join        Cars c on de.PrjName = c.FleetName and de.VehicleName = c.ConsistName and de.VehiclePos = c.Position inner join        DiagnosticConfigurations dc on de.DiagnosticConfigurationId = dc.DiagnosticConfigurationId inner join        Events e on de.DiagnosticConfigurationId = e.DiagnosticConfigurationId and de.EventId = e.EventId and de.ProcessId = e.ProcessId inner join        Processes prc on de.DiagnosticConfigurationId = prc.DiagnosticConfigurationId and de.ProcessId = prc.ProcessId inner join        SubSystems ss on e.DiagnosticConfigurationId = ss.DiagnosticConfigurationId and e.SubSystemId = ss.SubSystemId left join        Priorities pri on de.DiagnosticConfigurationId = pri.DiagnosticConfigurationId and de.Priority = pri.Id left join        Severities sev on de.PrjName = sev.PrjName and de.Priority = sev.Priority left join        MCGFileNames mcgf on de.MCGFileNameId = mcgf.MCGFileNameId left join        MCGFileNames mcgcf on de.MCGFileNameIdClosing = mcgcf.MCGFileNameId left join        WbsStructures wbs on e.FleetName = wbs.FleetName and e.WbsId = wbs.WBSId left join        LocaleResources lr on e.DiagnosticConfigurationId = lr.DiagnosticConfigurationId         and e.DescriptionResourceKeyId = lr.ResourceKeyId         and lr.Type = ''        and lr.LocaleId = ''            OUTER APPLY (select top 1 Name as ReferenceLocation, de.GeoPosition.STDistance(GeoPosition) as DistanceFromReferenceLocation         from Places         where Fleet = 'ETR1000' and de.GeoPosition is not null         order by de.GeoPosition.STDistance(GeoPosition)) as p     where 1=1 and de.PrjName = 'ETR1000' and ((v.VehicleName = 'consist') or (v.VehicleName = 'etr1000cs000') or (v.VehicleName = 'etr1000cst001') or (v.VehicleName = 'etr1000cst002') or (v.VehicleName = 'etr1000cst003') or (v.VehicleName = 'etr1000cst004') or (v.VehicleName = 'etr1000cst005') or (v.VehicleName = 'etr1000cst006') or (v.VehicleName = 'etr1000cst007') or (v.VehicleName = 'etr1000cst008') or (v.VehicleName = 'etr1000cst009') or (v.VehicleName = 'etr1000cst010') or (v.VehicleName = 'etr1000cst011') or (v.VehicleName = 'etr1000cst0111') or (v.VehicleName = 'etr1000cst012') or (v.VehicleName = 'etr1000cst013') or (v.VehicleName = 'etr1000cst014') or (v.VehicleName = 'etr1000cst015') or (v.VehicleName = 'etr1000cst016') or (v.VehicleName = 'etr1000cst017') or (v.VehicleName = 'etr1000cst018') or (v.VehicleName = 'etr1000cst024') or (v.VehicleName = 'etr1000cst036') or (v.VehicleName = 'etr1000cst098') or (v.VehicleName = 'etr1000cst099') or (v.VehicleName = 'etr1000cst999') or (v.VehicleName = 'Test') or (v.VehicleName = 'test123') or (v.VehicleName = 'TESTFM') or (v.VehicleName = 'UIC345001') or (v.VehicleName = 'UIC345005') or (v.VehicleName = 'Z5500525')) and de.StartTime >= '2015-09-26T04:32:09' and de.StartTime <= '2017-07-26T04:32:09'         order by DdsEventId         "
+
+
+
+
+"DdsEvents de inner joinVehicles v on de.PrjName = v.PrjName and de.VehicleName = v.VehicleName left joinCars c on de.PrjName = c.FleetName and de.VehicleName = c.ConsistName and de.VehiclePos = c.Position inner joinDiagnosticConfigurations dc on de.DiagnosticConfigurationId = dc.DiagnosticConfigurationId inner joinEvents e on de.DiagnosticConfigurationId = e.DiagnosticConfigurationId and de.EventId = e.EventId and de.ProcessId = e.ProcessId inner joinProcesses prc on de.DiagnosticConfigurationId = prc.DiagnosticConfigurationId and de.ProcessId = prc.ProcessId inner joinSubSystems ss on e.DiagnosticConfigurationId = ss.DiagnosticConfigurationId and e.SubSystemId = ss.SubSystemId left joinPriorities pri on de.DiagnosticConfigurationId = pri.DiagnosticConfigurationId and de.Priority = pri.Id left joinSeverities sev on de.PrjName = sev.PrjName and de.Priority = sev.Priority left joinMCGFileNames mcgf on de.MCGFileNameId = mcgf.MCGFileNameId left joinMCGFileNames mcgcf on de.MCGFileNameIdClosing = mcgcf.MCGFileNameId left joinWbsStructures wbs on e.FleetName = wbs.FleetName and e.WbsId = wbs.WBSId left joinLocaleResources lr on e.DiagnosticConfigurationId = lr.DiagnosticConfigurationId                                     and e.DescriptionResourceKeyId = lr.ResourceKeyId                                     and lr.Type = ''                                    and lr.LocaleId = ''                                        OUTER APPLY (select top 1 Name as ReferenceLocation, de.GeoPosition.STDistance(GeoPosition) as DistanceFromReferenceLocation                                     from Places                                     where Fleet = 'ETR1000' and de.GeoPosition is not null                                     order by de.GeoPosition.STDistance(GeoPosition)) as p"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ select de.DDSEventId as Id, 
+prc.ProcessId as ProcessId, 
+prc.Name as Processor, 
+e.DescriptionResourceKeyId,
+e.EventId as EventCode, 
+de.VehiclePos as Car,
+c.Name as CarName, 
+c.Type as CarType, 
+v.VehicleName as Consist,
+ss.Name as Subsystem, 
+ss.DefaultDescription as SubsystemDescription, 
+e.DefaultDescription as Description,
+de.StartTime as StartDate, 
+de.EndTime as EndDate, 
+de.Duration as Duration, 
+de.ExclusionState as ExclusionState,
+pri.Id as Priority, 
+pri.DefaultDescription as PriorityName, 
+sev.Level as Level, 
+sev.Colour as PriorityColour,
+case sev.Level when 'INFO' then '#c3c3c3' when 'LOW' then '#c8bfe7' when 'MEDIUM' then '#fff200' when 'HIGH' then '#ff7f27' when 'CRITICAL' then '#ed1c24' end as Colour,de.Trip as Trip, 
+de.Latitude as Latitude, 
+de.Longitude as Longitude, 
+de.Speed as Speed,
+de.Heading as Heading, 
+de.Odometer as Odometer, 
+e.EventId as EventId, 
+e.Name as Name, 
+e.ErrorCode0 as FaultCode, 
+e.ErrorCode0Name as ErrorCode0Name, 
+e.ErrorCode0Descr as ErrorCode0Descr, 
+e.ErrorCode1 as ErrorCode1, 
+e.ErrorCode1Name as ErrorCode1Name, 
+e.ErrorCode1Descr as ErrorCode1Descr,
+e.ErrorCode2 as ErrorCode2, 
+e.ErrorCode2Name as ErrorCode2Name, 
+e.ErrorCode2Descr as ErrorCode2Descr,
+e.ErrorCode3 as ErrorCode3, 
+e.ErrorCode3Name as ErrorCode3Name, 
+e.ErrorCode3Descr as ErrorCode3Descr,
+dc.PrjVersion as SoftwareVersion, 
+mcgf.MCGFileName as MCGFileName, 
+mcgcf.MCGFileName as McgClosingfileName,
+de.VCUState as VcuState, 
+de.DCUState as DcuState, 
+de.Effort as Effort, 
+
+wbs.WbsId as Wbs,wbs.Description as WbsDescription, 
+
+de.SourceType as SourceType, 
+lr.Text as LocaleDescription, 
+CAST(GeoPosition as nvarchar(max)) as GeoPosition, 
+ISNULL(p.ReferenceLocation, '') as ReferenceLocation, 
+p.DistanceFromReferenceLocation                                                 
+
+
+
+from DdsEvents de 
+
+inner join Vehicles v on de.PrjName = v.PrjName and de.VehicleName = v.VehicleName 
+left join Cars c on de.PrjName = c.FleetName and de.VehicleName = c.ConsistName and de.VehiclePos = c.Position 
+inner join DiagnosticConfigurations dc on de.DiagnosticConfigurationId = dc.DiagnosticConfigurationId 
+inner join Events e on de.DiagnosticConfigurationId = e.DiagnosticConfigurationId and de.EventId = e.EventId and de.ProcessId = e.ProcessId 
+inner join Processes prc on de.DiagnosticConfigurationId = prc.DiagnosticConfigurationId and de.ProcessId = prc.ProcessId 
+inner join SubSystems ss on e.DiagnosticConfigurationId = ss.DiagnosticConfigurationId and e.SubSystemId = ss.SubSystemId 
+left join  Priorities pri on de.DiagnosticConfigurationId = pri.DiagnosticConfigurationId and de.Priority = pri.Id 
+left joinSeverities sev on de.PrjName = sev.PrjName and de.Priority = sev.Priority 
+left join MCGFileNames mcgf on de.MCGFileNameId = mcgf.MCGFileNameId 
+left join MCGFileNames mcgcf on de.MCGFileNameIdClosing = mcgcf.MCGFileNameId 
+left join WbsStructures wbs on e.FleetName = wbs.FleetName and e.WbsId = wbs.WBSId 
+left join LocaleResources lr on e.DiagnosticConfigurationId = lr.DiagnosticConfigurationId and e.DescriptionResourceKeyId = lr.ResourceKeyId 
+and lr.Type = '' and lr.LocaleId = ''
+OUTER APPLY (select top 1 Name as ReferenceLocation, de.GeoPosition.STDistance(GeoPosition) as DistanceFromReferenceLocation
+ from Places             where Fleet = 'ETR1000' and de.GeoPosition is not null                                    
+ order by de.GeoPosition.STDistance(GeoPosition)) as p                                 
+where 1=1 and de.PrjName = 'ETR1000' and ((v.VehicleName = 'consist') or (v.VehicleName = 'etr1000cs000') or (v.VehicleName = 'etr1000cst001') or (v.VehicleName = 'etr1000cst002') or (v.VehicleName = 'etr1000cst003') or (v.VehicleName = 'etr1000cst004') or (v.VehicleName = 'etr1000cst005') or (v.VehicleName = 'etr1000cst006') or (v.VehicleName = 'etr1000cst007') or (v.VehicleName = 'etr1000cst008') or (v.VehicleName = 'etr1000cst009') or (v.VehicleName = 'etr1000cst010') or (v.VehicleName = 'etr1000cst011') or (v.VehicleName = 'etr1000cst0111') or (v.VehicleName = 'etr1000cst012') or (v.VehicleName = 'etr1000cst013') or (v.VehicleName = 'etr1000cst014') or (v.VehicleName = 'etr1000cst015') or (v.VehicleName = 'etr1000cst016') or (v.VehicleName = 'etr1000cst017') or (v.VehicleName = 'etr1000cst018') or (v.VehicleName = 'etr1000cst024') or (v.VehicleName = 'etr1000cst036') or (v.VehicleName = 'etr1000cst098') or (v.VehicleName = 'etr1000cst099') or (v.VehicleName = 'etr1000cst999') or (v.VehicleName = 'Test') or (v.VehicleName = 'test123') or (v.VehicleName = 'TESTFM') or (v.VehicleName = 'UIC345001') or (v.VehicleName = 'UIC345005') or (v.VehicleName = 'Z5500525')) and de.StartTime >= '2015-09-26T04:32:09' and de.StartTime <= '2017-07-26T04:32:09'                                                   order by DdsEventId                                                   "
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"                                 select de.DDSEventId as Id, prc.ProcessId as ProcessId, prc.Name as Processor, e.DescriptionResourceKeyId,\t                                    e.EventId as EventCode, de.VehiclePos as Car, c.Name as CarName, c.Type as CarType, \t                                    v.VehicleName as Consist,\t                                    ss.Name as Subsystem, ss.DefaultDescription as SubsystemDescription, \t                                    e.DefaultDescription as Description,\t                                    de.StartTime as StartDate, de.EndTime as EndDate, de.Duration as Duration, de.ExclusionState as ExclusionState, \t                                    pri.Id as Priority, pri.DefaultDescription as PriorityName, sev.Level as Level, sev.Colour as PriorityColour,                                        case sev.Level when 'INFO' then '#c3c3c3' when 'LOW' then '#c8bfe7' when 'MEDIUM' then '#fff200' when 'HIGH' then '#ff7f27' when 'CRITICAL' then '#ed1c24' end as Colour,\t                                    de.Trip as Trip, de.Latitude as Latitude, de.Longitude as Longitude, de.Speed as Speed,\t                                    de.Heading as Heading, de.Odometer as Odometer, e.EventId as EventId, e.Name as Name, \t                                    e.ErrorCode0 as FaultCode, e.ErrorCode0Name as ErrorCode0Name, e.ErrorCode0Descr as ErrorCode0Descr, \t                                    e.ErrorCode1 as ErrorCode1, e.ErrorCode1Name as ErrorCode1Name, e.ErrorCode1Descr as ErrorCode1Descr,\t                                    e.ErrorCode2 as ErrorCode2, e.ErrorCode2Name as ErrorCode2Name, e.ErrorCode2Descr as ErrorCode2Descr,\t                                    e.ErrorCode3 as ErrorCode3, e.ErrorCode3Name as ErrorCode3Name, e.ErrorCode3Descr as ErrorCode3Descr,\t                                    dc.PrjVersion as SoftwareVersion, mcgf.MCGFileName as MCGFileName, mcgcf.MCGFileName as McgClosingfileName,\t                                    de.VCUState as VcuState, de.DCUState as DcuState, de.Effort as Effort, wbs.WbsId as Wbs,\t                                    wbs.Description as WbsDescription, de.SourceType as SourceType, lr.Text as LocaleDescription,                                         CAST(GeoPosition as nvarchar(max)) as GeoPosition, ISNULL(p.ReferenceLocation, '') as ReferenceLocation, p.DistanceFromReferenceLocation                                                   from DdsEvents de inner join \t                                    Vehicles v on de.PrjName = v.PrjName and de.VehicleName = v.VehicleName left join \t                                    Cars c on de.PrjName = c.FleetName and de.VehicleName = c.ConsistName and de.VehiclePos = c.Position inner join \t                                    DiagnosticConfigurations dc on de.DiagnosticConfigurationId = dc.DiagnosticConfigurationId inner join \t                                    Events e on de.DiagnosticConfigurationId = e.DiagnosticConfigurationId and de.EventId = e.EventId and de.ProcessId = e.ProcessId inner join \t                                    Processes prc on de.DiagnosticConfigurationId = prc.DiagnosticConfigurationId and de.ProcessId = prc.ProcessId inner join \t                                    SubSystems ss on e.DiagnosticConfigurationId = ss.DiagnosticConfigurationId and e.SubSystemId = ss.SubSystemId left join \t                                    Priorities pri on de.DiagnosticConfigurationId = pri.DiagnosticConfigurationId and de.Priority = pri.Id left join \t                                    Severities sev on de.PrjName = sev.PrjName and de.Priority = sev.Priority left join \t                                    MCGFileNames mcgf on de.MCGFileNameId = mcgf.MCGFileNameId left join \t                                    MCGFileNames mcgcf on de.MCGFileNameIdClosing = mcgcf.MCGFileNameId left join \t                                    WbsStructures wbs on e.FleetName = wbs.FleetName and e.WbsId = wbs.WBSId left join \t                                    LocaleResources lr on e.DiagnosticConfigurationId = lr.DiagnosticConfigurationId                                     and e.DescriptionResourceKeyId = lr.ResourceKeyId                                     and lr.Type = ''                                    and lr.LocaleId = ''                                        OUTER APPLY (select top 1 Name as ReferenceLocation, de.GeoPosition.STDistance(GeoPosition) as DistanceFromReferenceLocation                                     from Places                                     where Fleet = 'ETR1000' and de.GeoPosition is not null                                     order by de.GeoPosition.STDistance(GeoPosition)) as p                                 where 1=1 and de.PrjName = 'ETR1000' and ((v.VehicleName = 'consist') or (v.VehicleName = 'etr1000cs000') or (v.VehicleName = 'etr1000cst001') or (v.VehicleName = 'etr1000cst002') or (v.VehicleName = 'etr1000cst003') or (v.VehicleName = 'etr1000cst004') or (v.VehicleName = 'etr1000cst005') or (v.VehicleName = 'etr1000cst006') or (v.VehicleName = 'etr1000cst007') or (v.VehicleName = 'etr1000cst008') or (v.VehicleName = 'etr1000cst009') or (v.VehicleName = 'etr1000cst010') or (v.VehicleName = 'etr1000cst011') or (v.VehicleName = 'etr1000cst0111') or (v.VehicleName = 'etr1000cst012') or (v.VehicleName = 'etr1000cst013') or (v.VehicleName = 'etr1000cst014') or (v.VehicleName = 'etr1000cst015') or (v.VehicleName = 'etr1000cst016') or (v.VehicleName = 'etr1000cst017') or (v.VehicleName = 'etr1000cst018') or (v.VehicleName = 'etr1000cst024') or (v.VehicleName = 'etr1000cst036') or (v.VehicleName = 'etr1000cst098') or (v.VehicleName = 'etr1000cst099') or (v.VehicleName = 'etr1000cst999') or (v.VehicleName = 'Test') or (v.VehicleName = 'test123') or (v.VehicleName = 'TESTFM') or (v.VehicleName = 'UIC345001') or (v.VehicleName = 'UIC345005') or (v.VehicleName = 'Z5500525')) and de.StartTime >= '2015-09-26T05:06:33' and de.StartTime <= '2017-07-26T05:06:33'                                                   order by DdsEventId                                                   "
+
+
+
+
+
+"DdsEvents de inner join \t                                    Vehicles v on de.PrjName = v.PrjName and de.VehicleName = v.VehicleName left join \t                                    Cars c on de.PrjName = c.FleetName and de.VehicleName = c.ConsistName and de.VehiclePos = c.Position inner join \t                                    DiagnosticConfigurations dc on de.DiagnosticConfigurationId = dc.DiagnosticConfigurationId inner join \t                                    Events e on de.DiagnosticConfigurationId = e.DiagnosticConfigurationId and de.EventId = e.EventId and de.ProcessId = e.ProcessId inner join \t                                    Processes prc on de.DiagnosticConfigurationId = prc.DiagnosticConfigurationId and de.ProcessId = prc.ProcessId inner join \t                                    SubSystems ss on e.DiagnosticConfigurationId = ss.DiagnosticConfigurationId and e.SubSystemId = ss.SubSystemId left join \t                                    Priorities pri on de.DiagnosticConfigurationId = pri.DiagnosticConfigurationId and de.Priority = pri.Id left join \t                                    Severities sev on de.PrjName = sev.PrjName and de.Priority = sev.Priority left join \t                                    MCGFileNames mcgf on de.MCGFileNameId = mcgf.MCGFileNameId left join \t                                    MCGFileNames mcgcf on de.MCGFileNameIdClosing = mcgcf.MCGFileNameId inner join \t                                    WbsStructures wbs on e.FleetName = wbs.FleetName and e.WbsId = wbs.WBSId left join \t                                    LocaleResources lr on e.DiagnosticConfigurationId = lr.DiagnosticConfigurationId                                     and e.DescriptionResourceKeyId = lr.ResourceKeyId                                     and lr.Type = ''                                    and lr.LocaleId = ''                                        OUTER APPLY (select top 1 Name as ReferenceLocation, de.GeoPosition.STDistance(GeoPosition) as DistanceFromReferenceLocation                                     from Places                                     where Fleet = 'ETR1000' and de.GeoPosition is not null                                     order by de.GeoPosition.STDistance(GeoPosition)) as p"
+
+
+
+
+
+
+
+
+
+
+
+
+"DdsEvents de inner join \t                                    Vehicles v on de.PrjName = v.PrjName and de.VehicleName = v.VehicleName left join \t                                    Cars c on de.PrjName = c.FleetName and de.VehicleName = c.ConsistName and de.VehiclePos = c.Position left join \t                                    WbsStructures wbs on e.FleetName = wbs.FleetName and e.WbsId = wbs.WBSId inner join \t                                    DiagnosticConfigurations dc on de.DiagnosticConfigurationId = dc.DiagnosticConfigurationId inner join \t                                    Events e on de.DiagnosticConfigurationId = e.DiagnosticConfigurationId and de.EventId = e.EventId and de.ProcessId = e.ProcessId inner join \t                                    Processes prc on de.DiagnosticConfigurationId = prc.DiagnosticConfigurationId and de.ProcessId = prc.ProcessId inner join \t                                    SubSystems ss on e.DiagnosticConfigurationId = ss.DiagnosticConfigurationId and e.SubSystemId = ss.SubSystemId left join \t                                    Priorities pri on de.DiagnosticConfigurationId = pri.DiagnosticConfigurationId and de.Priority = pri.Id left join \t                                    Severities sev on de.PrjName = sev.PrjName and de.Priority = sev.Priority left join \t                                    MCGFileNames mcgf on de.MCGFileNameId = mcgf.MCGFileNameId left join \t                                    MCGFileNames mcgcf on de.MCGFileNameIdClosing = mcgcf.MCGFileNameId left join \t                                    LocaleResources lr on e.DiagnosticConfigurationId = lr.DiagnosticConfigurationId                                     and e.DescriptionResourceKeyId = lr.ResourceKeyId                                     and lr.Type = ''                                    and lr.LocaleId = ''                                        OUTER APPLY (select top 1 Name as ReferenceLocation, de.GeoPosition.STDistance(GeoPosition) as DistanceFromReferenceLocation                                     from Places                                     where Fleet = 'ETR1000' and de.GeoPosition is not null                                     order by de.GeoPosition.STDistance(GeoPosition)) as p"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"could not execute query[                                  select de.DDSEventId as Id, prc.ProcessId as ProcessId, prc.Name as Processor, e.DescriptionResourceKeyId,\t                                    e.EventId as EventCode, de.VehiclePos as Car, c.Name as CarName, c.Type as CarType, \t                                    v.VehicleName as Consist,\t                                    ss.Name as Subsystem, ss.DefaultDescription as SubsystemDescription, \t                                    e.DefaultDescription as Description,\t                                    de.StartTime as StartDate, de.EndTime as EndDate, de.Duration as Duration, de.ExclusionState as ExclusionState, \t                                    pri.Id as Priority, pri.DefaultDescription as PriorityName, sev.Level as Level, sev.Colour as PriorityColour,                                        case sev.Level when 'INFO' then '#c3c3c3' when 'LOW' then '#c8bfe7' when 'MEDIUM' then '#fff200' when 'HIGH' then '#ff7f27' when 'CRITICAL' then '#ed1c24' end as Colour,\t                                    de.Trip as Trip, de.Latitude as Latitude, de.Longitude as Longitude, de.Speed as Speed,\t                                    de.Heading as Heading, de.Odometer as Odometer, e.EventId as EventId, e.Name as Name, \t                                    e.ErrorCode0 as FaultCode, e.ErrorCode0Name as ErrorCode0Name, e.ErrorCode0Descr as ErrorCode0Descr, \t                                    e.ErrorCode1 as ErrorCode1, e.ErrorCode1Name as ErrorCode1Name, e.ErrorCode1Descr as ErrorCode1Descr,\t                                    e.ErrorCode2 as ErrorCode2, e.ErrorCode2Name as ErrorCode2Name, e.ErrorCode2Descr as ErrorCode2Descr,\t                                    e.ErrorCode3 as ErrorCode3, e.ErrorCode3Name as ErrorCode3Name, e.ErrorCode3Descr as ErrorCode3Descr,\t                                    dc.PrjVersion as SoftwareVersion, mcgf.MCGFileName as MCGFileName, mcgcf.MCGFileName as McgClosingfileName,\t                                    de.VCUState as VcuState, de.DCUState as DcuState, de.Effort as Effort, wbs.WbsId as Wbs,\t                                    wbs.Description as WbsDescription, de.SourceType as SourceType, lr.Text as LocaleDescription,                                         CAST(GeoPosition as nvarchar(max)) as GeoPosition, ISNULL(p.ReferenceLocation, '') as ReferenceLocation, p.DistanceFromReferenceLocation                                                   from DdsEvents de inner join \t                                    Vehicles v on de.PrjName = v.PrjName and de.VehicleName = v.VehicleName left join \t                                    Cars c on de.PrjName = c.FleetName and de.VehicleName = c.ConsistName and de.VehiclePos = c.Position left join \t                                    WbsStructures wbs on e.FleetName = wbs.FleetName and e.WbsId = wbs.WBSId inner join \t                                    DiagnosticConfigurations dc on de.DiagnosticConfigurationId = dc.DiagnosticConfigurationId inner join \t                                    Events e on de.DiagnosticConfigurationId = e.DiagnosticConfigurationId and de.EventId = e.EventId and de.ProcessId = e.ProcessId inner join \t                                    Processes prc on de.DiagnosticConfigurationId = prc.DiagnosticConfigurationId and de.ProcessId = prc.ProcessId inner join \t                                    SubSystems ss on e.DiagnosticConfigurationId = ss.DiagnosticConfigurationId and e.SubSystemId = ss.SubSystemId left join \t                                    Priorities pri on de.DiagnosticConfigurationId = pri.DiagnosticConfigurationId and de.Priority = pri.Id left join \t                                    Severities sev on de.PrjName = sev.PrjName and de.Priority = sev.Priority left join \t                                    MCGFileNames mcgf on de.MCGFileNameId = mcgf.MCGFileNameId left join \t                                    MCGFileNames mcgcf on de.MCGFileNameIdClosing = mcgcf.MCGFileNameId left join \t                                    LocaleResources lr on e.DiagnosticConfigurationId = lr.DiagnosticConfigurationId                                     and e.DescriptionResourceKeyId = lr.ResourceKeyId                                     and lr.Type = ''                                    and lr.LocaleId = ''                                        OUTER APPLY (select top 1 Name as ReferenceLocation, de.GeoPosition.STDistance(GeoPosition) as DistanceFromReferenceLocation                                     from Places                                     where Fleet = 'ETR1000' and de.GeoPosition is not null                                     order by de.GeoPosition.STDistance(GeoPosition)) as p                                 where 1=1 and de.PrjName = 'ETR1000' and ((v.VehicleName = 'consist') or (v.VehicleName = 'etr1000cs000') or (v.VehicleName = 'etr1000cst001') or (v.VehicleName = 'etr1000cst002') or (v.VehicleName = 'etr1000cst003') or (v.VehicleName = 'etr1000cst004') or (v.VehicleName = 'etr1000cst005') or (v.VehicleName = 'etr1000cst006') or (v.VehicleName = 'etr1000cst007') or (v.VehicleName = 'etr1000cst008') or (v.VehicleName = 'etr1000cst009') or (v.VehicleName = 'etr1000cst010') or (v.VehicleName = 'etr1000cst011') or (v.VehicleName = 'etr1000cst0111') or (v.VehicleName = 'etr1000cst012') or (v.VehicleName = 'etr1000cst013') or (v.VehicleName = 'etr1000cst014') or (v.VehicleName = 'etr1000cst015') or (v.VehicleName = 'etr1000cst016') or (v.VehicleName = 'etr1000cst017') or (v.VehicleName = 'etr1000cst018') or (v.VehicleName = 'etr1000cst024') or (v.VehicleName = 'etr1000cst036') or (v.VehicleName = 'etr1000cst098') or (v.VehicleName = 'etr1000cst099') or (v.VehicleName = 'etr1000cst999') or (v.VehicleName = 'Test') or (v.VehicleName = 'test123') or (v.VehicleName = 'TESTFM') or (v.VehicleName = 'UIC345001') or (v.VehicleName = 'UIC345005') or (v.VehicleName = 'Z5500525')) and de.StartTime >= '2015-09-26T06:14:12' and de.StartTime <= '2017-07-26T06:14:12'                                                   order by DdsEventId                                                    ][SQL:                                  select de.DDSEventId as Id, prc.ProcessId as ProcessId, prc.Name as Processor, e.DescriptionResourceKeyId,\t                                    e.EventId as EventCode, de.VehiclePos as Car, c.Name as CarName, c.Type as CarType, \t                                    v.VehicleName as Consist,\t                                    ss.Name as Subsystem, ss.DefaultDescription as SubsystemDescription, \t                                    e.DefaultDescription as Description,\t                                    de.StartTime as StartDate, de.EndTime as EndDate, de.Duration as Duration, de.ExclusionState as ExclusionState, \t                                    pri.Id as Priority, pri.DefaultDescription as PriorityName, sev.Level as Level, sev.Colour as PriorityColour,                                        case sev.Level when 'INFO' then '#c3c3c3' when 'LOW' then '#c8bfe7' when 'MEDIUM' then '#fff200' when 'HIGH' then '#ff7f27' when 'CRITICAL' then '#ed1c24' end as Colour,\t                                    de.Trip as Trip, de.Latitude as Latitude, de.Longitude as Longitude, de.Speed as Speed,\t                                    de.Heading as Heading, de.Odometer as Odometer, e.EventId as EventId, e.Name as Name, \t                                    e.ErrorCode0 as FaultCode, e.ErrorCode0Name as ErrorCode0Name, e.ErrorCode0Descr as ErrorCode0Descr, \t                                    e.ErrorCode1 as ErrorCode1, e.ErrorCode1Name as ErrorCode1Name, e.ErrorCode1Descr as ErrorCode1Descr,\t                                    e.ErrorCode2 as ErrorCode2, e.ErrorCode2Name as ErrorCode2Name, e.ErrorCode2Descr as ErrorCode2Descr,\t                                    e.ErrorCode3 as ErrorCode3, e.ErrorCode3Name as ErrorCode3Name, e.ErrorCode3Descr as ErrorCode3Descr,\t                                    dc.PrjVersion as SoftwareVersion, mcgf.MCGFileName as MCGFileName, mcgcf.MCGFileName as McgClosingfileName,\t                                    de.VCUState as VcuState, de.DCUState as DcuState, de.Effort as Effort, wbs.WbsId as Wbs,\t                                    wbs.Description as WbsDescription, de.SourceType as SourceType, lr.Text as LocaleDescription,                                         CAST(GeoPosition as nvarchar(max)) as GeoPosition, ISNULL(p.ReferenceLocation, '') as ReferenceLocation, p.DistanceFromReferenceLocation                                                   from DdsEvents de inner join \t                                    Vehicles v on de.PrjName = v.PrjName and de.VehicleName = v.VehicleName left join \t                                    Cars c on de.PrjName = c.FleetName and de.VehicleName = c.ConsistName and de.VehiclePos = c.Position left join \t                                    WbsStructures wbs on e.FleetName = wbs.FleetName and e.WbsId = wbs.WBSId inner join \t                                    DiagnosticConfigurations dc on de.DiagnosticConfigurationId = dc.DiagnosticConfigurationId inner join \t                                    Events e on de.DiagnosticConfigurationId = e.DiagnosticConfigurationId and de.EventId = e.EventId and de.ProcessId = e.ProcessId inner join \t                                    Processes prc on de.DiagnosticConfigurationId = prc.DiagnosticConfigurationId and de.ProcessId = prc.ProcessId inner join \t                                    SubSystems ss on e.DiagnosticConfigurationId = ss.DiagnosticConfigurationId and e.SubSystemId = ss.SubSystemId left join \t                                    Priorities pri on de.DiagnosticConfigurationId = pri.DiagnosticConfigurationId and de.Priority = pri.Id left join \t                                    Severities sev on de.PrjName = sev.PrjName and de.Priority = sev.Priority left join \t                                    MCGFileNames mcgf on de.MCGFileNameId = mcgf.MCGFileNameId left join \t                                    MCGFileNames mcgcf on de.MCGFileNameIdClosing = mcgcf.MCGFileNameId left join \t                                    LocaleResources lr on e.DiagnosticConfigurationId = lr.DiagnosticConfigurationId                                     and e.DescriptionResourceKeyId = lr.ResourceKeyId                                     and lr.Type = ''                                    and lr.LocaleId = ''                                        OUTER APPLY (select top 1 Name as ReferenceLocation, de.GeoPosition.STDistance(GeoPosition) as DistanceFromReferenceLocation                                     from Places                                     where Fleet = 'ETR1000' and de.GeoPosition is not null                                     order by de.GeoPosition.STDistance(GeoPosition)) as p                                 where 1=1 and de.PrjName = 'ETR1000' and ((v.VehicleName = 'consist') or (v.VehicleName = 'etr1000cs000') or (v.VehicleName = 'etr1000cst001') or (v.VehicleName = 'etr1000cst002') or (v.VehicleName = 'etr1000cst003') or (v.VehicleName = 'etr1000cst004') or (v.VehicleName = 'etr1000cst005') or (v.VehicleName = 'etr1000cst006') or (v.VehicleName = 'etr1000cst007') or (v.VehicleName = 'etr1000cst008') or (v.VehicleName = 'etr1000cst009') or (v.VehicleName = 'etr1000cst010') or (v.VehicleName = 'etr1000cst011') or (v.VehicleName = 'etr1000cst0111') or (v.VehicleName = 'etr1000cst012') or (v.VehicleName = 'etr1000cst013') or (v.VehicleName = 'etr1000cst014') or (v.VehicleName = 'etr1000cst015') or (v.VehicleName = 'etr1000cst016') or (v.VehicleName = 'etr1000cst017') or (v.VehicleName = 'etr1000cst018') or (v.VehicleName = 'etr1000cst024') or (v.VehicleName = 'etr1000cst036') or (v.VehicleName = 'etr1000cst098') or (v.VehicleName = 'etr1000cst099') or (v.VehicleName = 'etr1000cst999') or (v.VehicleName = 'Test') or (v.VehicleName = 'test123') or (v.VehicleName = 'TESTFM') or (v.VehicleName = 'UIC345001') or (v.VehicleName = 'UIC345005') or (v.VehicleName = 'Z5500525')) and de.StartTime >= '2015-09-26T06:14:12' and de.StartTime <= '2017-07-26T06:14:12'                                                   order by DdsEventId                                                   ]"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{Bombardier.FleetMonitor.Repositories.NH.ApplicationData.EventChartDistibutions.EventDistributors.EventDistribByLocationCountWbs}
+
+
+
+
+Instead of the below line: seriesname = groups.Key.wbs.ToString(), I changed to: seriesname = groups.Key.wbs, as wbs Is null 
+
+17275:
+getChildEventDetails
+getEventChartData

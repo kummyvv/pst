@@ -1,0 +1,621 @@
+using Bombardier.FleetMonitor.Common.Utilities;
+using Bombardier.FleetMonitor.Dto.Hmi;
+using Bombardier.FleetMonitor.RTS.WCF.Contracts;
+using Bombardier.FleetMonitor.WebApi.HMI.Properties;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+using System.Drawing;
+using Bombardier.FleetMonitor.RTS.Models;
+using Bombardier.FleetMonitor.RTS.Models.HMI;
+using Bombardier.FleetMonitor.Wcf.Contracts.SystemData;
+using Common.Utilities;
+
+namespace WebApi.HMI.Controllers
+{
+    [RoutePrefix("api/hmi")]
+    public class HmiController : ApiController
+    {
+        private readonly ServiceClient<IRtsConfigurationService> _configurationService;
+        private readonly ServiceClient<IRealTimeService> _realTimeService;
+        private readonly ServiceClient<IFleetsService> _fleetsService;
+        public log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public HmiController()
+        {
+            _configurationService = new ServiceClient<IRtsConfigurationService>("BasicHttpBinding_IConfigurationService");
+            _realTimeService = new ServiceClient<IRealTimeService>("BasicHttpBinding_IRealTimeService");
+            _fleetsService = new ServiceClient<IFleetsService>("BasicHttpBinding_IFleetsService");
+        }
+
+        [Route("GetConsistHmi")]
+        [HttpPost]
+        public HmiConsistDto GetConsistHmi(string fleet, string consist)
+        {
+
+            var carss = _fleetsService.Proxy.GetAllCarsByConsist(fleet, consist);
+            var types = _fleetsService.Proxy.GetAllCarTypeCfg(fleet);
+
+            var cartypes = (from ca in carss.ToList()
+                            join ty in types.ToList() on ca.Type equals ty.CarType
+                            select new { Car = ca.Position, DoorA = ty.DoorsNumberSideA, DoorB = ty.DoorsNumberSideB, CabA = ty.CabDoorsNumberSideA, CabB = ty.CabDoorsNumberSideB, Emergency = ty.EmergencyDoorsNumber, Interlock = ty.SaloonDoorsNumber, Gang = ty.GangDoorsNumber, Type = ty.Orientation }).ToDictionary(p => p.Car, p => p);
+
+            var filters = new RealTimeFilter() { Fleet = fleet, Consists = new string[1] { consist }, ToDate = null, FromDate = null, FhmHealth = null };
+            var rts = _realTimeService.Proxy.GetFilteredData(filters).ToList();
+            var consistConf = _realTimeService.Proxy.GetConsistConfigurationSignal(fleet, consist);
+
+            var positions = (from s in rts
+                             where s.System == Settings.Default.PositionSignalsSystem
+                             select new HmiSignalDto { Name = s.SignalName, Color = s.Color.ToString(), Status = s.Status.ToString(), Value = ValueEvaluated(s.Value, s.ValueInterpretation, s.Dimension), VisualizationType = s.VisualizationType, LastUpdate = ConvertUnixTimeToUTC(s.TimestampUpdate), RawValue=s.Value }).OrderBy(p => p.Name).ToList();
+
+            var hmipanels = (from s in rts
+                             where s.VisualizationType == "ColourLabelBox" //TODO da sistemare la configurazione
+                             select new HmiSignalDto { Name = s.SignalName, Color = s.Color.ToString(), Status = s.Status.ToString(), Value = ValueEvaluated(s.Value, s.ValueInterpretation, s.Dimension), VisualizationType = s.VisualizationType, LastUpdate = ConvertUnixTimeToUTC(s.TimestampUpdate), RawValue = s.Value }).OrderBy(p => p.Name).ToList();
+
+            var cargrouped = (from s in rts
+                              where s.FhmHealth == "1"
+                              group s by new { Car = s.Car } into gs
+                              select new { Car = gs.Key.Car, Signals = (from p in gs select new { Status = p.Status, Name = p.SignalName, LastUpdate = p.TimestampUpdate }) }).OrderBy(p => p.Car).ToList();
+
+            List<HmiCarDto> cars = new List<HmiCarDto>();
+
+            if (cargrouped.Count > 0)
+            {
+                int? lastCar = cargrouped.Max(p => p.Car);
+                foreach (var c in cargrouped)
+                {
+                    if (c.Car == null || carss.Where(p => p.Position == c.Car).FirstOrDefault() != null)
+                    {
+                        int? car = c.Car;
+                        FhmEnum.FhmStatus carStatus = FhmEnum.FhmStatus.OK;
+                        DateTime? lastup = ConvertUnixTimeToUTC(c.Signals.Max(x => x.LastUpdate));
+                        string name = c.Car != null ? carss.Where(p => p.Position == c.Car).FirstOrDefault().Name : "";
+                        string type = c.Car != null ? carss.Where(p => p.Position == c.Car).FirstOrDefault().Type : "";
+                        foreach (var s in c.Signals)
+                        {
+                            if (s.Status == FhmEnum.FhmStatus.CRITICAL)
+                            {
+                                carStatus = FhmEnum.FhmStatus.CRITICAL;
+                                break;
+                            }
+                            else if (s.Status == FhmEnum.FhmStatus.WARNING)
+                            {
+                                carStatus = FhmEnum.FhmStatus.WARNING;
+                            }
+                        }
+                        List<HmiDoorDto> CarA = new List<HmiDoorDto>();
+                        List<HmiDoorDto> CarB = new List<HmiDoorDto>();
+                        List<HmiDoorDto> CarS = new List<HmiDoorDto>();
+                        if (car != null)
+                        {
+                            if (cartypes.ContainsKey((int)car))
+                            {
+                                if (cartypes[(int)car].Type == "Left")
+                                {
+                                    for (int i = 0; i < cartypes[(int)car].CabA; i++)
+                                    {
+                                        int offset = 0;
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.CAB);
+                                        CarA.Add(temp);
+                                    }
+                                    for (int i = cartypes[(int)car].CabA; i < (cartypes[(int)car].CabA + cartypes[(int)car].DoorA); i++)
+                                    {
+                                        int offset = cartypes[(int)car].CabA;
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.SALOON);
+                                        CarA.Add(temp);
+                                    }
+                                    for (int i = (cartypes[(int)car].CabA + cartypes[(int)car].DoorA); i < (cartypes[(int)car].CabA + cartypes[(int)car].DoorA + cartypes[(int)car].DoorB); i++)
+                                    {
+                                        int offset = cartypes[(int)car].CabA;
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.SALOON);
+                                        CarB.Add(temp);
+                                    }
+                                    for (int i = (cartypes[(int)car].CabA + cartypes[(int)car].DoorA + cartypes[(int)car].DoorB); i < (cartypes[(int)car].CabA + cartypes[(int)car].DoorA + cartypes[(int)car].DoorB + cartypes[(int)car].CabB); i++)
+                                    {
+                                        int offset = (cartypes[(int)car].DoorA + cartypes[(int)car].DoorB);
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.CAB);
+                                        CarB.Add(temp);
+                                    }
+                                    for (int i = 0; i < cartypes[(int)car].Emergency; i++)
+                                    {
+                                        int offset = 0;
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.EMERGENCY);
+                                        CarS.Add(temp);
+                                    }
+                                    for (int i = cartypes[(int)car].Emergency; i < cartypes[(int)car].Emergency + cartypes[(int)car].Interlock; i++)
+                                    {
+                                        int offset = cartypes[(int)car].Emergency;
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.INTERLOCK);
+                                        CarS.Add(temp);
+                                    }
+                                    int nfake = Settings.Default.MaxDoorNumber - CarS.Count - cartypes[(int)car].Gang;
+                                    if (nfake >= 0)
+                                    {
+                                        for (int i = 0; i < nfake; i++)
+                                        {
+                                            CarS.Add(new HmiDoorDto() { Name = HMIEnum.DoorType.FAKE.ToString() });
+                                        }
+                                        for (int i = cartypes[(int)car].Emergency + cartypes[(int)car].Interlock; i < cartypes[(int)car].Emergency + cartypes[(int)car].Interlock + cartypes[(int)car].Gang; i++)
+                                        {
+                                            int offset = (cartypes[(int)car].Emergency + cartypes[(int)car].Interlock);
+                                            HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.GANGWAY);
+                                            CarS.Add(temp);
+                                        }
+                                    }
+
+                                    if (CarS.Count >= 0)
+                                    {
+                                        if (CarS.FirstOrDefault()?.Name == HMIEnum.DoorType.FAKE.ToString())
+                                        {
+                                            var index = CarS.FindIndex(x => x.Name.Contains(HMIEnum.DoorType.GANGWAY.ToString()));
+                                            if (index != -1)
+                                            {
+                                                var item = CarS[index];
+                                                CarS[index] = CarS[0];
+                                                CarS[0] = item;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                else
+                                {
+
+                                    for (int i = 0; i < cartypes[(int)car].DoorA; i++)
+                                    {
+                                        int offset = -cartypes[(int)car].DoorB;
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.SALOON);
+                                        CarA.Add(temp);
+                                    }
+                                    for (int i = cartypes[(int)car].DoorA; i < (cartypes[(int)car].DoorA + cartypes[(int)car].CabA); i++)
+                                    {
+                                        int offset = cartypes[(int)car].DoorA - cartypes[(int)car].CabB;
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.CAB);
+                                        CarA.Add(temp);
+                                    }
+                                    for (int i = (cartypes[(int)car].DoorA + cartypes[(int)car].CabA); i < (cartypes[(int)car].DoorA + cartypes[(int)car].CabA + cartypes[(int)car].CabB); i++)
+                                    {
+                                        int offset = (cartypes[(int)car].DoorA + cartypes[(int)car].CabA);
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.CAB);
+                                        CarB.Add(temp);
+                                    }
+                                    for (int i = (cartypes[(int)car].DoorA + cartypes[(int)car].CabA + cartypes[(int)car].CabB); i < (cartypes[(int)car].DoorA + cartypes[(int)car].CabA + cartypes[(int)car].CabB + cartypes[(int)car].DoorB); i++)
+                                    {
+                                        int offset = (cartypes[(int)car].DoorA + cartypes[(int)car].CabA + cartypes[(int)car].CabB);
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.SALOON);
+                                        CarB.Add(temp);
+                                    }
+                                    for (int i = (cartypes[(int)car].Gang - 1); i >= 0; i--)
+                                    {
+                                        int offset = 0;
+                                        HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.GANGWAY);
+                                        CarS.Add(temp);
+                                    }
+
+                                    int nfake = Settings.Default.MaxDoorNumber - CarS.Count - cartypes[(int)car].Emergency - cartypes[(int)car].Interlock;
+                                    if (nfake >= 0)
+                                    {
+                                        for (int i = 0; i < nfake; i++)
+                                        {
+                                            CarS.Add(new HmiDoorDto() { Name = HMIEnum.DoorType.FAKE.ToString() });
+                                        }
+                                        for (int i = (cartypes[(int)car].Gang + cartypes[(int)car].Interlock - 1); i >= cartypes[(int)car].Gang; i--)
+                                        {
+                                            int offset = cartypes[(int)car].Gang;
+                                            HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.INTERLOCK);
+                                            CarS.Add(temp);
+                                        }
+
+
+                                        for (int i = (cartypes[(int)car].Gang + cartypes[(int)car].Interlock + cartypes[(int)car].Emergency - 1); i >= cartypes[(int)car].Gang + cartypes[(int)car].Interlock; i--)
+                                        {
+                                            int offset = cartypes[(int)car].Gang + cartypes[(int)car].Interlock;
+                                            HmiDoorDto temp = CreateDoor(i, offset, car, consistConf, rts, HMIEnum.DoorType.EMERGENCY);
+                                            CarS.Add(temp);
+                                        }
+                                    }
+                                    if (CarS.Count >= 0)
+                                    {
+                                        if (CarS.Last().Name == HMIEnum.DoorType.FAKE.ToString())
+                                        {
+                                            var index = CarS.FindLastIndex(x => x.Name.Contains(HMIEnum.DoorType.GANGWAY.ToString()));
+                                            if (index != -1)
+                                            {
+                                                var item = CarS[index];
+                                                CarS[index] = CarS[Settings.Default.MaxDoorNumber - 1];
+                                                CarS[Settings.Default.MaxDoorNumber - 1] = item;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        cars.Add(new HmiCarDto() { Position = car, Status = carStatus.ToString(), DoorSideA = CarA, DoorSideB = CarB, DoorService = CarS, Name=name, Type=type, LastUpdate=lastup });
+                    }
+                }
+                cars.OrderBy(p => p.Position);
+            }
+
+            var systemgrouped = (from s in rts
+                                     //where s.FhmHealth == "1" prende tutti i sistemi
+                                 where (s.GroupContext == "HMI Mimic" || s.FhmHealth == "1")
+                                 group s by new { System = s.System } into gs
+                                 select new { System = gs.Key.System, Signals = (from p in gs select new { Status = p.Status, Name = p.SignalName, LastUpdate = p.TimestampUpdate }) }).OrderBy(p => p.System).ToList();
+
+            List<HmiSystemDto> systems = new List<HmiSystemDto>();
+            foreach (var c in systemgrouped)
+            {
+                string system = c.System;
+                FhmEnum.FhmStatus systemStatus = FhmEnum.FhmStatus.OK;
+                DateTime? lastup = ConvertUnixTimeToUTC(c.Signals.Max(x => x.LastUpdate));
+                foreach (var s in c.Signals)
+                {
+                    if (s.Status == FhmEnum.FhmStatus.CRITICAL)
+                    {
+                        systemStatus = FhmEnum.FhmStatus.CRITICAL;
+                        break;
+                    }
+                    else if (s.Status == FhmEnum.FhmStatus.WARNING)
+                    {
+                        systemStatus = FhmEnum.FhmStatus.WARNING;
+                    }
+                }
+                systems.Add(new HmiSystemDto() { Name = system, Status = systemStatus.ToString(), LastUpdate=lastup });
+            }
+
+            bool isoState = false;
+            int[] panSigs = null;
+            bool isleft = false;
+            bool isRight = false;
+            string averageVoltage = "";
+        
+            if (consistConf != null)
+            {
+                if (consistConf.HmiConfigurations.FirstOrDefault(j => j.Configuration == Settings.Default.CabAActive) != null)
+                {
+                    string cabAsigname = consistConf.HmiConfigurations.FirstOrDefault(j => j.Configuration == Settings.Default.CabAActive).Signals;
+                    var cabAsignal = (from s in rts
+                                      where s.SignalName == cabAsigname
+                                      select s).ToList();
+                    if (cabAsignal.Count > 0)
+                    {
+                        if (cabAsignal.FirstOrDefault()?.Value != null)
+                        {
+                            isleft = cabAsignal.First().Value.ToString() == "1";
+                        }
+                    }
+                }
+                if (consistConf.HmiConfigurations.FirstOrDefault(j => j.Configuration == Settings.Default.CabBActive) != null)
+                {
+                    string cabBsigname = consistConf.HmiConfigurations.FirstOrDefault(j => j.Configuration == Settings.Default.CabBActive).Signals;
+                    var cabBsignal = (from s in rts
+                                      where s.SignalName == cabBsigname
+                                      select s).ToList();
+                    if (cabBsignal.Count > 0)
+                    {
+                        if (cabBsignal.FirstOrDefault()?.Value != null)
+                        {
+                            isRight = cabBsignal.First().Value.ToString() == "1";
+                        }
+                    }
+                }
+                if (consistConf.HmiConfigurations.FirstOrDefault(j => j.Configuration == Settings.Default.IsoSignals) != null)
+                {
+                    string[] isoSig = consistConf.HmiConfigurations.FirstOrDefault(j => j.Configuration == Settings.Default.IsoSignals).Signals.Split(',');
+                    var isoSignals = (from s in rts
+                                      where isoSig.Contains(s.SignalName)
+                                      select s).ToList();
+                    if (isoSig.Length > 0)
+                    {
+                        isoState = false;
+                        for (int i = 0; i < isoSig.Length; i++)
+                        {
+                            var sig = isoSignals.Where(p => p.SignalName == isoSig[i]).FirstOrDefault();
+                            if (sig != null)
+                            {
+                                if (sig.Value != null)
+                                {
+                                    isoState = isoState || sig.Value.ToString() == "1";
+                                }
+                            }
+                            else
+                            {
+                                isoState = true;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        isoState = true;
+                    }
+                }
+                var panSignalConf = consistConf.HmiPantographsconfigurations.OrderBy(p => p.Pantograph).ToList();
+                if (panSignalConf != null)
+                {
+                    panSigs = new int[panSignalConf.Count];
+                    for (int i = 0; i < panSignalConf.Count; i++)
+                    {
+                        var panSignals = (from s in rts
+                                          where s.SignalName == panSignalConf[i].SignalName && s.Car == panSignalConf[i].CarNumber
+                                          orderby s.Car
+                                          select s).ToList();
+                        panSigs[i] = 0;
+                        if (panSignals != null)
+                        {
+                            if (panSignals.FirstOrDefault()?.Value != null)
+                                panSigs[i] = Int16.Parse(panSignals.First().Value.ToString());
+                        }
+
+                    }
+                }
+                
+                if (consistConf.HmiConfigurations.FirstOrDefault(j => j.Configuration == Settings.Default.HighVoltageSignals) != null)
+                {
+                    
+                    var voltageCfg = consistConf.HmiConfigurations.FirstOrDefault(j => j.Configuration == Settings.Default.HighVoltageSignals);
+                    if (voltageCfg != null)
+                    {
+                        string[] voltageSignalNames = voltageCfg.Signals.Split(',');
+                        var voltageSignals = (from s in rts
+                                              where voltageSignalNames.Contains(s.SignalName)
+                                              select s).ToList();
+                        int voltageSignalsNumber = 0;
+                        double totalVoltage = 0;
+
+                        foreach (var voltageSignal in voltageSignals)
+                        {
+                            if (voltageSignal.Value == null)
+                                continue;
+
+                            var voltageValidator = rts.SingleOrDefault(s => s.SignalName == voltageSignal.SignalName + Settings.Default.ValidityCheck && s.Car == voltageSignal.Car);
+                            if (voltageValidator != null && voltageValidator.Status != FhmEnum.FhmStatus.OK)
+                                continue;
+
+                            double sigVal = 0;
+                            if (double.TryParse(voltageSignal.Value.ToString(), out sigVal))
+                            {
+                                voltageSignalsNumber++;
+                                totalVoltage += sigVal;
+                            }                            
+                        }
+
+                        if (voltageSignalsNumber > 0)
+                        {
+                            int averageVoltageN = (int)(Math.Round((totalVoltage / 1000) / voltageSignalsNumber) );
+                            averageVoltage = averageVoltageN.ToString() + "kV";
+                        }
+                    }                    
+                }
+            }
+
+            bool consistCommStatus = false;
+            DateTime? lastUp = null;
+            if (rts.Count > 0)
+            {
+                consistCommStatus = !(rts.Max(x => x.TimestampUpdate) > (int)(DateTime.UtcNow.AddSeconds(-60) - new DateTime(1970, 1, 1)).TotalSeconds); //todo soglia
+                lastUp = ConvertUnixTimeToUTC(rts.Max(x => x.TimestampUpdate));
+            }
+
+            return new HmiConsistDto()
+            {
+                Fleet = fleet,
+                Name = consist,
+                CommProblem = consistCommStatus,
+                LastUpdate = lastUp,
+                Cars = cars,
+                Systems = systems,
+                PositionSignals = positions,
+                HmiPanelSignals = hmipanels,
+                PantographStatus = panSigs,
+                IsoOK = !isoState,
+                AverageVoltage = averageVoltage,
+                cabLeft = isleft,
+                cabRight = isRight
+            };
+        }
+
+        private HmiDoorDto CreateDoor(int i, int offset, int? car, ConsistConfiguration consistConf, List<RealTimeStatusData> rts, HMIEnum.DoorType doortype)
+        {
+            string name = "";
+            bool check = false;
+            string signalname = "";
+            string status = "UNDEFINED";
+            DateTime? lastUpd = null;
+            string mode = "";
+            string color1 = "#" + ColorTranslator.FromHtml(Settings.Default.DoorDefaultColor).R.ToString("X2") + ColorTranslator.FromHtml(Settings.Default.DoorDefaultColor).G.ToString("X2") + ColorTranslator.FromHtml(Settings.Default.DoorDefaultColor).B.ToString("X2");
+            string color2 = "#" + ColorTranslator.FromHtml(Settings.Default.DoorDefaultColor).R.ToString("X2") + ColorTranslator.FromHtml(Settings.Default.DoorDefaultColor).G.ToString("X2") + ColorTranslator.FromHtml(Settings.Default.DoorDefaultColor).B.ToString("X2");
+            if (consistConf != null)
+            {
+                //Search for the signal configuration that contains the door status
+                var doorSignal = consistConf.HmiDoorsconfigurations.Where(p => p.DoorTypeEnum == doortype && p.PortNumber == (i - offset + 1)).FirstOrDefault();
+                if (doorSignal != null)
+                {
+                    name = doorSignal.DoorTypeEnum.ToString() + "_" + doorSignal.PortNumber;
+                    signalname = doorSignal.SignalName;
+
+                    //search for the signal value
+                    var realDoorSignal = rts.Where(p => p.Car == car && p.SignalName == doorSignal.SignalName).FirstOrDefault();
+                    if (realDoorSignal != null)
+                    {
+                        status = ValueEvaluated(realDoorSignal.Value, realDoorSignal.ValueInterpretation, realDoorSignal.Dimension);
+                        lastUpd = ConvertUnixTimeToUTC(realDoorSignal.TimestampUpdate);
+                        check = true;
+                        if (realDoorSignal.Value != null)
+                        {
+                            //search in the HMI doors color cfg the color to show for that specific door type (saloon or cab) and for the signal value
+                            var doorConf = consistConf.HmiDoorsColoursConfigurations.Where(p => p.DoorTypeEnum == doorSignal.DoorTypeEnum && p.StatusValue == Int16.Parse(realDoorSignal.Value.ToString())).FirstOrDefault();
+                            if (doorConf != null)
+                            {
+                                mode = doorConf.Effect;
+                                try
+                                {
+                                    Color c1 = ColorTranslator.FromHtml(doorConf.Colour1);
+                                    color1 = "#" + c1.R.ToString("X2") + c1.G.ToString("X2") + c1.B.ToString("X2");
+                                }
+                                catch { }
+                                try
+                                {
+                                    Color c2 = ColorTranslator.FromHtml(doorConf.Colour2);
+                                    color2 = "#" + c2.R.ToString("X2") + c2.G.ToString("X2") + c2.B.ToString("X2");
+                                }
+                                catch { }
+                            }
+                        }
+                    }
+                }
+            }
+            return new HmiDoorDto() { Name = name, Status = status, Signal = signalname, Checked = check, LastUpdate = lastUpd, Mode = mode, Color1 = color1, Color2 = color2 };
+        }
+
+
+        private string ValueEvaluated(object value, string interpretation, string uom)
+        {
+            string toReturn = Settings.Default.InvalidValue;
+            if (value != null)
+            {
+                if (!String.IsNullOrEmpty(interpretation))
+                {
+                    string[] couple = interpretation.Split(new string[] { Settings.Default.InterpretationCaseSeparator }, StringSplitOptions.None);
+                    for (int i = 0; i < couple.Length; i++)
+                    {
+                        if (couple[i].Split(new string[] { Settings.Default.InterpretationKeyValueSeparator }, StringSplitOptions.None).Length >= 2)
+                        {
+                            string range = couple[i].Split(new string[] { Settings.Default.InterpretationKeyValueSeparator }, StringSplitOptions.None)[0];
+                            string toRet = couple[i].Split(new string[] { Settings.Default.InterpretationKeyValueSeparator }, StringSplitOptions.None)[1].Trim();
+                            if (range.Contains(Settings.Default.InterpretationRangeSeparator))
+                            {
+
+                                //debug
+                                //toReturn = value.ToString() + " is not in the Ranges";
+
+
+                                double min = 0;
+                                Double.TryParse(range.Split(new string[] { Settings.Default.InterpretationRangeSeparator }, StringSplitOptions.None)[0].Trim(), out min);
+
+                                double max = 0;
+                                Double.TryParse(range.Split(new string[] { Settings.Default.InterpretationRangeSeparator }, StringSplitOptions.None)[1].Trim(), out max);
+
+                                double sValue = double.NaN;
+                                if (double.TryParse(value.ToString(), out sValue))
+                                {
+                                    if (sValue >= min && sValue <= max)
+                                    {
+                                        if (toRet == Settings.Default.ShowValue)
+                                        {
+                                            toReturn = value.ToString();
+                                            break;
+                                        }
+                                        else if (toRet == Settings.Default.GPSCoordinate)
+                                        {
+                                            toReturn = MathHelper.ConvertDecimalsToDegrees(sValue);
+                                            break;
+                                        }
+                                        else if (toRet == Settings.Default.UnixTime)
+                                        {
+                                            toReturn = ConvertUnixTimeToUTC((long)Math.Floor(sValue)).ToString("yyyy/MM/dd HH:mm:ss");
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            toReturn = toRet;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                double val = 0;
+                                Double.TryParse(range.Trim(), out val);
+
+                                double sValue = double.NaN;
+                                if (double.TryParse(value.ToString(), out sValue))
+                                {
+                                    if (sValue == val)
+                                    {
+                                        if (toRet == Settings.Default.ShowValue)
+                                        {
+                                            toReturn = value.ToString();
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            toReturn = toRet;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+                    }
+                }
+                else
+                {
+                    toReturn = value.ToString();
+                }
+
+                if (!String.IsNullOrEmpty(uom))
+                {
+                    toReturn += uom;
+                }
+            }
+            return toReturn;
+        }
+
+        private DateTime ConvertUnixTimeToUTC(long seconds)
+        {
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(seconds);
+            return dtDateTime;
+        }
+
+        [Route("GetSystemHmi")]
+        [HttpPost]
+        public List<HmiSignalSystemDto> GetSystemHmi(HmiSignalSystemFilterDto filter)
+        {
+            List<HmiSignalSystemDto> toReturn=new List<HmiSignalSystemDto>();
+
+            var filters = new RealTimeFilter() { Fleet = filter.Fleet, Consists = new string[1] { filter.Consist }, Systems = filter.System , ToDate = null, FromDate = null, FhmHealth = null };
+            var rts = _realTimeService.Proxy.GetFilteredData(filters).ToList();
+
+            var valSignal = (from s in rts
+                             where s.SignalName.Contains(Settings.Default.ValidityCheck)
+                             select new { Name = s.SignalName, Car = s.Car, Status =s.Status}).ToDictionary(p => p.Name + Settings.Default.ValidityCheck + "_" + p.Car, p => p.Status);
+
+            var namegrouped = (from s in rts
+                               where !s.SignalName.Contains(Settings.Default.ValidityCheck)
+                               group s by new { Name = s.SignalName } into gs
+                                 select new { Name = gs.Key.Name, Signals = (from p in gs select new { Status = p.Status
+                                                                             ,System=p.System
+                                                                             , Car = p.Car
+                                                                             , LastUpdate = p.TimestampUpdate
+                                                                             , Value= valSignal.ContainsKey(p.SignalName+Settings.Default.ValidityCheck+"_"+p.Car)?
+                                                                               (valSignal[p.SignalName + Settings.Default.ValidityCheck + "_" + p.Car]!=FhmEnum.FhmStatus.OK? Settings.Default.InvalidValue : ValueEvaluated(p.Value,p.ValueInterpretation,p.Dimension)) :
+                                                                               ValueEvaluated(p.Value, p.ValueInterpretation, p.Dimension)
+                                                                            , RealValue = p.Value
+                                                                            , Validator = valSignal.ContainsKey(p.SignalName + Settings.Default.ValidityCheck + "_" + p.Car) ? p.SignalName + Settings.Default.ValidityCheck + "_" + p.Car : ""
+                                                                            , ValidatorValue = valSignal.ContainsKey(p.SignalName + Settings.Default.ValidityCheck + "_" + p.Car) ? valSignal[p.SignalName + Settings.Default.ValidityCheck + "_" + p.Car].ToString() : ""
+                                                                            
+
+                                 }) }).OrderBy(p => p.Name).ToList();
+
+            
+            foreach(var s in namegrouped)
+            {
+                string name = s.Name;
+                List<HmiSignalSystemCarDto> systems = new List<HmiSignalSystemCarDto>();
+                foreach (var c in s.Signals)
+                {
+                    systems.Add(new HmiSignalSystemCarDto() { Position = c.Car, value = c.Value, LastUpdate=ConvertUnixTimeToUTC(c.LastUpdate), RealValue = c.RealValue?.ToString(), Validator = c.Validator, ValidatorValue = c.ValidatorValue });
+                }
+                toReturn.Add(new HmiSignalSystemDto() { Fleet = filter.Fleet, Consist = filter.Consist, System = s.Signals.FirstOrDefault()?.System, Name = name, CarValue = systems });
+            }
+
+            return toReturn.OrderBy(p=>p.System).ToList();
+        }
+    }
+}

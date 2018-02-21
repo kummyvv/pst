@@ -1,0 +1,15 @@
+cmd.exe ren D:\Kumar\FleetMonitor\Main\Dev\Code\Portal.Web\App\PlugIns PlugIns4
+cmd.exe RD /S /Q D:\Kumar\FleetMonitor\Main\Dev\Code\Portal.Web\App\PlugIns
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\AlertManagement.Plugin" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\AlertManagement.Plugin\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\Arlem\BT.Arlem.Container" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\Arlem\BT.Arlem.Container\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\OCSAdmin.Plugin" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\OCSAdmin.Plugin\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\CountersPlugin" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\CountersPlugin\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\Tssp.Plugin" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\Tssp.Plugin\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\VrsPlugIn" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\VrsPlugIn\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\EventsPlugIn" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\EventsPlugIn\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\RecordingPlugIn" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\RecordingPlugIn\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\CcutManagerPlugin" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\CcutManagerPlugin\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\FAO\FaoPlugin" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\FAO\FaoPlugin\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\MetersPlugin" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\MetersPlugin\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\RealTimePlugin" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\RealTimePlugin\Gruntfile.js" copy
+cmd.exe /c grunt -b "D:\Kumar\FleetMonitor\Main\Dev\Code\Portal.Web" --gruntfile "D:\Kumar\FleetMonitor\Main\Dev\Code\Portal.Web\Gruntfile.js" includeSource

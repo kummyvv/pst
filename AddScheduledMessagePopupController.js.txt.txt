@@ -1,0 +1,103 @@
+app.controller("AddScheduledMessagePopupController", ['$scope', 'scheduledMessageService', 'dateFiltersFactory', 'notificationService', 'busyService', 'dateTimeConvertionService', 'userDataFactory', '$modalInstance', 'modalParams', 'standardFiltersFactory', '$translate',
+    function ($scope, scheduledMessageService, dateFiltersFactory, notificationService, busyService, dateTimeConvertionService, userDataFactory, $modalInstance, modalParams, standardFiltersFactory, $translate) {
+        $scope.modalTitle = modalParams.title;
+        $scope.dateFiltersFactory = dateFiltersFactory;
+        $scope.userDataFactory = userDataFactory;
+        $scope.userData = null;
+
+        $scope.data = {
+            startTime: null,
+            endTime: null
+        };
+
+        $scope.userData = {
+            username: userDataFactory.username,
+            Locale: userDataFactory.Locale,
+            TimeZone: userDataFactory.TimeZone
+        };
+
+        $scope.StartTimeOptions = {
+            culture: userDataFactory.Locale,
+            interval: 10,
+            change: function () {
+                var ctrlStartTime = moment($scope.data.startTime).format();
+                dateFiltersFactory.controlStartTime = ctrlStartTime;
+                dateFiltersFactory.startTime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.controlStartTime);
+            }
+        };
+        $scope.EndTimeOptions = {
+            culture: userDataFactory.Locale,
+            interval: 10,
+            change: function () {
+                var ctrlEndTime = moment($scope.data.endTime).format();
+                dateFiltersFactory.controlEndTime = ctrlEndTime;
+                dateFiltersFactory.endTime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.controlEndTime);
+            }
+        };
+        $scope.CreationTimeOptions = {
+            culture: userDataFactory.Locale,
+            TimeZone: userDataFactory.TimeZone,
+            interval: 10
+        };
+
+        $scope.userOptions = {
+       
+        };
+
+        $scope.updateDateFilters = function () {
+            dateFiltersFactory.startTime = dateTimeConvertionService.convertUTCTimestampToUserTimeZone($scope.data.startTime);
+            dateFiltersFactory.endTime = dateTimeConvertionService.convertUTCTimestampToUserTimeZone($scope.data.endTime);
+        };
+
+        $scope.loadData = function () {
+            $scope.author = userDataFactory.username;
+            $scope.CreationTime = scheduledMessageService.getCurrentTime();
+
+            dateFiltersFactory.starttime = moment($scope.StartTime).format();
+            dateFiltersFactory.starttime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.starttime);
+
+            dateFiltersFactory.endtime = moment($scope.EndTime).format();
+            dateFiltersFactory.endtime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.endtime);
+
+        };
+
+        $scope.ok = function () {
+            // field validation
+            if ($scope.author.length <= 0 || $scope.text.length <= 0 || $scope.StartTime.length <= 0 || $scope.EndTime.length <= 0) {
+                notificationService.showWarning($translate.instant('portalWeb.ScheduleMessage.errorFillEveryField'));
+                return;
+            }
+
+            //$scope.loadData();
+            dateFiltersFactory.endTime = dateTimeConvertionService.convertToUTC($scope.EndTime);
+            dateFiltersFactory.endTime = dateTimeConvertionService.convertUserToLocalTimeZone(moment().tz(userDataFactory.TimeZone).format());
+
+            $scope.updateDateFilters();
+
+            var reqData = {
+                Id: null,
+                author: $scope.author,
+                text: $scope.text,
+                StartTime: dateFiltersFactory.startTime,
+                EndTime: dateFiltersFactory.endTime,
+                CreationTime: $scope.CreationTime
+            };
+
+            scheduledMessageService.saveScheduledMessage(reqData).then(function (data) {
+                if (data)
+                    notificationService.showInfo($translate.instant('portalWeb.ScheduleMessage.scheduleSaved'));
+                else
+                    notificationService.showInfo($translate.instant('portalWeb.ScheduleMessage.scheduleFailed'));
+
+                $modalInstance.close(data);
+            });
+        }
+
+   
+        $scope.cancel = function () {
+            $modalInstance.dismiss();
+        }
+
+        $scope.loadData();
+
+}]);

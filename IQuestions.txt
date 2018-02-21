@@ -1,0 +1,113 @@
+Question: Whats the Base Class for MVC & Web API's
+
+In ASP.NET MVC it is possible to create a ControllerBase class that inherits from Controller. Then you can have all of your Controllers inherit from ControllerBase and if you want to have all of your controllers receive a certain attribute, all you have to do is add it to ControllerBase and you're set.
+
+I'm trying to do the same thing with Web API and the ApiController. I've created a base ApiControllerBase class which is decorated with an attribute and then I inherit from ApiControllerBase on all of my ApiControllers. This does not seem to be working.
+
+I do have standard MVC Controllers exhibiting the behavior from attribute they are receiving from my BaseController. And I am able to decorate an ApiController class specifically with my attributes and it works, but I'm not able to get it to work when I'm trying to use the ApiControllerBase class.
+
+Any ideas what I may be doing wronge?
+
+
+Anwser:
+Do note that MVC attributes can not be used by Api controllers and vice versa.
+
+You have to use attributes from the System.Web.Http namespace for Api controllers and attributes from the System.Web.Mvc namespace for regular controllers. If you create your own attributes make sure that they inherit an attribute from the correct namespace.
+
+
+question: Is Multiple Inheritance Possible in C#?
+
+Anwser: NO
+
+In C#, both inheritance and interface implementation are defined by the : operator, equivalent to extends and implements in Java. The base class should always be leftmost in the class declaration. Like Java, C# does not support multiple inheritance, meaning that classes cannot inherit from more than one class.
+
+
+Question:  I would like to import a class from a third-party library and make it a derived class (or something similar). In the following example, how can I create a class that can have both CircleSpecificMethods() and CommonShapeMethods()?
+
+Thanks!
+
+Third-party library:
+
+namespace ThirdPartyLib
+{
+    public class Circle
+    {
+        public CircleSpecificMethods()
+        {
+            ...
+        }
+    }
+
+    public class Triangle
+    {
+        public TriangleSpecificMethods()
+        {
+            ...
+        }
+    }
+}
+My Program:
+
+using ThirdPartyLib;
+namespace MyProgram
+{
+    public class Shape
+    {
+        public CommonShapeMethods()
+        {
+            ...
+        }
+    }
+
+    public class Rectangle : Shape
+    {
+        public RectangleSpecificMethods()
+        {
+            ...
+        }
+    }
+
+    public static class Program
+    {
+        public static void Main()
+        {
+            var rectangle = new Rectangle();
+            var circle = new Circle();
+
+            rectangle.CommonShapeMethods();
+            rectangle.RectangleSpecificMethods();
+
+            circle.CommonShapeMethods(); // How can I make circle to have CommonShapeMethods as well?
+            circle.CircleSpecificMethods();
+        }
+    }
+}
+
+What you ask for is the Adapter Pattern.
+
+Adapter is an auxiliary class that lets you adapt a class into another class. In your example that would be
+
+// adapter fulfills your requirement, it is a shape
+public class CircleToShapeAdapter : Shape 
+{
+     private Circle _circle { get; set; }
+
+     // but it takes their object as a source
+     public CircleToShapeAdapter( Circle circle )
+     {
+         this._circle = circle;
+     }
+
+     // for any method that is required by your Shape specification
+     // you just find a way to implement the method using their API
+     public void ShapeMethod()
+     {
+         circle.DoSomething();
+     }
+}
+and then you can have your shapes using their circles
+
+Shape shape = new CircleToShapeAdapter( circle );
+Note that the adapter can still expose circle specific methods but it won't act as a circle (won't inherit from it) as C# doesn't let you derive from two classes. This means that either their base class or yours has to be an interface instead.
+
+Question:

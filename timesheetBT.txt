@@ -1,0 +1,599 @@
+                                      Pass: Kumar1
+https://cyientbtappsw.slack.com/messages/D8B6BT9ML/
+
+CITI0000003 
+5546370227230171
+
+https://wd3.myworkday.com/cyient/d/home.htmld
+
+Open new links in a new tab: short cut link, alt +T + O
+IE Tools | Internet Options [Alt+T+O] | General | Tabs (button) | When a pop-up is encountered | Always open pop-ups in a new tab <=this option
+
+I enabled script debugging (Internet options > Advanced > Under Browsing uncheck the "Disable script debugging"). <= This is actually needed for actually debugging once you get your scripting pane back.
+
+http://www.vfs-italy.co.in/mumbai/trackyourapplication.html
+HYDE/110517/0004
+https://fm.bt.ab2ls.ch/Portal.web/Views/
+https://login.swiftkanban.com/login.do?isError=true&msgId=1100.10007#
+
+kumar.vaddadi
+nocapkummyvv123$
+
+https://btcrossrail.slack.com/
+password: Kvaddadi123$
+
+Reset Password:-
+https://tfs.orbiflo-bombardier.com:8443/pr/passwordreset.aspx
+
+Change password:
+https://sp.orbiflo-bombardier.com
+
+
+INHMT2E-DD3616\SQLEXPRESS
+tfs.orbiflo-bombardier.com
+Path : tfs
+Port number: 8443
+Protocol: Https
+Press Ok
+tfs connections=====>orbiflo\kumar.vaddadi:  vM*47zX-
+
+***************************************************************
+http://www.ess.adp.in/ESS4
+company code: cyient
+Cyient#25
+20947
+****************************************************************
+
+https://my.cyient.com/payrol/Pages/default.aspx
+
+
+Path:
+D:\Kumar\SP_UI_2_6_0\_Common\Scripts\Batch
+D:\Kumar\MVP_Pattern
+D:\Kumar\WEBAPI
+D:\Kumar\WCF_Practise
+D:\Kumar\FleetMonitor_offline
+
+**********************************************************************************************************************
+					Dec 2016
+**********************************************************************************************************************
+01/Thu - Started BT first day, took Knowledge session on the process
+02/Fri - Continue on Knowledge session, OrbitaFlo
+05/Mon - Knowledge session on overview & FM
+06/Tue - Walk through Code
+07/Wed - Make Build of OrbitaFlo app.
+08/Thu - Debug code for walk through to analysze the code
+		Saw lots of stuff related to WCF services, noted few of them
+09/Fri - walk through WCF code
+12/Mon - Got the Following documents, and going through them:
+	Architecture Doc
+	Interface Control Doc
+	Design Doc
+13/Tue - working on FwkSample Application Build and changes
+14/Wed - Completed working on FwkSample Application Build and changes
+15/Thu - Working on FM smart screen front end design
+16/Fri - Working on FM smart screen front end design and other half I applied for Leave  -5.5
+19/Mon - Going through requirements document to design class diagram
+20/Tue - Going through requirements document to design class diagram
+         Gave few design flows diagram, HIPO to Bunny on Paper
+21/Wed - Working on design of the Alarm History UI, had a challenege to understand how to consume database through WCF client
+22/Thu - Working on WCF test client
+23/Fri - Working on WCF test client and interface calling wcf service
+26/Mon - working on ncreation of wcf client using existing soap service, to consume the methods and data
+27/Tue - working on wcf test client
+28/wed - worked on consuming wcf service to fetch the data into datagrid 
+	 very good one
+29/Thu - working on converting above project to MVP pattern
+30/Fri - working on converting above project to MVP pattern
+
+**********************************************************************************************************************
+					Jan 2017
+**********************************************************************************************************************
+01/Sun - Father Expired 11 days leave till 16th Jan
+
+16/Mon - wcf soap consume project to MVP Pattern (awaiting for webapi to be supplied by bunny)
+17/Tue - worked on consuming webapi thru WebClient and display it in DataGridView 
+18/Wed - worked on consuming webapi thru HttpWebRequest, RestSharp and display it in DataGridView
+19/Thu - working on UI Framework
+20/Fri - working on UI Framework MVP pattern
+23/Mon - Working on AlarmHistory UI Component
+24/Tue - worked on Raising customized events and call them in the MVP Pattern. POC done
+25/Wed - Integrating this Code into actual Project: $/FleetMonitor/Main_SC/Dev/Code/FleetMonitor.SmartClient.UI.sln
+26/Thu - Republic Day Holiday
+27/Fri - Worked and completed the Fleet Monitor SmartScreen which contains display of UltraGrid on UI Framework
+**********************************************************************************
+			Feb 2017
+**********************************************************************************
+01/Wed - worked on AlarmHistory & Helptext
+02/Thu - worked on AlarmHistory & Helptext
+03/Fri - worked on AlarmHistory & Helptext
+06, 07 - Leave , went to Kasi & Prayag
+08/Wed - Working with integration source code and unit testing (actual issue with bunny and laptop and PC)
+09/Thu - Working with integration source code and unit testing (actual issue with bunny and laptop and PC)
+10/Fri - Working with integration source code and unit testing (actual issue with PC)
+13/Mon - Working on Unit testing of integration and AngularJS
+14/Tue - Working on Unit testing of integration and AngularJS (Just today I got all the working env setup ready, infragistics, TFS latest src code etc)
+15/Wed - Working on Unit testing of integration and AngularJS (sent one small crud app on angular yday, working on different one, full fledge)
+16/Thu - working on angularjs and unit testing (i have trouble in angularjs crud)
+17/Fri - working on angularjs demo for crud (ii have trouble in post / push method) attended meeting for an 1 hour with Bunny and Onsite team
+20/Mon - working on angularjs anchorscroll
+21/Tue - working on angularjs NHibernate CRUD
+22/Wed - working on Fluent NHibernate CRUD
+23/Thu - working on Fluent NHibernate CRUD
+24/Fri - Maha Sivarathiri 
+		working on Fluent NHibernate CRUD
+27/Mon - working on understanding the code
+28/Tue - working on understanding the code fleetmonitor, angularjs
+
+**********************************************************************************
+			Mar 2017
+**********************************************************************************
+01/Wed - working on understanding the code fleetmonitor, angularjs
+awaiting for real task and preparing for PTE
+02/Thu - working on understanding the code fleetmonitor, angularjs
+03/Fri - working on understanding the code fleetmonitor, angularjs
+
+06/Mon - working on understanding the code fleetmonitor, angularjs
+I fear of less sal bcoz of unbillable, Pranamam to Laxmi Matha, Pls save me
+
+Preparing for PTE...nothing is going well....Help me srirama
+07/Tue - working on tfs checkout of angularjs project
+08/Wed - working on tfs checkout of angularjs project
+09/Thu - working on tfs checkout of angularjs project (half day due to PTE exam on 11th)
+10/Fri - working on tfs checkout of angularjs project (Half day due to PTE exam on 11th)
+11/Sat - PTE didnt happened bcoz of name descripency
+13/Mon - working on tfs checkout of angularjs project
+
+From now onwards billable
+14/Tue - working on tfs checkout of angularjs project
+15/Wed - working on tfs checkout of angularjs project and understanding of code
+16/Thu - working on tfs checkout of angularjs project and understanding of code, UST484
+17/Fri - working on tfs checkout of angularjs project and understanding of code, UST484
+20/Mon - working on Events Chart Distribution (UST484)
+21/Tue - working on Events Chart Distribution (UST484)
+22/Wed - working on Events Chart Distribution (UST484)
+23/Thu - working on Events Chart Distribution (UST484)
+24/Fri - working on Events Chart Distribution (UST484)
+
+UST484 (Events Chart Distribution Improvements)
+I have worked on adding one of the Item in the category of chart selection of 
+events distribution graphical report and its corresponding combination of stack , 
+total 6 reports awaiting for more inputs.
+
+27/Mon - working on Events Chart Distribution (UST484), Marco.S explained the improvements further in the scrum call
+28/Tue - (UST484), working on Marco.S Review on further improvements discussed in the scrum call
+29/Wed - Ugadhi -Hemalambi Nama Samvatsara
+
+30/Thu - (UST484), working on Marco.S Review on further improvements discussed in the scrum call, had issues with adding WBS & Subsytem, working on it.
+
+31/Fri - worked on sat
+
+****************************************************************************************
+			April 2017
+****************************************************************************************
+
+
+01/Sat - (UST484) , working on Marco.S Review on further improvements discussed in the scrum call, had issues with adding WBS & Subsytem, working on it.
+03/Mon - (UST484) , working on Marco.S Review on further improvements discussed in the scrum call, had issues with adding WBS & Subsytem, working on it.
+04/Tue - (UST484) Yesterday had a webex with Marco.S, with regards to how to add the new Table.Column through DbMigrations, added Column: Event.FleetName & WbsId (Table : WbsStructure?)
+SQLExpress
+05/Wed - Happy Srirama Navami
+(UST484) added new code from tfs and working on the build issues
+06/Thu - having issues with MetaDataService.svc, working  on it, resolved Thx Marco, stephen & Raghu
+07/Fri - Working on adding new Events Graph for Distributed List of Wbs, Subsytem
+10/Mon - completed addition of Stack & Category Items as per the requirement in UST484,	
+	 in Events Graph for Distributed List (Car, Wbs, Subsytem)
+11/Tue - Checkin the code for UST484, and started to work on UST555
+12/Wed - Working on adding a page in RTS Plugin (UST555), have issues in Logging probably security settings
+13/Thu - Resolved the issue with getConnectionStatus, by clearing all bin folders and rebuild all binaries.
+	 Currently working on UST555
+14/Fri - Working on issue reported by Marco, (UST555)
+17/Mon - Working on issue reported by Marco, and (UST555)
+18/Tue - working on adding page in RTSPluggin, had spent some time in learning nested kendo-grids
+19/Wed - working on UST555, had spend some time on getting data from webapi with regards to table: RtsSignalMetaData
+20/Thu - working on UST555, had spend some time on getting data from webapi with regards to table: RtsSignalMetaData
+
+21, 24 - Leave for Passport re-issue & Pinni ByPass Surgery
+25/Tue - Working on UST555
+26/Wed - went for Pasport re-issue worked in suceeding saturday ie., 29th March 2017
+	 Working on adding page in RTS Pluggin
+27/Thu - Working on adding page in RTS Pluggin
+28/Fri - Working on the binding issue for Grid1 to Grid2 in adding page in RTS Pluggin
+	Piyush helped out, there is a concept called DTO which will be inbetween WCF & WebApi
+	the data comes at once into IList leveraging the data connection, so that, the dependency on fetchinh huge data is decreased
+	thereby increasing the performance, also called stateless connection
+29/Sat - Worked on compensating for 26th Apr
+****************************************************************************************
+			May 2017
+****************************************************************************************
+
+01/Mon - worked on the binding issue for Grid1 to Grid2 in adding page in RTS Pluggin
+02/Tue - Working on DTO Objects
+03/Wed - Worked on getting latest checkout code
+04/Thu - got fewer review comments from Marco, working on them
+05/Fri - preparing to give demo on the review comments plus show n tell of entire app
+08/Mon - Started Working on UST638
+09/Tue - Worked on UST638, checkin the code
+10/Wed - Checking the code sanctity and unit testing
+11/Thu - Review comments
+12/Fri - worked on Review comments for UST638, and checin the code
+15/Mon - Started to Work on UST644
+16/Tue - Continue to work on UST644, adding SoldTime in edit consist popup
+17/Wed - Continue to work on UST644, adding SoldTime in edit consist popup
+18/Thu - Continue to work on UST644, adding SoldTime in edit consist popup
+19/Fri - checkin the code of UST644( adding SoldTime in edit consist popup)
+23/Mon - started to Work on UST650 (scheduled messages after the user login)
+24/Tue - Continue to Work on UST650 (scheduled messages after the user login)
+25/Wed - Continue to Work on UST650 (scheduled messages after the user login)
+26/Thu - Continue to Work on UST650 (scheduled messages after the user login)
+29/Mon - Continue to Work on UST650 (scheduled messages after the user login)
+30/Tue - Continue to Work on UST650 (scheduled messages after the user login)
+31/Wed - Working on UST650, completed WebApi, Wcf Service, Repository, Database, working on front end part (Angularjs)
+
+****************************************************************************************
+			June 2017
+****************************************************************************************
+01/Thu - Working on UST650, completed WebApi, Wcf Service, Repository, Database, working on front end part (Angularjs)
+02/Fri - Telnagana Avirbhava Dinotsavam
+05/Mon - Working on UST650, resolved a issue in DateTime being shown as Invalid Date in WebApi
+Lessons Learnt: when a angularjs function is called passing an object to it as an argument,
+and if the object contains the datetime field, then the default value it contains is dateTime.MinValue
+Inorder to persist the DateTime value that user has entered thru DateTimePicker control , we need to convert 
+into String value as shown in the eg below:
+$scope.updateDateFilters = function () {
+            dateFiltersFactory.startTime = dateTimeConvertionService.convertUTCTimestampToUserTimeZone($scope.data.startTime);
+            dateFiltersFactory.endTime = dateTimeConvertionService.convertUTCTimestampToUserTimeZone($scope.data.endTime);
+        };
+where startTime, endTime are k-ng-model
+06/Tue - Working on UST650, completed WebApi, Wcf Service, Repository, Database, working on front end part (Angularjs)
+
+07 Came to Italy Bomardier Office.
+08/Tue - working in Italy Bombardier Office. UST650
+09,10,11
+
+12/Mon - Getting Uservice.svc errors, resolving them, to show the demo to Marco
+13/Tue - Worked on UST650: 60% of the work is completed and gave demo to Marco
+14/Wed - Review Meeting for 2 hrs. Showed the Popup window that contains scheduled message after login. Marco has provided review, working on them 
+15/Thu - working on Popup window, sent the screen for approval, awaiting for his comments and and any review comments
+16/Fri - completed the UST650
+19/Mon - Working on ust638, soldtime is having few bugs, resolved them and gave for testing along with UST650
+20/Tue - working on a new task UST545 (add Active Stream List Page)
+21/Wed - continue to work on a new task UST545 (add Active Stream List Page), showed demo, no review comments as of now, said good work.
+22/Thu - continue to work on completed tasks, for unit testing  UST(650, 545)
+23/Fri - worked on the unit testing and fixed significant issues in UST650. Completed UST545, Started new task ust544
+26/Mon - working on task ust544, Add a new page in the TSSP plug in that let the user configure the dynamic streaming.
+27/Tue - working on task ust544. Had problem with HttpGet for saveTsspData, actually it shouild be POST, also problem with URL format, worked on these issues and going further for completion of task
+28/Wed - Working on UST544
+29/Thu - Working on UST544 (completed Edit, Save, Get, details of the problems faced)
+30/Fri - completed ust544, unit testing
+
+
+****************************************************************************************
+			July 2017
+****************************************************************************************
+03/Mon - Working in new task UST690
+04/Tue - returning Back to India
+05/Wed - compensate 26th June working (bakrid)
+06/Thu - working on ust690, angularjs to deal with mutiple events, completed it (events selctor)
+07/Fri - working on ust690, dealing with multiple consists, that needs to have a logic to insert into database
+10/Mon - working on ust690
+11/Tue - working on ust690
+12/Wed - completed ust690,and unit testing, and worked on bug raised by tester in UST544
+13/Thu - working on padlock requested by stephen
+14/Fri - working on bugs, getting latest and IE patch fix to setup development environment
+17/Mon - working on padlock requested by stephen
+18/Tue - planned leave
+19/Wed - working on padlock requested by stephen
+20/Thu - working on ust711, and continuing with green padlock.
+21/Fri - completed grid display, delete functionality in ust711, and continuing with green padlock.
+24/Mon - continuing to work on ust711, and continuing with green padlock.
+25/Tue - completed ust711 add & edit, worked and completed on medium bugs
+26/Wed - working on critical bugs
+template: "#= ('EndTime' == null) ? ' ' : kendo.toString(kendo.parseDate(EndTime, 'yyyy-MM-ddTHH:mm:ss'), 'G', '" + userDataFactory.Locale + "') #",
+27/Thu - working on medium bugs
+28/Fri - working on medium bugs (actual: issues with iis, have to install the certificate again to resolve the issue finally)
+
+****************************************************************************************
+			Aug 2017
+****************************************************************************************
+01/Tue - working on medium bugs
+02/Wed - working on medium bugs
+template: "#= (" + 'Carname' ==  'undefined' + ") ? ' ' : Carname ) #",
+03/Thu - completed few bugs related to null date issues, working on other bugs related to eventGraph
+04/Fri - Leave on the ocassion of Moms Bday to go to Vargal
+07/Mon - working on other bugs related to eventGraph. 
+self: Unable to proceed further to fix
+08/Tue - working on other bugs related to eventGraph
+self: awaiting for more work
+09/Wed - working on other bugs related to eventGraph
+10/Thu - working on other bugs related to eventGraph 275
+11/Fri - working on bugs 17376
+14/Mon - working on bugs 17130, 17275, 17276
+15/Tue - Independence Day Holiday
+16/Wed - working on bugs 17130, 17275, 17276
+17/Thu - working on 17376
+18/Fri - working on bugs 17393
+21/Mon - working on bugs 17403, 16662,16897,17387
+22/Tue - Working on bug: 17338, 17348
+23/Wed - working on bug: 17393(not able to reproduce), 17396, 17405, 16662
+
+<input id="datetimepicker" value="20/12/2000" k-options="{format: 'dd/MM/yyyy'}"
+                     style="width: 95%;" required />
+
+<input kendo-date-time-picker k-ng-model="data.startTime" ng-model="data.strStartTime" style="width:calc(100% - 120px)"
+                   onkeydown="return false" k-options="startDatePickerOptions" k-min="minDate" k-max="data.endTime" k-rebind="data.endTime" />
+
+24/Thu - working on bugs: 17353 ,17354
+
+kendo-date-time-picker
+*****************************************************************
+* 25/fri - Indian Holiday on the Ocassion of Ganesh Chathurthi  *
+*****************************************************************
+
+28/Mon - fixed Bugs: 17402, 17424, 17351,17375, 17343 (not able to reproduce)
+29/Tue - working on Bugs: 16898, 17428
+30/Wed - working on bugs fixing of 17428 and xamarin tutorial
+
+https://www.udemy.com/cart/success/94899010/
+
+31/Thu - working on bugs fixing of alert chart & event chart date formats, and xamarin tutorial
+
+***************************************************************************************************************************
+						Sept 2017
+***************************************************************************************************************************
+01/Fri - working on issue:17428, 427 and xamarin setup
+04/Mon - working on issue:17428, 427 and xamarin setup (sent an email to MarcoB, Raoul, Lornana, as I am unable to fix this date format issues)
+05/Tue - working on Bug:16656 and Xamarin setup (problem with C drive, N&S has added 40GB to C drive)
+06/Wed - working on Xamarin Setup (started installing, now that available space is there)
+Installation is getting very slow, meanwhile I am going thru Videos
+07/Thu - working on Xamarin tutorials (working from home)
+08/Fri - working on Xamarin tutorials (partially worked from home)
+
+weekend also I worked, looked into how to configure the android avd
+
+11/Mon - working on xamarin tutorials, and started with login screen
+downloading components for android support repository
+12/Tue - working on xamarin login screen & Android Multiscreen 
+Resolved issues with Emulator, downloaded latest emulators as recommended by AVD
+Need to start with Android Activity Lifecycle, and Menu pages
+
+13/Wed - working on xamarin login screen & Android Multiscree
+	 Signin Screen, And Signup screen Logic, Navigation thru Tabbed scroll view
+
+14/Thu - working on integrating login screen and the tabbed screen
+15/Fri - working along to get prepared with POC
+18/Mon - Gave first POC to stephen, Antonelli, Raoul
+	 Gave Login system & Slide Layout 
+19/Tue - working along with Xamarin POC (Yday whole day went wasted, as VS2017 got some issues while opening, hence in the night while going I downloaded the required setup and next day, this got resolved, not sure how to recover this one day of loss)
+20/Wed - Looking for required / relative projects for POC
+21/Thu - Integrated Login system with main menu view which was shown in Poc
+22/Fri - working on xamarin project poc
+	 Yday Antonelli was not happy with the progress, need to speed up the things
+25/Mon - Working on webapi consumption in Xamarin
+	 don't know how to pass through this phase, God Durga Pls help me
+	 Took half day leave, as mummy got hospitalized in Vivekananada Hospital, Somajiguda
+	 Yday I got theft and stolen 65,000 from my citi bank credit card @5:43 & 5:44 PM in the evening
+26/Tue - Working to understand the document that stephen has sent on OpenID Connect
+27/Wed - working on OpenID connect to login system
+28/Thu - working on OpenID connect to login system
+	 challenges: unable to deploy XamarinForms downloaded from KevinDocx
+		     Taking more time to build Houssem Dellai project
+29/Fri - work from home, worked a lot for weekend, and long holidays
+	 worked on OIDC, now working in UWP, got help from Ramakrishna regards to Restful webapi need to integrate
+***************************************************************************************************************************
+						Oct 2017
+***************************************************************************************************************************
+02/Mon - is Holiday due to gandhi Jayanthi, but I came home for executing the Login System which is only working in UWP, tried a lot to investigate for deploymnent in Android
+03/Mon - Working on show and tell session of OIDC login screen & getFleetData api
+         Worked for all these holidays 4 days of long weekened, took help from Ramakrishna, its not yet working
+04/Tue - working on webapi consume getFleetData api
+	 Thx to ramakrishna for providing me a small help in this area.
+	 May God Bless me pls, to complete this project
+	 unable to integrate android with PCL, problems with some of the libraries in PCL(eg HttpClient, xmldocument, HttpWebRequest)
+	 Gone thru ListView (Douglas Starnes), prepared a sample code for ListView	 	
+05/Wed - working on webapi consume getFleetData api
+	 Night worked on the yday problem, found some link: Tomasz Cielecki
+	 But Build errors bcoz of Nuget issues, need to continue in this direction today?
+	 not sure of navigation in android, in case it takes time, I have to restrict myself to android for now
+	 somehow I wanted to show all the contents in WebApi, and give all features in it as PoC
+	 some errors in Android SDK, trying to download Api's, if i start in between, I may get same issue as I got earlier with VS updates (VS got crashed)
+	 May God Bless me to do this task
+06/Thu - working on webapi consume getFleetData api
+	 Today morning I see some improve in RK's code
+	 all the effort to get the PCL into Android is futile as of now
+	 Still I don't give up, I have to research more in this application/xml => deserialize
+	 May God Bless me with to do this task
+09/Mon - Worked in getting consume WebApi of FM Portal.Web, need to show the same in demo for weekly status
+ 	 Worked on Sat, and from home in Sun: mostly in the direction of xamarin android listview manuplation, getting to second screen, when user presses on one item in the list
+	 then I worked on getting the program for showing up a button in the listview, the logic
+10/Tue - Working on Bug Fixing : 17351, 17402, 17424
+	 Marco.B asked me to work in FM Portal.Web, Bugs. Paused the Xamarin
+11/Wed - Working on WBSEventsAssociation bug: 17428, unable to identify the wrong file while uploading
+	 Marco.B has kindly asked me to work back on Xamarin, Stuck up @Button Click event having null referenece
+	 trying to call edit consist webapi, I think I now need to understand Ray'sHotDog App
+	 Tried to work on xamarin from home, a little bit
+12/Thu - working on consuming edit consist webapi, stuck up at button click event throwing error: null reference
+	 I think I now need to understand Ray'sHotDog App. Tried to understand how it works in the early morning.
+	 from now on I will do meditation for 3 hrs a day
+13/Fri - working on consuming edit consist webapi, stuck up at button click event throwing error: null reference
+Google search: 	call button click event from adapters in xamarin android
+https://stackoverflow.com/questions/16215686/monodroid-handling-click-events-inside-listadapter-rows
+
+Another Search:		
+Found conflicts between different versions of the same dependent assembly that could not be resolved.  These reference conflicts are listed in the build log when log verbosity is set to detailed
+
+Found this useful:
+		This is incorrect (or at least it was for some versions of Visual Studio - it seems to be OK on an up to date VS2015 Update 3 or later). Instead turn it to Diagnostic (from Tools->Options->Project and Solutions->Build and Run, set MSBuild project build output verbosity), whereupon you'll see messages such as:
+16/Mon - worked on the bug in scheduled user message
+17/Tue - working on Floating menu option for settings
+18/Wed - working on Floating menu option for settings, worked on the login screen integration
+	 thought of working on webapi part, but attenda server is down since from 2 days
+	 meanwhile I am working on other stuff
+19/Thu - Holiday on the Ocassion of Diwali Celebrations
+20/Fri - working on donebar, and floating menu
+
+23/Mon - Leave due to Father's monthly ceremony
+
+24/Tue - Gave demo, of the skeleton of app, and worked on further
+	 working on Fragment transition, its a challenge for me
+25/Wed - working on consuming webapi from demo.bombardier
+	 sent demo package & instructions of installation to Marco.A
+26/Thu - worked on consuming webapi
+27/fri - integrate the code with rayshotdog
+
+sat n sun - worked on getting login screen passed to webapi screen, finally its done, but needs to format the screens nicely
+
+30/Mon - working on show n tell session, of what all worked for the week
+	 cropped up with an error:
+Error: No resource found that matches the given name (at 'colorAccent' with value '@color/accent')
+31/Tue - trying to resolve the above error. 
+This was instantly solved by adding the accent in styles not coloraccent
+
+********************************************************************************************
+				Nov 2017
+********************************************************************************************
+
+01/Wed - Working on integration of drawer layout with login screen. unable to yet do it.
+	 Murali gave hint of giving this project to someone
+02/Thu - too many things in mind, keeping me insecure. Not sure which one to start with:
+
+Spoke with subbarao asked to help with regards to drawer layout
+
+What’s Not Completed (I will be working on the below, for the coming week):
+1.	OAuth Login is not yet completed, I need the WebApi url to connect to FM, which I am not sure.
+2.	Alerts & Last Alerts but I don’t have WebApi url to get the related data
+3.	I need to work more on setting up of webapi url, so that the changes made will reflect the main screen which I have shown to you in demo.
+4.	Integration of Hamburger Icon in the toolbar which was done earlier week with the demo shown this week,  ie.,skeleton of the App
+
+http://www.json-xls.com/json2xls
+03/Fri - yday was useless. not completed anything. dilemma, what to task to do. looked into multiple fragment calling in a single activity, but couldn't get any.
+	Today continuing on the samae lines +
+	reload after setwebapi
+Not much help from Subba Rao or Ramakrishna regarding my issues.
+Sat n Sun bit progressive with regards to Drawer Icon & Set WebApi, which integrates with any api sucessfully.
+
+by closing of friday I came to know that the server fm.bt.ab2ls.ch is up & running but webapi that provides the list of fleet & consist, alerts for each fleet is not yet known. Not sure if there are any such web api's
+
+06/Mon - Happy Prafulla's Bday
+	 working on tuning of weekend work for demo: Login screen , Drawer Layout and fetching data from any webapi provided in set webapi window.
+07/Tue - Gave demo to stephen, working on drawer layout and actual webapi's
+	 worked on fetching fleets from fm.bt.ab2ls.ch
+	 and its corresponding nr of consists for each fleet
+08/Wed - continuing on what I am working yday
+	 I got stuck up with 1. Alerts Count not being shown with the api
+	2. The fragments container is not shown as desired in the UI
+
+09/Thu - 
+	 I coudln't still work out with the logic of two fragments in a view.
+	 God Bless me
+10/Fri - God has blessed me thru Ramakrishna, who gave me hint on how to do
+	 buttons under ListView got worked out finally. 
+sat n sun couldnt work (ThaTha garu masikam, krishna mavayya garu satyanarayana vratham)
+
+13/Mon - Finally I made the round Image + textView in Alerts + Tickets to work for me 
+	 Early morning of 14th is a boon to me, which showed the way ahead
+	 which i couldn't do it since from past few days
+14/Tue - going ahead to work on Login screen to work for ,.a rupine
+	 tubyam namaha hayagriva vidharajaya vishnave swaha hamsaha soham
+
+15/Wed - working oauth2, if this gets delayed, i need to shift to the next task so that
+	 I may show some progress for the week.
+	 it's already 1.5 days over that i started this task. May God Bless me
+
+16/Thu - still working on OAuth2, some break over seems to show, but not a concret pass through
+17/Fri - working on OAuth2, Marco.A has asked to stop this work and work on user manual
+
+20/Mon - Shifted to new location Cafetaria 3rd Floor
+	 working on User Manual
+21/Tue - working on user manual, sent comparison report, working on further tasks
+22/Wed - Leave on the ocassion of dady's Masikam
+23/Thu - working on Report Handover document, coudln't get srs for it, sent an email to Marco.B
+24/Fri - working on updating screen shot and planning to send for review to whomsoever
+	 had meeting with dayne regarding user manual
+27/Mon - working on user manual. not much progress :(
+28/Tue - working on user manual. 
+	 Ivanka Trump and Modi inaugurating Metro today
+29/Wed - working on User Manual
+30/Thu - working on user manual, got few good points from Andrea. Thanks to him. 
+	 Vanaja, is not at all coperating and helping me in anyway for the user manual task.
+********************************************************************************************
+				Dec 2017
+********************************************************************************************
+01, 04, 05 Leave
+01, 04 - IELTS Exam
+05 - Srinivas Babayya not well. he is on ventilator and kidney failure.
+06/wed - completed report handover of the user manual, sent to vanaja for second review.
+	as usual she is not even taking care of the reviews.
+07/thu - working on user manual. vanaja is hopeless. not at all helping me. what should be my attitude? God pls guide me.
+	 finally the soul has departed. rest in peace. may the Lord give him peaceful journey
+08/fri - working on merge of the document
+09/sat - came office. took printout for mavayya garu for indigo
+11/Mon - no work today, feeling depressed. not happy, bcoz of liquidating the dreams of ielts.
+	 low cash. lots of debts
+12/Tue - problem with sami. he gave wrong notion to murali about me
+	 I thought of reporting about vanaja to chouhan:
+Hi Chouhan,
+I get very minimum help from our team, for the User manual update. 
+Only after the client asked in our yesterday’s call for review by the team, now that they are looking into it.
+
+13/Wed - working on review comments
+
+25 - christmas holiday
+
+13-27: these days I am browsing thru Twitter, Tumblr Hot hotter hottest ones.
+I got a msg from Goddess, Sarada Matha, to check my character. Today I stopped it 28th Dec2017
+28/Thu - sent few documents for review to Duan
+29/Fri - went to chilkur on the eve of my 6th Anniversary
+********************************************************************************************
+				Jan 2018
+********************************************************************************************
+01/Mon- Holiday onn the ocassion of 1st Jan
+02/Tue - working on User Manual. 
+	 lil bit horny these days. Prafulla's health is not doing good.
+	Hopeless reponsibility from Vanaja
+03/Wed - need to work and complete all the pending ones today.
+08/Mon - doing nothing. attneded interview medtronics. not done well. met Harinivas. felt nice. 
+09/Tue - updated few documents
+10/wed - continue to update the documehts
+11/thu - half day leave
+12/Fri - Leave going to Tirupathi
+15/Mon - Sankranthi
+16/Tue - I am not knowing my feature career with murali...very inconsistent mgr
+17/wed - requested for additional work to duane /marco.B not recvd anythign till now,
+	 fingers crossed from ajay, murali. sent emails to many
+18/thu - nothing
+19/fri - nothing
+22/Mon - lost my phone, whats happeneing?
+23/Tue - kiran has take over the orbiflo. i am still awaiting for work
+	 where is my destiny God?
+24/wed - rathasapthami subhakankshalu.
+	 found a very good article to prepare for interviews:
+	 http://www.csharpstar.com/design-pattern-interview-questions/
+25/Thu - nothing is working. upset with raju and Co.
+26/Fri - Holiday on the Ocassion of Republic Day
+27/Sat - Satyanarayana Vratam
+29/Mon - Marco wants me to ask Piyush & Ashok related to 2 other documents
+30/Tue - I prepared 2 docs, sent to review with Piyush & Ashok, after they complete,
+	 I shall fwd it to Duane. Feeling low bcoz of Raju & co. And Hari
+	 why should I feel bad? when I dont expect anything from them?
+	 is my attitude wrong? in expecting good friendship?
+	 why cant I give good, and dont expect anything good from others
+	 so what good thing I can offer?
+	 just whenever they come to me, be good, think good, nothing else
+31/Wed - working on Alert - Rule Tester
+	 yday met gurupreet, a strategic talk. he wants me to look in to R-Package
+********************************************************************************************
+				Feb 2018
+********************************************************************************************
+01/Thu - met ajay yday, he said he will take me inn, atleast small good news to me
+	 amidst all odds
+	 had meeting with duane, told me that, almost the task is over
+02/Fri - I&ENR team went for outing, no news to me, fingers crossed, awaiting.
+05/Mon - not filling timesheets, hence no updates
+12/Mon - moved to MDT project, hope I will make my stamp there and continue in it. 
+	God Pls bless me
+13/Tue - yday had a meeting with client shown mockup screens. 
+	 dont know how would i handle the team, how would i handle vasu
+16/Fri - had call with client, shown some mockups, i hope the project will get go ahead
+19/Mon-  talked with murali & chouhan on lighter note. in cafetaria
+	 

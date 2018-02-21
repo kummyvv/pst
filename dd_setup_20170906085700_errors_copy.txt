@@ -1,0 +1,45 @@
+Something went wrong with the install.
+
+You can troubleshoot the package failures by:
+
+    1. Search for solutions using the search URL below for each package failure
+    2. Modify your selections for the affected workloads or components and then retry the installation
+    3. Remove the product from your machine and then install again
+
+If the issue has already been reported on the Developer Community, you can find solutions or workarounds there. If the issue has not been reported, we encourage you to create a new issue so that other developers will be able to find solutions or workarounds. You can create a new issue from within the Visual Studio Installer in the upper-right hand corner using the "Provide feedback" button.
+
+================================================================================
+
+Package 'JavaJDKV2,version=1.8.1,chip=x64' failed to download from 'https://go.microsoft.com/fwlink/?linkid=844912'.
+    Search URL
+        https://aka.ms/VSSetupErrorReports?q=PackageId=JavaJDKV2;PackageAction=DownloadPackage;ReturnCode=0x80096004
+    Details
+        WebClient download failed: SHA256 verification for 'jdk-8u112-windows-x64.exe' failed. Expected hash: 6C3504185DD06F50B0578766BD913B277FD1FF444023AACD20B969AE76F20F5E, Actual hash: 88F657FBBDC4D1A53E0C317D23106F0AC93331E963F3557CB19EC0515C68BD4B
+        Bits download failed: SHA256 verification for 'jdk-8u112-windows-x64.exe' failed. Expected hash: 6C3504185DD06F50B0578766BD913B277FD1FF444023AACD20B969AE76F20F5E, Actual hash: 7ED7295EC1379EC80EDF83F9F98327510AC837992E227BAE1172889E6A47CA65
+        WinInet download failed: SHA256 verification for 'jdk-8u112-windows-x64.exe' failed. Expected hash: 6C3504185DD06F50B0578766BD913B277FD1FF444023AACD20B969AE76F20F5E, Actual hash: A22A8D86A4DCCCB04E9F92F18161B4129D18C9CB91768B830823EDEEBCE9438C
+    Impacted workloads
+        Mobile development with .NET (Microsoft.VisualStudio.Workload.NetCrossPlat,version=15.0.26606.0)
+        Mobile development with JavaScript (Microsoft.VisualStudio.Workload.WebCrossPlat,version=15.0.26711.1)
+    Impacted components
+        Android SDK setup (API level 23) (Component.Android.SDK23,version=15.0.26606.0)
+        Google Android Emulator (API Level 23) (Component.Google.Android.Emulator.API23.V2,version=15.0.26711.1)
+        Intel Hardware Accelerated Execution Manager (HAXM) (Component.HAXM,version=15.0.26208.0)
+        Java SE Development Kit (8.0.1120.15) (Component.JavaJDK,version=15.0.26403.0)
+
+--------------------------------------------------------------------------------
+
+Package 'JavaJDKV2,version=1.8.1,chip=x86' failed to download from 'https://go.microsoft.com/fwlink/?LinkID=842899'.
+    Search URL
+        https://aka.ms/VSSetupErrorReports?q=PackageId=JavaJDKV2;PackageAction=DownloadPackage;ReturnCode=0x80096004
+    Details
+        WebClient download failed: SHA256 verification for 'jdk-8u112-windows-i586.exe' failed. Expected hash: C2126BB16B85EE47F44124D318155C329194E1A60A3A5562A6A4672CA5989C85, Actual hash: FB8C91A49B4F63C56CC9BD2929034F671E394F11950EC813B0BE17B65B6AED76
+        Bits download failed: SHA256 verification for 'jdk-8u112-windows-i586.exe' failed. Expected hash: C2126BB16B85EE47F44124D318155C329194E1A60A3A5562A6A4672CA5989C85, Actual hash: C9BA18EBB4E2E7F5E65A6DD00B1DE56889BFE840AF7A06DC980C0590568E2C8E
+        WinInet download failed: SHA256 verification for 'jdk-8u112-windows-i586.exe' failed. Expected hash: C2126BB16B85EE47F44124D318155C329194E1A60A3A5562A6A4672CA5989C85, Actual hash: B5AE97A560613D6550EC4E38A3D5DFD73F52EF60558A05AEBE18897DA5E3BE5C
+    Impacted workloads
+        Mobile development with .NET (Microsoft.VisualStudio.Workload.NetCrossPlat,version=15.0.26606.0)
+        Mobile development with JavaScript (Microsoft.VisualStudio.Workload.WebCrossPlat,version=15.0.26711.1)
+    Impacted components
+        Android SDK setup (API level 23) (Component.Android.SDK23,version=15.0.26606.0)
+        Google Android Emulator (API Level 23) (Component.Google.Android.Emulator.API23.V2,version=15.0.26711.1)
+        Intel Hardware Accelerated Execution Manager (HAXM) (Component.HAXM,version=15.0.26208.0)
+        Java SE Development Kit (8.0.1120.15) (Component.JavaJDK,version=15.0.26403.0)

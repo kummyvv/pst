@@ -1,0 +1,8 @@
+win10sdk_10.0.10586.212
+
+Hardware
+
+1.8 GHz or faster processor. Dual-core or better recommended
+2 GB of RAM; 4 GB of RAM recommended (2.5 GB minimum if running on a virtual machine)
+Hard disk space: 1GB to 40GB, depending on features installed
+Video card that supports a minimum display resolution of 720p (1280 by 720); Visual Studio will work best at a resolution of WXGA (1366 by 768) or higher

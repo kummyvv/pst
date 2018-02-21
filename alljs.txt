@@ -1,0 +1,176 @@
+app.controller('AddScheduledMessageController', function ($scope, $http, $modalInstance, modalParams, notificationService, scheduledMessageService,  $translate) {
+    $scope.modalTitle = modalParams.title;
+    $scope.loadingPanel = false;
+    $scope.scheduleMessageObj = {
+        id: modalParams.id,
+        author: modalParams.author === undefined ? '' : modalParams.author,
+        text: modalParams.text === undefined ? '' : modalParams.text,
+        StartTime: modalParams.StartTime === undefined ? '' : modalParams.StartTime,
+        EndTime: modalParams.EndTime === undefined ? '' : modalParams.EndTime,
+        CreationTime: modalParams.CreationTime === undefined ? '' : modalParams.CreationTime
+    };
+    
+    $scope.ok = function () {
+        // field validation
+        if ($scope.scheduleMessageObj.author.length <= 0 || $scope.scheduleMessageObj.text.length <= 0 || $scope.scheduleMessageObj.StartTime.length <= 0 || $scope.scheduleMessageObj.EndTime.length <= 0) {
+            notificationService.showWarning($translate.instant('portalWeb.ScheduleMessage.errorFillEveryField'));
+            return;
+        }
+
+    var reqData = {
+        Id: $scope.scheduleMessageObj.id,
+        author: $scope.scheduleMessageObj.author,
+        text: $scope.scheduleMessageObj.text,
+        StartTime: $scope.scheduleMessageObj.StartTime,
+        EndTime: $scope.scheduleMessageObj.EndTime,
+        CreationTime: $scope.scheduleMessageObj.CreationTime
+    };
+
+    scheduledMessageService.saveScheduledMessage(reqData).then(function (data) {
+        $modalInstance.close(data);
+    });
+
+    $scope.cancel = function () {
+        $modalInstance.close(false);
+    }
+
+
+
+}]);
+
+*********************************************************************************************************************
+
+app.controller("scheduledMessageController", function ($scope, $timeout,$http, $rootScope, $modal, standardFiltersFactory, scheduledMessageService, notificationService, currentPageFactory,pageOptionFactory, busyService, $translate) {
+
+    $scope.timeoutPromise;
+    $scope.cancelTimeout = false;
+
+    var loadingData = false;
+    var currentFilters = null;
+    currentPageFactory.showPageOptions = true;
+    currentPageFactory.pageSize = 25;
+    $scope.standardFiltersFactory = standardFiltersFactory;
+    $scope.loadingPanel = false;
+
+    var dataSourceX = new kendo.data.DataSource({
+        serverSorting: false,
+        pageSize: 25
+    });
+
+    $scope.grid = {
+        dataSource: dataSourceX,
+        resizable: true,
+        sortable: true,
+        scrollable: false,
+        reorderable: true,
+        filterable: true,
+
+        columns: [
+
+           {
+               field: "Guid",
+               title: $translate.instant('portalWeb.ScheduledMessage.GUID'),
+               width: "auto",
+
+           },
+           {
+               field: "StartTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.StartTime'),
+               type: "number",
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "EndTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.EndTime'),
+               width: "auto",
+
+           },
+           {
+               field: "Text",
+               title: $translate.instant('portalWeb.ScheduledMessage.Text'),
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "Author",
+               title: $translate.instant('portalWeb.ScheduledMessage.Author'),
+               type: "number",
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "CreationTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.CreationTime'),
+               width: "auto",
+
+           }
+
+        ]
+    };
+
+    
+    $scope.$on('LoadData', function (event, args) {
+        $scope.loadData();
+    });
+
+  
+    $scope.loadData = function () {
+      
+        busyService.show();
+        scheduledMessageService.getScheduledMessages().then(function(data) {
+            $scope.grid.dataSource.data(data);
+        }).finally(function () {
+            busyService.hide();
+            if (!$scope.cancelTimeout)
+                $scope.timeoutPromise = $timeout(function () {
+                    $scope.loadData();
+                }, pageOptionFactory.delayUpdate * 1000);
+        });;
+        
+    };
+
+    // Default load data
+    $scope.loadData(true);
+
+});
+
+
+***********************************************************************************************************************************
+500 Could not find endpoint element with name 'BasicHttpBinding_IScheduledMessage' and contract 'Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IScheduledMessage' in the ServiceModel client configuration section. This might be because no configuration file was found for your application, or because no endpoint element matching this name could be found in the client element. undefined
+
+***********************************************************************************************************************************
+
+
+
+app.controller("ScheduleMessagePageOptionsController", function ($rootScope, $scope, $modal, standardFiltersFactory, scheduleMessageFactory, $translate, notificationService) {
+    $scope.scheduleMessageFactory = scheduleMessageFactory;
+    $scope.openPopup = function () {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: '../Views/ScheduledMessage/AddScheduleMessagePopup.html',
+            controller: 'AddScheduledMessagePopupController',
+            resolve: {
+                modalParams: function () {
+                    return {
+                        title: $translate.instant('portalWeb.ScheduleMessage.NewScheduleMsg'),
+                        id: null
+                    };
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            if (result)
+                $rootScope.$broadcast('LoadData');
+        });
+    }
+    
+});
+
+
+***********************************************************************************************************************************
+

@@ -1,0 +1,3 @@
+EventsController.cs >> GetEventsMetaByWbs (time lapsed)
+
+&& (filters.ChartFilterJS.custom.selectedProcessors.Length == 0 || filters.ChartFilterJS.custom.selectedProcessors.Contains(eventData.Processors.Name))

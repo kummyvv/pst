@@ -1,0 +1,16 @@
+function stringStartsWith(orignalString, searchString) {
+        var flag = false;
+        if (searchString != undefined && orignalString!=undefined) {
+            flag= orignalString.substr(0, searchString.length) === searchString;
+        }
+        return flag;
+    }
+
+ function stringEndsWith(orignalString, searchString) {
+        return orignalString.match(searchString + "$") == searchString;
+    }
+
+Alerts > R
+
+
+https://slproweb.com/products/Win32OpenSSL.html

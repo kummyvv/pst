@@ -1,0 +1,115 @@
+1.
+I got 
+"Method not implemented error",
+it got resolved with dfollowing code;
+
+adding : 
+var eventItems = events.ToList();
+
+to LINQ Query:
+chartResult = (from eventItem in eventItems
+                               group eventItem by new
+                               {
+                                   datecategory = eventItem.EventDateTime.Date,
+                                   subsytem = eventItem.Subsystem
+                               } into groups
+                               select new ChartDto
+                               {
+                                   category = (groups.Key.datecategory.ToString("yyyy-MM-dd")),
+                                   seriesname = groups.Key.subsytem.ToString(),
+                                   value = groups.Sum(x => x.Duration) / 1000
+                               }).AsQueryable();
+
+
+instead the issue with the code was:
+chartResult = (from eventItem in events
+                               group eventItem by new
+                               {
+                                   car = eventItem.Car,
+                                   processor = eventItem.Processor
+                               } into groups
+                               select new ChartDto
+                               {
+                                   category = groups.Key.car.ToString(),
+                                   seriesname = groups.Key.processor.ToString(),
+                                   value = groups.Count()
+                               }).AsQueryable();
+
+
+2. Added new items in Stack combobox in pageOptionsselecorcomtroller.js, but it was not getting reflected in combo box,
+even after rebuild all the sources and did all grunts, the issues finally got resolved by:
+restarting IIS Express
+
+(I spent 1 day for This resolution)
+
+3.
+I got 
+column in invalid in the select list because it is not contained in either an aggregate function or the GROUP By Clause
+it got resolved with addition of following code;
+
+adding : 
+var eventItems = events.ToList();
+
+to LINQ Query:
+same as pt#1
+
+
+4.
+:44301/.well-known/openid-configuration Failed to load resource: the server responded with a status of 500 (Internal Server Error)
+:44300/Views/#/index:1 XMLHttpRequest cannot load https://localhost:44301/.well-known/openid-configuration. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'https://localhost:44300' is therefore not allowed access. The response had HTTP status code 500.
+
+make following changes:
+1. Update fleetmonitor.client.json with port number of Portal.Web
+2. Update the port of Application in web.config from 50010 to 500098 for eg.
+3. 
+
+
+
+5. Could not find a component with name Bombardier.FleetMonitor.Wcf.ApplicationData.Services.ConnectionStatusDataService, did you forget to register it?
+Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code. 
+
+Exception Details: System.InvalidOperationException: Could not find a component with name Bombardier.FleetMonitor.Wcf.ApplicationData.Services.ConnectionStatusDataService, did you forget to register it?
+
+
+Ans: every wcf component has to register thru windsor eg as shown below:
+
+
+public class ServicesInstaller : IWindsorInstaller
+    {
+        public void Install(IWindsorContainer container, IConfigurationStore store)
+        {
+            /// Application Data
+            container.Register(Component.For<IEventsService>().ImplementedBy<EventDataService>().LifestyleTransient());
+            container.Register(Component.For<ICounterService>().ImplementedBy<CounterDataService>().LifestyleTransient());
+            container.Register(Component.For<IEnvironmentsService>().ImplementedBy<EnvironmentDataService>().LifestyleTransient());
+            container.Register(Component.For<IVersionDataService>().ImplementedBy<VersionDataService>().LifestyleTransient());
+            container.Register(Component.For<IConnectionStatusService>().ImplementedBy<ConnectionStatusDataService>().LifestyleTransient());
+            container.Register(Component.For<IHandoverService>().ImplementedBy<HandoverService>().LifestyleTransient());
+            container.Register(Component.For<IEnvironmentsMetaDataService>().ImplementedBy<EnvironmentsMetaDataService>().LifestyleTransient());
+            container.Register(Component.For<IEventsMetaDataService>().ImplementedBy<EventsMetaDataService>().LifestyleTransient());
+            container.Register(Component.For<IBaselinesService>().ImplementedBy<BaselinesService>().LifestyleTransient());
+            container.Register(Component.For<ICountersMetaDataService>().ImplementedBy<CountersMetaDataService>().LifestyleTransient());
+            container.Register(Component.For<IDiagnosticConfigurationsService>().ImplementedBy<DiagnosticConfigurationsService>().LifestyleTransient());
+        }
+    }
+
+
+resoltuion: clear all bin folders and then rebuild the entire application
+
+and change the contract to:
+change the contract to Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IConnectionStatusService
+
+Portal.Web (Web.Config) contains wrong contract:   Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IConnectionStatusService
+
+<endpoint address="http://localhost:29124/ConnectionStatusDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IConnectionStatusService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IConnectionStatusService" />
+
+6. I had a very big binding issue Grid1 to Grid2 in adding page in RTS Pluggin
+{"The underlying connection was closed: A connection that was expected to be kept alive was closed by the server."}
+
+Resolution:
+28/Fri, 2017:
+	Piyush helped out, there is a concept called DTO which will be inbetween WCF & WebApi
+	the data comes at once into IList leveraging the data connection, so that, the dependency on fetching huge data is decreased
+	thereby increasing the performance, also called stateless connection
+
+Proxy objects in WCF and Web services are good candidates for data transfer objects to improve performance.

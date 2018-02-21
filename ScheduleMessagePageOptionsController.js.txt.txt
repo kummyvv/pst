@@ -1,0 +1,24 @@
+app.controller("ScheduleMessagePageOptionsController", function ($rootScope, $scope, $modal, standardFiltersFactory, scheduleMessageFactory, $translate, notificationService) {
+    $scope.scheduleMessageFactory = scheduleMessageFactory;
+    $scope.openPopup = function () {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: '../Views/ScheduledMessage/AddScheduleMessagePopup.html',
+            controller: 'AddScheduledMessagePopupController',
+            resolve: {
+                modalParams: function () {
+                    return {
+                        title: $translate.instant('portalWeb.ScheduleMessage.NewScheduleMsg'),
+                        id: null
+                    };
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            if (result)
+                $rootScope.$broadcast('LoadData');
+        });
+    }
+    
+});

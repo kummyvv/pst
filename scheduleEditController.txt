@@ -1,0 +1,415 @@
+app.controller("scheduledEditController", ['$scope', 'scheduledMessageService', 'dateFiltersFactory', 'notificationService', 'busyService', 'dateTimeConvertionService', 'userDataFactory', '$modalInstance', 'modalParams', 'dataItem', 'standardFiltersFactory', '$translate',
+        function ($scope, scheduledMessageService, dateFiltersFactory, notificationService, busyService, dateTimeConvertionService, userDataFactory, $modalInstance, modalParams, dataItem, standardFiltersFactory, $translate) {
+
+    $scope.modalTitle = 'portalWeb.ScheduleMessage.EditScheduleMsg';
+    $scope.dateFiltersFactory = dateFiltersFactory;
+    $scope.userDataFactory = userDataFactory;
+    $scope.userData = null;
+    $scope.Author = dataItem.Author;
+    $scope.Text = dataItem.Text;
+    $scope.StartTime = dataItem.StartTime;
+    $scope.EndTime = dataItem.EndTime;
+    $scope.CreationTime = dataItem.CreationTime;
+    $scope.data = {
+        startTime: null,
+        endTime: null
+    };
+
+    $scope.userData = {
+        username: userDataFactory.username,
+        Locale: userDataFactory.Locale,
+        TimeZone: userDataFactory.TimeZone
+    };
+
+    $scope.StartTimeOptions = {
+        culture: userDataFactory.Locale,
+        interval: 10,
+        change: function () {
+            var ctrlStartTime = moment($scope.data.startTime).format();
+            dateFiltersFactory.controlStartTime = ctrlStartTime;
+            dateFiltersFactory.startTime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.controlStartTime);
+        }
+    };
+    $scope.EndTimeOptions = {
+        culture: userDataFactory.Locale,
+        interval: 10,
+        change: function () {
+            var ctrlEndTime = moment($scope.data.endTime).format();
+            dateFiltersFactory.controlEndTime = ctrlEndTime;
+            dateFiltersFactory.endTime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.controlEndTime);
+        }
+    };
+    $scope.CreationTimeOptions = {
+        culture: userDataFactory.Locale,
+        TimeZone: userDataFactory.TimeZone,
+        interval: 10
+    };
+
+    $scope.userOptions = {
+
+    };
+
+    $scope.updateDateFilters = function () {
+        dateFiltersFactory.startTime = dateTimeConvertionService.convertUTCTimestampToUserTimeZone($scope.data.startTime);
+        dateFiltersFactory.endTime = dateTimeConvertionService.convertUTCTimestampToUserTimeZone($scope.data.endTime);
+    };
+
+    $scope.loadData = function () {
+        $scope.author = userDataFactory.username;
+        $scope.CreationTime = scheduledMessageService.getCurrentTime();
+
+        dateFiltersFactory.starttime = moment($scope.StartTime).format();
+        dateFiltersFactory.starttime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.starttime);
+
+        dateFiltersFactory.endtime = moment($scope.EndTime).format();
+        dateFiltersFactory.endtime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.endtime);
+
+    };
+
+    $scope.saveChanges = function () {
+        if ($scope.Text == " " || $scope.Text == undefined) {
+            notificationService.showWarning($translate.instant('portalWeb.ScheduleMessage.TextRequired'));
+            return;
+        };
+        //dateFiltersFactory.endTime = dateTimeConvertionService.convertToUTC($scope.EndTime);
+        //dateFiltersFactory.endTime = dateTimeConvertionService.convertUserToLocalTimeZone(moment().tz(userDataFactory.TimeZone).format());
+
+        $scope.updateDateFilters();
+
+        var reqData = {
+            Id: null,
+            Author: $scope.Author,
+            Text: $scope.Text,
+            StartTime: $scope.StartTime,
+            EndTime: $scope.EndTime,
+            CreationTime: $scope.CreationTime
+        };
+
+        scheduledMessageService.editMessage(reqData).finally(function () {
+
+            if (reqData)
+                notificationService.showInfo($translate.instant('portalWeb.ScheduleMessage.editSaved'));
+            else
+                notificationService.showInfo($translate.instant('portalWeb.ScheduleMessage.editFailed'));
+
+            $modalInstance.close(true);
+            $scope.loadingPanel = false;
+        });
+
+
+        $scope.cancel();
+    };
+
+
+    $scope.cancel = function () {
+        $modalInstance.close(false);
+    }
+}]);
+
+
+**********************************************************
+scheduledMessageController
+***********************************************************
+
+app.controller("scheduledMessageController", function ($scope, $timeout, $http, $rootScope, $modal, standardFiltersFactory, userDataFactory, dateTimeConvertionService, scheduledMessageService, notificationService, currentPageFactory, pageOptionFactory, busyService, $translate) {
+    $scope.timeoutPromise;
+    $scope.cancelTimeout = false;
+
+    currentPageFactory.showPageOptions = true;
+    currentPageFactory.pageSize = 25;
+    $scope.standardFiltersFactory = standardFiltersFactory;
+    $scope.userDataFactory = userDataFactory;
+    var loadingData = false;
+    var currentFilters = null;
+    $scope.loadingPanel = false;
+
+    var dataSourceX = new kendo.data.DataSource({
+        serverSorting: false,
+        pageSize: 25
+    });
+
+    $scope.grid = {
+        dataSource: dataSourceX,
+        resizable: true,
+        sortable: true,
+        scrollable: false,
+        reorderable: true,
+        filterable: true,
+
+        columns: [
+
+           {
+               hidden: true,
+               field: "ScheduleMessageId",
+               title: $translate.instant('portalWeb.ScheduledMessage.GUID'),
+               width: "auto",
+
+           },
+           {
+               field: "StartTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.StartTime'),
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "EndTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.EndTime'),
+               width: "auto",
+
+           },
+           {
+               field: "Text",
+               title: $translate.instant('portalWeb.ScheduledMessage.Text'),
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "Author",
+               title: $translate.instant('portalWeb.ScheduledMessage.Author'),
+               type: "number",
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "CreationTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.CreationTime'),
+               width: "auto",
+
+           },
+           {
+               title: $translate.instant('portalWeb.ScheduledMessage.edit'),
+               command: [{
+                   text: "Edit", template: "<button  ng-click='onEditClick(dataItem)' class='btn btn-link btn-xs'><img src='../Content/images/edit.png'  width='20px' height='20px' /></button>"
+               }],
+               width: "15px"
+           },
+           {
+               title: $translate.instant('portalWeb.ScheduledMessage.delete'),
+               command: [{
+                   text: $translate.instant('portalWeb.ScheduledMessage.delete'),
+                   template: "<button   ng-click='deleteMessage(dataItem)' class='btn btn-link btn-xs'><img src='../Content/images/delete-256.png'  alt='Delete Consist' title= {{'portalWeb.ScheduledMessage.delete'|translate}}  width='20px' height='20px' /></button> "
+               }],
+               width: "15px"
+           }
+
+        ]
+    };
+
+    $scope.$on('LoadData', function (event, args) {
+        $scope.loadData();
+    });
+    
+    $scope.onEditClick = function (dataItem) {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: '../Views/ScheduledMessage/ScheduleMessageEdit.html',
+            controller: 'scheduledEditController',
+            size: 'md',  // sm, md, lg
+            resolve: {
+                dataItem: function () {
+                    return dataItem;
+                },
+                modalParams: function () {
+                    return {
+                        title: $translate.instant('portalWeb.ScheduleMessage.EditScheduleMsg'),
+                        id: null
+                    };
+                }
+            }
+        });
+        
+        modalInstance.result.then(function (data) {
+            if (data)
+                $scope.loadData();
+        });
+    }
+
+    $scope.deleteMessage = function (e) {
+
+        var msg = $translate.instant('portalWeb.ScheduledMessage.deleteMessageConfirmation');
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: '../Views/ScheduledMessage/ScheduleMessageDelete.html',
+            controller: 'scheduledDeleteController',
+            resolve: {
+                message: function () {
+                    return msg;
+                }
+            }
+
+        });
+
+        modalInstance.result.then(function (data) {
+            busyService.show();
+            scheduledMessageService.deleteScheduledMessage(e.ScheduleMessageId).then(function (data) {
+                $scope.loadData();
+
+            }).finally(function () {
+                busyService.hide();
+            });
+        });
+    }
+  
+    $scope.loadData = function () {
+      
+        busyService.show();
+        scheduledMessageService.getMessages().then(function (data) {
+
+            for (i = 0; i < data.length; i++) {
+                data[i].CreationTime = dateTimeConvertionService.convertUTCtoUserTimeZone(data[i].CreationTime);
+
+                if (data[i].StartTime !== null)
+                    data[i].StartTime = dateTimeConvertionService.convertUTCtoUserTimeZone(data[i].StartTime);
+
+                if (data[i].EndTime !== null)
+                    data[i].EndTime = dateTimeConvertionService.convertUTCtoUserTimeZone(data[i].EndTime);
+            }
+
+            $scope.grid.dataSource.data(data);
+        }).finally(function () {
+            busyService.hide();
+        });;
+        //scheduledMessageService.getScheduledMessages(userDataFactory.username).then(function (data) {
+        //    $scope.grid.dataSource.data(data);
+        //}).finally(function () {
+        //    busyService.hide();
+        //});;
+        
+    };
+
+    //// Default load data
+    $scope.loadData(true);
+
+});
+
+
+**************************************************************
+AddScheduledMessagePopupController.js
+**************************************************************
+
+
+app.controller("AddScheduledMessagePopupController", ['$scope', 'scheduledMessageService', 'dateFiltersFactory', 'notificationService', 'busyService', 'dateTimeConvertionService', 'userDataFactory', '$modalInstance', 'modalParams', 'standardFiltersFactory', '$translate',
+    function ($scope, scheduledMessageService, dateFiltersFactory, notificationService, busyService, dateTimeConvertionService, userDataFactory, $modalInstance, modalParams, standardFiltersFactory, $translate) {
+        $scope.modalTitle = modalParams.title;
+        $scope.dateFiltersFactory = dateFiltersFactory;
+        $scope.userDataFactory = userDataFactory;
+        $scope.userData = null;
+        $scope.loadingPanel = false;
+        $scope.data = {
+            startTime: null,
+            endTime: null
+        };
+
+        $scope.userData = {
+            username: userDataFactory.username,
+            Locale: userDataFactory.Locale,
+            TimeZone: userDataFactory.TimeZone
+        };
+
+        $scope.StartTimeOptions = {
+            culture: userDataFactory.Locale,
+            interval: 10,
+            change: function () {
+                var ctrlStartTime = moment($scope.data.startTime).format();
+                dateFiltersFactory.controlStartTime = ctrlStartTime;
+                dateFiltersFactory.startTime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.controlStartTime);
+            }
+        };
+        $scope.EndTimeOptions = {
+            culture: userDataFactory.Locale,
+            interval: 10,
+            change: function () {
+                var ctrlEndTime = moment($scope.data.endTime).format();
+                dateFiltersFactory.controlEndTime = ctrlEndTime;
+                dateFiltersFactory.endTime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.controlEndTime);
+            }
+        };
+        $scope.CreationTimeOptions = {
+            culture: userDataFactory.Locale,
+            TimeZone: userDataFactory.TimeZone,
+            interval: 10
+        };
+
+        $scope.userOptions = {
+       
+        };
+
+        $scope.updateDateFilters = function () {
+            dateFiltersFactory.startTime = dateTimeConvertionService.convertUTCTimestampToUserTimeZone($scope.data.startTime);
+            dateFiltersFactory.endTime = dateTimeConvertionService.convertUTCTimestampToUserTimeZone($scope.data.endTime);
+        };
+
+        $scope.loadData = function () {
+            $scope.author = userDataFactory.username;
+            $scope.CreationTime = dateTimeConvertionService.convertToUTC(scheduledMessageService.getCurrentTime());
+
+            //dateFiltersFactory.starttime = moment($scope.StartTime).format();
+            //dateFiltersFactory.starttime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.starttime);
+
+            //dateFiltersFactory.endtime = moment($scope.EndTime).format();
+            //dateFiltersFactory.endtime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.endtime);
+
+        };
+
+        $scope.ok = function () {
+            // field validation
+            if ($scope.author.length <= 0 || $scope.Text.length <= 0 || $scope.StartTime.length <= 0 || $scope.EndTime.length <= 0) {
+                notificationService.showWarning($translate.instant('portalWeb.ScheduleMessage.errorFillEveryField'));
+                return;
+            }
+
+            ////$scope.loadData();
+            //dateFiltersFactory.endTime = dateTimeConvertionService.convertToUTC($scope.EndTime);
+            //dateFiltersFactory.endTime = dateTimeConvertionService.convertUserToLocalTimeZone(moment().tz(userDataFactory.TimeZone).format());
+
+            //$scope.updateDateFilters();
+
+            var reqData = {
+                Id: null,
+                author: $scope.author,
+                Text: $scope.Text,
+                StartTime: dateFiltersFactory.startTime,
+                EndTime: dateFiltersFactory.endTime,
+                CreationTime: $scope.CreationTime
+            };
+
+            scheduledMessageService.saveScheduledMessage(reqData).then(function (data) {
+                if (data) {
+                    notificationService.showInfo($translate.instant('portalWeb.ScheduleMessage.scheduleSaved'));
+                    $modalInstance.close(true);
+                    $scope.loadingPanel = false;
+                }
+                else
+                    notificationService.showInfo($translate.instant('portalWeb.ScheduleMessage.scheduleFailed'));
+                
+                
+            });
+            modalInstance.result.then(function (result) {
+                if (result) {
+                    busyService.show();
+                    metersService.addNewMeter($scope.meter, $scope.reduction, $scope.reductionParamSelection, reductionfieldsArray).then(function (response) {
+                        if (response)
+                            notificationService.showInfo("Meter saved successfully.")
+                        else
+                            notificationService.showError("Meter not saved.")
+                    });
+                    $modalInstance.close(true);
+                    //$rootScope.$broadcast('loadMeters', { data: true });
+                    busySevice.hide();
+                }
+            });
+            $modalInstance.close(true);
+            $scope.loadingPanel = false;
+        }
+
+   
+        $scope.cancel = function () {
+            $modalInstance.dismiss();
+        }
+
+        $scope.loadData();
+
+}]);

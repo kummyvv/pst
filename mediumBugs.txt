@@ -1,0 +1,29 @@
+template: "#= (StartTime == null) ? ' ' : kendo.toString(kendo.parseDate(StartTime, 'yyyy-MM-ddTHH:mm:ss'), 'G', '" + userDataFactory.Locale + "') #",
+
+dateTimeConvertionService.CreateTemplateForDateTimeColumn('
+
+manageFleetViewController
+
+
+ABC
+20/02/2017 12:31:10
+Production	
+EngineTest
+
+FaoMetaDataService.svc.cs>
+GetAlertTriggeredList
+
+
+Alerts and Ticket management >> consistDetailController >> getAlertTriggeredList >> 
+
+consistDetailController :
+template: "#= (triggerElementTime == '01/01/0001 00:00:00') ? ' ' : kendo.toString(kendo.parseDate(triggerElementTime, 'yyyy-MM-ddTHH:mm:ss'), 'G', '" + userDataFactory.Locale + "') #"
+
+Changeset 56596 
+
+
+
+
+
+
++40 

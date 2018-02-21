@@ -1,0 +1,696 @@
+Google Search:
+kushasthali place
+
+
+http://stackoverflow.com/questions/22930335/column-is-not-contained-in-either-an-aggregate-function-or-the-group-by-clause
+
+column in invalid in the select list because it is not contained in either an aggregate function or the GROUP By Clause
+
+where eventItem.WbsId != null
+
+// Event Count: Category--> Consist, Series-->WBS
+            if (CategoryType.Consist.ToString() == request.ChartFilterJS.custom.selectedCategory
+                && ChartValueType.Count.ToString() == request.ChartFilterJS.custom.selectedValueType
+                && StackType.Wbs.ToString() == request.ChartFilterJS.custom.selectedStack)
+            {
+                chartResult = (from eventItem in events
+                               join idcolum in events
+                               on eventItem.WbsId equals idcolum.WbsId
+                               group eventItem by new
+                               {
+                                   consist = eventItem.Consist,
+                                   wbs = eventItem.Wbs,
+                                   wbsid = eventItem.WbsId
+                               } into groups
+                               select new ChartDto
+                               {
+                                   category = groups.Key.consist,
+                                   seriesname = groups.Key.wbs ,
+                                   value = groups.Count()
+                               }).AsQueryable();
+            }
+
+
+               group eventItem by eventItem.Wbs into tmp
+                               select new ChartDto
+                               {
+                                   category = tmp.Key
+                                   seriesname = tmp.Key.wbs ,
+                                   value = groups.Count()
+                               }).AsQueryable();
+
+var events = from eventData in ddsevents
+                         select new EventChartDto
+                         {
+                             Consist = eventData.Consist.Name,
+                             Processor = eventData.Processors.Name,
+                             Car = eventData.Car.Name,
+                             Wbs = eventData.Event.Wbs.Description != null ? eventData.Event.Wbs.Description : "Default",
+                             WbsId = eventData.Event.Wbs != null ? eventData.Event.Wbs.WBSId : "00",
+                             Subsystem = eventData.Event.Subsystem.Name,
+                             Event = eventData.Event.Name,
+                             EventDateTime = TimeZoneInfo.ConvertTimeFromUtc(eventData.StartTime, userTimeZone),
+                             Duration = (long?)eventData.Duration ?? 0,
+                             FaultCode = eventData.Event.ErrorCode0
+                         };
+
+"could not execute query\r\n
+
+[ select consist1_.VehicleName as col_0_0_, wbslookup3_.WBSId as col_1_0_, wbslookup3_.FleetName as col_1_1_, wbslookup3_.Description as col_2_0_, cast(cast(count(*) as INT) as BIGINT) as col_3_0_, wbslookup3_.WBSId as WBSId40_, wbslookup3_.FleetName as FleetName40_, wbslookup3_.Description as Descript3_40_, wbslookup3_.ParentWBSId as ParentWB4_40_ 
+
+
+from DDSEvents ddsevent0_ 
+
+left outer join Vehicles consist1_ on ddsevent0_.PrjName=consist1_.PrjName 
+
+and ddsevent0_.VehicleName=consist1_.VehicleName 
+
+left outer join Events eventmeta2_ on ddsevent0_.DiagnosticConfigurationId=eventmeta2_.DiagnosticConfigurationId 
+
+and ddsevent0_.EventId=eventmeta2_.EventId and ddsevent0_.ProcessId=eventmeta2_.ProcessId
+
+ left outer join WbsStructures wbslookup3_ on eventmeta2_.FleetName=wbslookup3_.WBSId 
+
+and eventmeta2_.WbsId=wbslookup3_.FleetName left outer join SubSystems subsystems6_ on eventmeta2_.DiagnosticConfigurationId=subsystems6_.DiagnosticConfigurationId 
+
+
+
+and eventmeta2_.SubSystemId=subsystems6_.SubSystemId 
+
+left outer join Processes processor4_ on ddsevent0_.DiagnosticConfigurationId=processor4_.DiagnosticConfigurationId 
+
+and ddsevent0_.ProcessId=processor4_.ProcessId left outer join Cars car5_ on ddsevent0_.PrjName=car5_.FleetName 
+
+and ddsevent0_.VehicleName=car5_.ConsistName 
+
+and ddsevent0_.VehiclePos=car5_.Position 
+
+where ddsevent0_.PrjName=@p0 and (cast(consist1_.VehicleName as nvarchar(50)) 
+
+in (@p1 , @p2 , @p3 , @p4 , @p5 , @p6 , @p7 , @p8 , @p9 , @p10 , @p11 , @p12 , @p13 , @p14 , @p15 , @p16 , @p17 , @p18 , @p19 , @p20 , @p21 , @p22 , @p23 , @p24 , @p25 , @p26 , @p27 , @p28 , @p29 , @p30 , @p31 , @p32 , @p33 , @p34 , @p35 , @p36 , @p37 , @p38 , @p39 , @p40 , @p41 , @p42 , @p43 , @p44 , @p45 , @p46 , @p47 , @p48 , @p49 , @p50 , @p51 , @p52 , @p53 , @p54 , @p55 , @p56 , @p57 , @p58 , @p59 , @p60 , @p61 , @p62 , @p63 , @p64 , @p65 , @p66 , @p67 , @p68 , @p69 , @p70 , @p71 , @p72 , @p73 , @p74 , @p75 , @p76 , @p77 , @p78 , @p79 , @p80 , @p81 , @p82 , @p83 , @p84 , @p85 , @p86 , @p87 , @p88 , @p89 , @p90 , @p91 , @p92 , @p93 , @p94 , @p95 , @p96 , @p97 , @p98 , @p99 , @p100 , @p101 , @p102 , @p103 , @p104 , @p105 , @p106 , @p107 , @p108 , @p109 , @p110 , @p111 , @p112 , @p113 , @p114 , @p115 , @p116 , @p117 , @p118 , @p119 , @p120 , @p121 , @p122 , @p123 , @p124 , @p125 , @p126 , @p127 , @p128 , @p129 , @p130 , @p131 , @p132 , @p133 , @p134 , @p135 , @p136 , @p137 , @p138 , @p139 , @p140 , @p141 , @p142 , @p143 , @p144 , @p145 , @p146 , @p147 , @p148 , @p149 , @p150 , @p151 , @p152 , @p153 , @p154 , @p155 , @p156 , @p157 , @p158 , @p159 , @p160 , @p161 , @p162 , @p163 , @p164 , @p165 , @p166 , @p167 , @p168 , @p169 , @p170 , @p171 , @p172 , @p173 , @p174 , @p175 , @p176 , @p177 , @p178 , @p179 , @p180 , @p181 , @p182 , @p183 , @p184 , @p185 , @p186 , @p187 , @p188 , @p189 , @p190 , @p191 , @p192 , @p193 , @p194 , @p195 , @p196 , @p197 , @p198 , @p199 , @p200 , @p201 , @p202 , @p203 , @p204 , @p205 , @p206 , @p207 , @p208 , @p209 , @p210 , @p211 , @p212 , @p213 , @p214 , @p215 , @p216 , @p217 , @p218 , @p219 , @p220 , @p221 , @p222 , @p223 , @p224 , @p225 , @p226 , @p227 , @p228 , @p229 , @p230 , @p231 , @p232 , @p233 , @p234 , @p235 , @p236 , @p237 , @p238 , @p239 , @p240 , @p241 , @p242 , @p243 , @p244 , @p245 , @p246 , @p247 , @p248 , @p249 , @p250 , @p251 , @p252 , @p253 , @p254 , @p255 , @p256 , @p257 , @p258 , @p259 , @p260 , @p261 , @p262 , @p263 , @p264 , @p265 , @p266 , @p267 , @p268 , @p269 , @p270 , @p271 , @p272 , @p273 , @p274 , @p275 , @p276 , @p277 , @p278 , @p279 , @p280 , @p281 , @p282 , @p283 , @p284 , @p285 , @p286 , @p287 , @p288 , @p289 , @p290 , @p291 , @p292 , @p293 , @p294 , @p295 , @p296 , @p297 , @p298 , @p299 , @p300 , @p301 , @p302 , @p303 , @p304 , @p305 , @p306 , @p307 , @p308)) and ddsevent0_.StartTime>=@p309 and ddsevent0_.StartTime<=@p310 and (@p311=1 or 1=0) and (cast(case when eventmeta2_.FleetName is not null or eventmeta2_.WbsId is not null then wbslookup3_.WBSId else @p312 end as NVARCHAR(255)) is not null) group by consist1_.VehicleName , cast(case when eventmeta2_.FleetName is not null or eventmeta2_.WbsId is not null then wbslookup3_.Description else @p313 end as NVARCHAR(255)) ]\r\n  Name:p1 - Value:MR08  Name:p3 - Value:3/10/2017 5:43:30 AM  Name:p4 - Value:4/10/2017 5:43:30 AM  Name:p5 - Value:True  Name:p8 - Value:00  Name:p7 - Value:Default  Name:p2_0_ - Value:8001  Name:p2_1_ - Value:8002  Name:p2_2_ - Value:8003  Name:p2_3_ - Value:8004  Name:p2_4_ - Value:8005  Name:p2_5_ - Value:8006  Name:p2_6_ - Value:8007  Name:p2_7_ - Value:8008  Name:p2_8_ - Value:8009  Name:p2_9_ - Value:8010  Name:p2_10_ - Value:8011  Name:p2_11_ - Value:8012  Name:p2_12_ - Value:8013  Name:p2_13_ - Value:8014  Name:p2_14_ - Value:8015  Name:p2_15_ - Value:8016  Name:p2_16_ - Value:8017  Name:p2_17_ - Value:8018  Name:p2_18_ - Value:8019  Name:p2_19_ - Value:8020  Name:p2_20_ - Value:8021  Name:p2_21_ - Value:8022  Name:p2_22_ - Value:8023  Name:p2_23_ - Value:8024  Name:p2_24_ - Value:8025  Name:p2_25_ - Value:8026  Name:p2_26_ - Value:8027  Name:p2_27_ - Value:8028  Name:p2_28_ - Value:8029  Name:p2_29_ - Value:8030  Name:p2_30_ - Value:8031  Name:p2_31_ - Value:8032  Name:p2_32_ - Value:8033  Name:p2_33_ - Value:8034  Name:p2_34_ - Value:8035  Name:p2_35_ - Value:8036  Name:p2_36_ - Value:8037  Name:p2_37_ - Value:8038  Name:p2_38_ - Value:8039  Name:p2_39_ - Value:8040  Name:p2_40_ - Value:8041  Name:p2_41_ - Value:8042  Name:p2_42_ - Value:8043  Name:p2_43_ - Value:8044  Name:p2_44_ - Value:8045  Name:p2_45_ - Value:8046  Name:p2_46_ - Value:8047  Name:p2_47_ - Value:8048  Name:p2_48_ - Value:8049  Name:p2_49_ - Value:8050  Name:p2_50_ - Value:8051  Name:p2_51_ - Value:8052  Name:p2_52_ - Value:8053  Name:p2_53_ - Value:8054  Name:p2_54_ - Value:8055  Name:p2_55_ - Value:8056  Name:p2_56_ - Value:8057  Name:p2_57_ - Value:8058  Name:p2_58_ - Value:8059  Name:p2_59_ - Value:8060  Name:p2_60_ - Value:8061  Name:p2_61_ - Value:8062  Name:p2_62_ - Value:8063  Name:p2_63_ - Value:8064  Name:p2_64_ - Value:8065  Name:p2_65_ - Value:8066  Name:p2_66_ - Value:8067  Name:p2_67_ - Value:8068  Name:p2_68_ - Value:8069  Name:p2_69_ - Value:8070  Name:p2_70_ - Value:8071  Name:p2_71_ - Value:8072  Name:p2_72_ - Value:8073  Name:p2_73_ - Value:8074  Name:p2_74_ - Value:8075  Name:p2_75_ - Value:8076  Name:p2_76_ - Value:8077  Name:p2_77_ - Value:8078  Name:p2_78_ - Value:8079  Name:p2_79_ - Value:8080  Name:p2_80_ - Value:8081  Name:p2_81_ - Value:8082  Name:p2_82_ - Value:8083  Name:p2_83_ - Value:8084  Name:p2_84_ - Value:8085  Name:p2_85_ - Value:8086  Name:p2_86_ - Value:8087  Name:p2_87_ - Value:8088  Name:p2_88_ - Value:8089  Name:p2_89_ - Value:8090  Name:p2_90_ - Value:8091  Name:p2_91_ - Value:8092  Name:p2_92_ - Value:8093  Name:p2_93_ - Value:8094  Name:p2_94_ - Value:8095  Name:p2_95_ - Value:8096  Name:p2_96_ - Value:8097  Name:p2_97_ - Value:8098  Name:p2_98_ - Value:8099  Name:p2_99_ - Value:8100  Name:p2_100_ - Value:8101  Name:p2_101_ - Value:8102  Name:p2_102_ - Value:8103  Name:p2_103_ - Value:8104  Name:p2_104_ - Value:8105  Name:p2_105_ - Value:8106  Name:p2_106_ - Value:8107  Name:p2_107_ - Value:8108  Name:p2_108_ - Value:8109  Name:p2_109_ - Value:8110  Name:p2_110_ - Value:8111  Name:p2_111_ - Value:8112  Name:p2_112_ - Value:8113  Name:p2_113_ - Value:8114  Name:p2_114_ - Value:8115  Name:p2_115_ - Value:8116  Name:p2_116_ - Value:8117  Name:p2_117_ - Value:8118  Name:p2_118_ - Value:8119  Name:p2_119_ - Value:8120  Name:p2_120_ - Value:8121  Name:p2_121_ - Value:8122  Name:p2_122_ - Value:8123  Name:p2_123_ - Value:8124  Name:p2_124_ - Value:8125  Name:p2_125_ - Value:8126  Name:p2_126_ - Value:8127  Name:p2_127_ - Value:8128  Name:p2_128_ - Value:8129  Name:p2_129_ - Value:8130  Name:p2_130_ - Value:8131  Name:p2_131_ - Value:8132  Name:p2_132_ - Value:8133  Name:p2_133_ - Value:8134  Name:p2_134_ - Value:8135  Name:p2_135_ - Value:8136  Name:p2_136_ - Value:8137  Name:p2_137_ - Value:8138  Name:p2_138_ - Value:8139  Name:p2_139_ - Value:8140  Name:p2_140_ - Value:8141  Name:p2_141_ - Value:8142  Name:p2_142_ - Value:8143  Name:p2_143_ - Value:8144  Name:p2_144_ - Value:8145  Name:p2_145_ - Value:8146  Name:p2_146_ - Value:8147  Name:p2_147_ - Value:8148  Name:p2_148_ - Value:8149  Name:p2_149_ - Value:8150  Name:p2_150_ - Value:8151  Name:p2_151_ - Value:8152  Name:p2_152_ - Value:8153  Name:p2_153_ - Value:8154  Name:p2_154_ - Value:8155  Name:p2_155_ - Value:8156  Name:p2_156_ - Value:8157  Name:p2_157_ - Value:8158  Name:p2_158_ - Value:8159  Name:p2_159_ - Value:8160  Name:p2_160_ - Value:8161  Name:p2_161_ - Value:8162  Name:p2_162_ - Value:8163  Name:p2_163_ - Value:8164  Name:p2_164_ - Value:8165  Name:p2_165_ - Value:8166  Name:p2_166_ - Value:8167  Name:p2_167_ - Value:8168  Name:p2_168_ - Value:8169  Name:p2_169_ - Value:8170  Name:p2_170_ - Value:8171  Name:p2_171_ - Value:8172  Name:p2_172_ - Value:8173  Name:p2_173_ - Value:8174  Name:p2_174_ - Value:8175  Name:p2_175_ - Value:8176  Name:p2_176_ - Value:8177  Name:p2_177_ - Value:8178  Name:p2_178_ - Value:8179  Name:p2_179_ - Value:8180  Name:p2_180_ - Value:8181  Name:p2_181_ - Value:8182  Name:p2_182_ - Value:8183  Name:p2_183_ - Value:8184  Name:p2_184_ - Value:8185  Name:p2_185_ - Value:8186  Name:p2_186_ - Value:8187  Name:p2_187_ - Value:8188  Name:p2_188_ - Value:8189  Name:p2_189_ - Value:8190  Name:p2_190_ - Value:8191  Name:p2_191_ - Value:8192  Name:p2_192_ - Value:8193  Name:p2_193_ - Value:8194  Name:p2_194_ - Value:8195  Name:p2_195_ - Value:8196  Name:p2_196_ - Value:8197  Name:p2_197_ - Value:8198  Name:p2_198_ - Value:8199  Name:p2_199_ - Value:8200  Name:p2_200_ - Value:8201  Name:p2_201_ - Value:8202  Name:p2_202_ - Value:8203  Name:p2_203_ - Value:8204  Name:p2_204_ - Value:8205  Name:p2_205_ - Value:8206  Name:p2_206_ - Value:8207  Name:p2_207_ - Value:8208  Name:p2_208_ - Value:8209  Name:p2_209_ - Value:8210  Name:p2_210_ - Value:8501  Name:p2_211_ - Value:8502  Name:p2_212_ - Value:8503  Name:p2_213_ - Value:8504  Name:p2_214_ - Value:8505  Name:p2_215_ - Value:8506  Name:p2_216_ - Value:8507  Name:p2_217_ - Value:8508  Name:p2_218_ - Value:8509  Name:p2_219_ - Value:8510  Name:p2_220_ - Value:8511  Name:p2_221_ - Value:8512  Name:p2_222_ - Value:8513  Name:p2_223_ - Value:8514  Name:p2_224_ - Value:8515  Name:p2_225_ - Value:8516  Name:p2_226_ - Value:8517  Name:p2_227_ - Value:8518  Name:p2_228_ - Value:8519  Name:p2_229_ - Value:8520  Name:p2_230_ - Value:8521  Name:p2_231_ - Value:8522  Name:p2_232_ - Value:8523  Name:p2_233_ - Value:8524  Name:p2_234_ - Value:8525  Name:p2_235_ - Value:8526  Name:p2_236_ - Value:8527  Name:p2_237_ - Value:8528  Name:p2_238_ - Value:8529  Name:p2_239_ - Value:8530  Name:p2_240_ - Value:8531  Name:p2_241_ - Value:8532  Name:p2_242_ - Value:8533  Name:p2_243_ - Value:8534  Name:p2_244_ - Value:8535  Name:p2_245_ - Value:8536  Name:p2_246_ - Value:8537  Name:p2_247_ - Value:8538  Name:p2_248_ - Value:8539  Name:p2_249_ - Value:8540  Name:p2_250_ - Value:8541  Name:p2_251_ - Value:8542  Name:p2_252_ - Value:8543  Name:p2_253_ - Value:8544  Name:p2_254_ - Value:8545  Name:p2_255_ - Value:8546  Name:p2_256_ - Value:8547  Name:p2_257_ - Value:8548  Name:p2_258_ - Value:8549  Name:p2_259_ - Value:8550  Name:p2_260_ - Value:8551  Name:p2_261_ - Value:8552  Name:p2_262_ - Value:8553  Name:p2_263_ - Value:8554  Name:p2_264_ - Value:8555  Name:p2_265_ - Value:8556  Name:p2_266_ - Value:8557  Name:p2_267_ - Value:8558  Name:p2_268_ - Value:8559  Name:p2_269_ - Value:8560  Name:p2_270_ - Value:8561  Name:p2_271_ - Value:8562  Name:p2_272_ - Value:8563  Name:p2_273_ - Value:8564  Name:p2_274_ - Value:8565  Name:p2_275_ - Value:8566  Name:p2_276_ - Value:8567  Name:p2_277_ - Value:8568  Name:p2_278_ - Value:8569  Name:p2_279_ - Value:8570  Name:p2_280_ - Value:8571  Name:p2_281_ - Value:8572  Name:p2_282_ - Value:8573  Name:p2_283_ - Value:8574  Name:p2_284_ - Value:8575  Name:p2_285_ - Value:8576  Name:p2_286_ - Value:8577  Name:p2_287_ - Value:8578  Name:p2_288_ - Value:8579  Name:p2_289_ - Value:8580  Name:p2_290_ - Value:8581  Name:p2_291_ - Value:8582  Name:p2_292_ - Value:8583  Name:p2_293_ - Value:8584  Name:p2_294_ - Value:8585  Name:p2_295_ - Value:8586  Name:p2_296_ - Value:8587  Name:p2_297_ - Value:8588  Name:p2_298_ - Value:8589  Name:p2_299_ - Value:8590  Name:p2_300_ - Value:8591  Name:p2_301_ - Value:8592  Name:p2_302_ - Value:8593  Name:p2_303_ - Value:8594  Name:p2_304_ - Value:8595  Name:p2_305_ - Value:test123  Name:p2_306_ - Value:UIC345001  Name:p2_307_ - Value:UIC345003\r\n[SQL: select consist1_.VehicleName as col_0_0_, wbslookup3_.WBSId as col_1_0_, wbslookup3_.FleetName as col_1_1_, wbslookup3_.Description as col_2_0_, cast(cast(count(*) as INT) as BIGINT) as col_3_0_, wbslookup3_.WBSId as WBSId40_, wbslookup3_.FleetName as FleetName40_, wbslookup3_.Description as Descript3_40_, wbslookup3_.ParentWBSId as ParentWB4_40_ from DDSEvents ddsevent0_ left outer join Vehicles consist1_ on ddsevent0_.PrjName=consist1_.PrjName and ddsevent0_.VehicleName=consist1_.VehicleName left outer join Events eventmeta2_ on ddsevent0_.DiagnosticConfigurationId=eventmeta2_.DiagnosticConfigurationId and ddsevent0_.EventId=eventmeta2_.EventId and ddsevent0_.ProcessId=eventmeta2_.ProcessId left outer join WbsStructures wbslookup3_ on eventmeta2_.FleetName=wbslookup3_.WBSId and eventmeta2_.WbsId=wbslookup3_.FleetName left outer join SubSystems subsystems6_ on eventmeta2_.DiagnosticConfigurationId=subsystems6_.DiagnosticConfigurationId and eventmeta2_.SubSystemId=subsystems6_.SubSystemId left outer join Processes processor4_ on ddsevent0_.DiagnosticConfigurationId=processor4_.DiagnosticConfigurationId and ddsevent0_.ProcessId=processor4_.ProcessId left outer join Cars car5_ on ddsevent0_.PrjName=car5_.FleetName and ddsevent0_.VehicleName=car5_.ConsistName and ddsevent0_.VehiclePos=car5_.Position where ddsevent0_.PrjName=@p0 and (cast(consist1_.VehicleName as nvarchar(50)) in (@p1 , @p2 , @p3 , @p4 , @p5 , @p6 , @p7 , @p8 , @p9 , @p10 , @p11 , @p12 , @p13 , @p14 , @p15 , @p16 , @p17 , @p18 , @p19 , @p20 , @p21 , @p22 , @p23 , @p24 , @p25 , @p26 , @p27 , @p28 , @p29 , @p30 , @p31 , @p32 , @p33 , @p34 , @p35 , @p36 , @p37 , @p38 , @p39 , @p40 , @p41 , @p42 , @p43 , @p44 , @p45 , @p46 , @p47 , @p48 , @p49 , @p50 , @p51 , @p52 , @p53 , @p54 , @p55 , @p56 , @p57 , @p58 , @p59 , @p60 , @p61 , @p62 , @p63 , @p64 , @p65 , @p66 , @p67 , @p68 , @p69 , @p70 , @p71 , @p72 , @p73 , @p74 , @p75 , @p76 , @p77 , @p78 , @p79 , @p80 , @p81 , @p82 , @p83 , @p84 , @p85 , @p86 , @p87 , @p88 , @p89 , @p90 , @p91 , @p92 , @p93 , @p94 , @p95 , @p96 , @p97 , @p98 , @p99 , @p100 , @p101 , @p102 , @p103 , @p104 , @p105 , @p106 , @p107 , @p108 , @p109 , @p110 , @p111 , @p112 , @p113 , @p114 , @p115 , @p116 , @p117 , @p118 , @p119 , @p120 , @p121 , @p122 , @p123 , @p124 , @p125 , @p126 , @p127 , @p128 , @p129 , @p130 , @p131 , @p132 , @p133 , @p134 , @p135 , @p136 , @p137 , @p138 , @p139 , @p140 , @p141 , @p142 , @p143 , @p144 , @p145 , @p146 , @p147 , @p148 , @p149 , @p150 , @p151 , @p152 , @p153 , @p154 , @p155 , @p156 , @p157 , @p158 , @p159 , @p160 , @p161 , @p162 , @p163 , @p164 , @p165 , @p166 , @p167 , @p168 , @p169 , @p170 , @p171 , @p172 , @p173 , @p174 , @p175 , @p176 , @p177 , @p178 , @p179 , @p180 , @p181 , @p182 , @p183 , @p184 , @p185 , @p186 , @p187 , @p188 , @p189 , @p190 , @p191 , @p192 , @p193 , @p194 , @p195 , @p196 , @p197 , @p198 , @p199 , @p200 , @p201 , @p202 , @p203 , @p204 , @p205 , @p206 , @p207 , @p208 , @p209 , @p210 , @p211 , @p212 , @p213 , @p214 , @p215 , @p216 , @p217 , @p218 , @p219 , @p220 , @p221 , @p222 , @p223 , @p224 , @p225 , @p226 , @p227 , @p228 , @p229 , @p230 , @p231 , @p232 , @p233 , @p234 , @p235 , @p236 , @p237 , @p238 , @p239 , @p240 , @p241 , @p242 , @p243 , @p244 , @p245 , @p246 , @p247 , @p248 , @p249 , @p250 , @p251 , @p252 , @p253 , @p254 , @p255 , @p256 , @p257 , @p258 , @p259 , @p260 , @p261 , @p262 , @p263 , @p264 , @p265 , @p266 , @p267 , @p268 , @p269 , @p270 , @p271 , @p272 , @p273 , @p274 , @p275 , @p276 , @p277 , @p278 , @p279 , @p280 , @p281 , @p282 , @p283 , @p284 , @p285 , @p286 , @p287 , @p288 , @p289 , @p290 , @p291 , @p292 , @p293 , @p294 , @p295 , @p296 , @p297 , @p298 , @p299 , @p300 , @p301 , @p302 , @p303 , @p304 , @p305 , @p306 , @p307 , @p308)) and ddsevent0_.StartTime>=@p309 and ddsevent0_.StartTime<=@p310 and (@p311=1 or 1=0) and (cast(case when eventmeta2_.FleetName is not null or eventmeta2_.WbsId is not null then wbslookup3_.WBSId else @p312 end as NVARCHAR(255)) is not null) group by consist1_.VehicleName , cast(case when eventmeta2_.FleetName is not null or eventmeta2_.WbsId is not null then wbslookup3_.Description else @p313 end as NVARCHAR(255))]"
+
+
+
+
+
+"select consist1_.VehicleName as col_0_0_, 
+
+wbslookup3_.Description as col_1_0_, 
+
+wbslookup3_.Description as col_2_0_, cast(cast(count(*) as INT) as BIGINT) as col_3_0_ 
+
+
+from DDSEvents ddsevent0_ left outer join Vehicles consist1_ on ddsevent0_.PrjName=consist1_.PrjName and ddsevent0_.VehicleName=consist1_.VehicleName left outer join Events eventmeta2_ on ddsevent0_.DiagnosticConfigurationId=eventmeta2_.DiagnosticConfigurationId and ddsevent0_.EventId=eventmeta2_.EventId and ddsevent0_.ProcessId=eventmeta2_.ProcessId left outer join WbsStructures wbslookup3_ on eventmeta2_.FleetName=wbslookup3_.WBSId and eventmeta2_.WbsId=wbslookup3_.FleetName left outer join SubSystems subsystems6_ on eventmeta2_.DiagnosticConfigurationId=subsystems6_.DiagnosticConfigurationId and eventmeta2_.SubSystemId=subsystems6_.SubSystemId left outer join Processes processor4_ on ddsevent0_.DiagnosticConfigurationId=processor4_.DiagnosticConfigurationId and ddsevent0_.ProcessId=processor4_.ProcessId left outer join Cars car5_ on ddsevent0_.PrjName=car5_.FleetName and ddsevent0_.VehicleName=car5_.ConsistName and ddsevent0_.VehiclePos=car5_.Position where ddsevent0_.PrjName=@p0 and (cast(consist1_.VehicleName as nvarchar(50)) in (@p1 , @p2 , @p3 , @p4 , @p5 , @p6 , @p7 , @p8 , @p9 , @p10 , @p11 , @p12 , @p13 , @p14 , @p15 , @p16 , @p17 , @p18 , @p19 , @p20 , @p21 , @p22 , @p23 , @p24 , @p25 , @p26 , @p27 , @p28 , @p29 , @p30 , @p31 , @p32 , @p33 , @p34 , @p35 , @p36 , @p37 , @p38 , @p39 , @p40 , @p41 , @p42 , @p43 , @p44 , @p45 , @p46 , @p47 , @p48 , @p49 , @p50 , @p51 , @p52 , @p53 , @p54 , @p55 , @p56 , @p57 , @p58 , @p59 , @p60 , @p61 , @p62 , @p63 , @p64 , @p65 , @p66 , @p67 , @p68 , @p69 , @p70 , @p71 , @p72 , @p73 , @p74 , @p75 , @p76 , @p77 , @p78 , @p79 , @p80 , @p81 , @p82 , @p83 , @p84 , @p85 , @p86 , @p87 , @p88 , @p89 , @p90 , @p91 , @p92 , @p93 , @p94 , @p95 , @p96 , @p97 , @p98 , @p99 , @p100 , @p101 , @p102 , @p103 , @p104 , @p105 , @p106 , @p107 , @p108 , @p109 , @p110 , @p111 , @p112 , @p113 , @p114 , @p115 , @p116 , @p117 , @p118 , @p119 , @p120 , @p121 , @p122 , @p123 , @p124 , @p125 , @p126 , @p127 , @p128 , @p129 , @p130 , @p131 , @p132 , @p133 , @p134 , @p135 , @p136 , @p137 , @p138 , @p139 , @p140 , @p141 , @p142 , @p143 , @p144 , @p145 , @p146 , @p147 , @p148 , @p149 , @p150 , @p151 , @p152 , @p153 , @p154 , @p155 , @p156 , @p157 , @p158 , @p159 , @p160 , @p161 , @p162 , @p163 , @p164 , @p165 , @p166 , @p167 , @p168 , @p169 , @p170 , @p171 , @p172 , @p173 , @p174 , @p175 , @p176 , @p177 , @p178 , @p179 , @p180 , @p181 , @p182 , @p183 , @p184 , @p185 , @p186 , @p187 , @p188 , @p189 , @p190 , @p191 , @p192 , @p193 , @p194 , @p195 , @p196 , @p197 , @p198 , @p199 , @p200 , @p201 , @p202 , @p203 , @p204 , @p205 , @p206 , @p207 , @p208 , @p209 , @p210 , @p211 , @p212 , @p213 , @p214 , @p215 , @p216 , @p217 , @p218 , @p219 , @p220 , @p221 , @p222 , @p223 , @p224 , @p225 , @p226 , @p227 , @p228 , @p229 , @p230 , @p231 , @p232 , @p233 , @p234 , @p235 , @p236 , @p237 , @p238 , @p239 , @p240 , @p241 , @p242 , @p243 , @p244 , @p245 , @p246 , @p247 , @p248 , @p249 , @p250 , @p251 , @p252 , @p253 , @p254 , @p255 , @p256 , @p257 , @p258 , @p259 , @p260 , @p261 , @p262 , @p263 , @p264 , @p265 , @p266 , @p267 , @p268 , @p269 , @p270 , @p271 , @p272 , @p273 , @p274 , @p275 , @p276 , @p277 , @p278 , @p279 , @p280 , @p281 , @p282 , @p283 , @p284 , @p285 , @p286 , @p287 , @p288 , @p289 , @p290 , @p291 , @p292 , @p293 , @p294 , @p295 , @p296 , @p297 , @p298 , @p299 , @p300 , @p301 , @p302 , @p303 , @p304 , @p305 , @p306 , @p307 , @p308)) and ddsevent0_.StartTime>=@p309 and ddsevent0_.StartTime<=@p310 and (@p311=1 or 1=0) group by consist1_.VehicleName , cast(case when wbslookup3_.Description is not null then wbslookup3_.Description else @p312 end as NVARCHAR(255))"
+
+fleetmonitor.client.json
+{
+"Enabled": true,
+"ClientId": "fleetmonitor",
+"ClientName": "FleetMonitor",
+"RequireConsent": false,
+"AllowRememberConsent": true,
+"Flow": 1,
+"RedirectUris": [ "https://localhost:44300/loginPrompt.html", "https://localhost:44300/silent-renew.html" ],
+"PostLogoutRedirectUris": [ "https://localhost:44300/index.html" ],
+"RequireSignOutPrompt": false,
+"AllowAccessToAllScopes": false,
+"AllowedScopes": [ "openid", "profile", "email", "webapi" ],
+"AccessTokenLifetime": 28800,
+"Claims": [ ],
+"AllowedCorsOrigins": [ "https://localhost:44300" ]
+}
+
+
+
+
+
+portal.web>
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+
+  <configSections>
+    <sectionGroup name="fleetMonitor.security">
+      <section name="provider" type="Bombardier.FleetMonitor.Security.Provider.Configuration.ProviderConfigurationSection" allowLocation="true" allowDefinition="Everywhere" />
+      <section name="client" type="Bombardier.FleetMonitor.Security.Provider.Configuration.ClientConfigurationSection" allowLocation="true" allowDefinition="Everywhere" />
+    </sectionGroup>
+  </configSections>
+
+  <fleetMonitor.security>
+    <provider>
+      <!--<authorization type="Bombardier.FleetMonitor.Security.Generic.Provider.Authorization" cache="1" />-->
+      <authorization type="Bombardier.FleetMonitor.Security.Stub.Provider.Authorization" cache="1" />
+    </provider>
+
+    <client authority="https://localhost:44301/"
+        internalAuthority="https://localhost:44301/"
+        id="fleetmonitor"
+        responseType="id_token token"
+        scope="openid profile email webapi"
+        loginPage="/loginPrompt.html"
+        logoutRedirect="/index.html" />
+  
+  <!--<client authority="https://localhost:44345/"
+        internalAuthority="https://localhost:44345/"
+        id="fleetmonitor"
+        responseType="id_token token"
+        scope="openid profile email webapi"
+        loginPage="/loginPrompt.html"
+        logoutRedirect="/index.html" />-->
+  </fleetMonitor.security>
+
+  <appSettings>
+    <add key="googleMapsApiVersion" value="3.26" />
+    <!-- AUTH TYPE VALID VALUES: "KEY", "CLIENT_ID"-->
+    <add key="googleMapsAuthType" value="KEY" />
+    <!-- EITHER THE KEY OR THE CLIENTID -->
+    <add key="googleMapsAuthValue" value="AIzaSyC2uRh_iDDfxo1BsGLnwpkiChHpnloqXrQ" />
+    
+    <!-- CCUT PLUGIN -->
+    <add key="muParserLocation" value="./x64/muParser.dll" />
+
+    <add key="TokenLifetimeInMinutes" value="5" />
+    <add key="webpages:Version" value="3.0.0.0" />
+    <add key="webpages:Enabled" value="false" />
+    <add key="ClientValidationEnabled" value="true" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+
+    <add key="TSSP_xsd_path" value="tssp-config.xsd" />
+    <add key="IPTCOM_xsd_path" value="iptcom-config.xsd" />
+    <add key="CSTSTA_xsd_path" value="CstSta_V2-0-0-3.xsd" />
+    <add key="Baseline_xsd_path" value="tu_rule_baseline.xsd" />
+    <add key="DiaDef_xsd_path" value="tu_dia_def.xsd" />
+    <add key="Rule_xsd_path" value="tu_rule.xsd" />
+    <add key="EnableConsistValidation" value="false" />
+    <add key="CommunicationMode" value="WCF" />
+    <add key="DR_MAX_SIGNALS" value="300"/>
+    <add key="DR_REMOTE_MOD_ALLOWED" value="YES"/>
+  </appSettings>
+
+  <system.web>
+    <compilation debug="true" targetFramework="4.5.2" />
+    <httpRuntime targetFramework="4.5.2" maxRequestLength="2147483647" />
+  </system.web>
+
+  <system.webServer>
+    <directoryBrowse enabled="true" />
+    <handlers>
+      <remove name="ExtensionlessUrlHandler-Integrated-4.0" />
+      <remove name="OPTIONSVerbHandler" />
+      <remove name="TRACEVerbHandler" />
+      <add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb="*" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" />
+    </handlers>
+    <rewrite>
+      <rules>
+        <rule name="ReverseProxyInboundRule1" stopProcessing="true">
+          <match url="TimoneServices/(.*)" />
+          <action type="Rewrite" url="http://10.0.0.155:8080/timone-services/{R:1}" />
+        </rule>
+      </rules>
+    </rewrite>
+    <security>
+      <requestFiltering>
+        <requestLimits maxAllowedContentLength="2147483647" />
+      </requestFiltering>
+    </security>
+    <staticContent>
+      <remove fileExtension="*.json" />
+      <!--<mimeMap fileExtension=".json" mimeType="text/plain" />-->
+    </staticContent>    
+  </system.webServer>
+
+  <system.serviceModel>
+    <bindings>
+      <basicHttpBinding>
+        <binding name="BasicHttpBinding_IRawDataService" maxBufferSize="2147483647" maxBufferPoolSize="2147483647" maxReceivedMessageSize="2147483647">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+        </binding>
+
+        <binding name="FMBasicHttpBinding" closeTimeout="00:05:00" openTimeout="00:05:00" receiveTimeout="00:10:00" sendTimeout="00:05:00" allowCookies="false" bypassProxyOnLocal="false" hostNameComparisonMode="StrongWildcard" maxBufferSize="2147483647" maxBufferPoolSize="2147483647" maxReceivedMessageSize="2147483647" messageEncoding="Text" textEncoding="utf-8" transferMode="Buffered" useDefaultWebProxy="true">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <security mode="None">
+            <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+            <message clientCredentialType="UserName" algorithmSuite="Default" />
+          </security>
+        </binding>
+
+        <binding name="BasicHttpBinding_ICcutWcfService" />
+      </basicHttpBinding>
+
+      <netNamedPipeBinding>
+        <binding name="NetNamedPipeBinding_IFileRepository" closeTimeout="00:01:00" openTimeout="00:01:00" receiveTimeout="00:01:00" sendTimeout="00:01:00" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="600000000" transferMode="Buffered" maxBufferSize="600000000">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <security mode="None">
+            <transport protectionLevel="None" />
+          </security>
+        </binding>
+      </netNamedPipeBinding>
+
+      <wsHttpBinding>
+        <binding name="WSHttpBinding_IFileRepository" closeTimeout="00:01:00" openTimeout="00:01:00" receiveTimeout="00:01:00" sendTimeout="00:01:00" bypassProxyOnLocal="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="20000000" messageEncoding="Mtom" textEncoding="utf-8" useDefaultWebProxy="true" allowCookies="false">
+          <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+          <reliableSession ordered="true" inactivityTimeout="00:10:00" enabled="false" />
+          <security mode="None">
+            <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+            <message clientCredentialType="None" establishSecurityContext="false" />
+          </security>
+        </binding>
+          <binding name="WSHttpBinding_ISymtreeService" closeTimeout="00:03:00" openTimeout="00:03:00" receiveTimeout="00:03:00" sendTimeout="00:03:00" bypassProxyOnLocal="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="40000000" messageEncoding="Mtom" textEncoding="utf-8" useDefaultWebProxy="true" allowCookies="false">
+            <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+            <reliableSession ordered="true" inactivityTimeout="00:10:00" enabled="false" />
+            <security mode="None">
+              <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+              <message clientCredentialType="None" establishSecurityContext="false" />
+            </security>
+          </binding>
+      
+          <binding name="FMWSHttpBinding" closeTimeout="00:03:00" openTimeout="00:03:00" receiveTimeout="00:03:00" sendTimeout="00:03:00" bypassProxyOnLocal="false" hostNameComparisonMode="StrongWildcard" maxBufferPoolSize="524288" maxReceivedMessageSize="40000000" messageEncoding="Mtom" textEncoding="utf-8" useDefaultWebProxy="true" allowCookies="false">
+            <readerQuotas maxDepth="2000000" maxStringContentLength="2147483647" maxArrayLength="2147483647" maxBytesPerRead="2147483647" maxNameTableCharCount="2147483647" />
+            <reliableSession ordered="true" inactivityTimeout="00:10:00" enabled="false" />
+            <security mode="None">
+              <transport clientCredentialType="None" proxyCredentialType="None" realm="" />
+              <message clientCredentialType="None" establishSecurityContext="false" />
+            </security>
+          </binding>
+        </wsHttpBinding>
+      
+    </bindings>
+
+    <client>
+      <!-- Authorization -->
+      <endpoint address="http://localhost:2307/PolicyService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Bombardier.FleetMonitor.Security.Wcf.Contracts.Services.IPolicyService" name="BasicHttpBinding_IPolicyService" />
+      <endpoint address="http://localhost:2307/UserService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Bombardier.FleetMonitor.Security.Wcf.Contracts.Services.IUserService" name="BasicHttpBinding_IUserService" />
+      <endpoint address="http://localhost:2307/RoleService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Bombardier.FleetMonitor.Security.Wcf.Contracts.Services.IRoleService" name="BasicHttpBinding_IRoleService" />
+      <endpoint address="http://localhost:2307/ClientService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" contract="Bombardier.FleetMonitor.Security.Wcf.Contracts.Services.IClientService" name="BasicHttpBinding_IClientService"/>
+      
+      <!-- ARLEM Plugin -->
+      <endpoint address="http://localhost:57869/ArlemService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IArlemService" contract="BT.Arlem.Wcf.Contract.IArlemService" />
+
+      <!-- METADATA SERVICES -->
+      <endpoint address="http://localhost:29123/EnvironmentsMetaDataService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_IEnvironmentsMetaDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.MetaData.Services.IEnvironmentsMetaDataService" />
+      <endpoint address="http://localhost:29123/EventsMetaDataService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_IEventsMetaDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.MetaData.Services.IEventsMetaDataService" />
+      <endpoint address="http://localhost:29123/MetaDataService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_IMetaDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.MetaData.Services.IMetaDataService" />
+      <endpoint address="http://localhost:29123/ProcessorsService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_IProcessorsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.MetaData.Services.IProcessorsService" />
+      <endpoint address="http://localhost:29123/CountersMetaDataService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_ICountersMetaDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.MetaData.Services.ICountersMetaDataService" />
+      <endpoint address="http://localhost:29123/DiagnosticConfigurationsService.svc" binding="wsHttpBinding" bindingConfiguration="FMWSHttpBinding" name="BasicHttpBinding_IDiagnosticConfigurationsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.MetaData.Services.IDiagnosticConfigurationsService" />
+      
+      <!--FAO SERVICES-->
+      <endpoint address="http://localhost:64190/FaoMetaData.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IFaoMetaDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.FaoMetaData.Services.IFaoMetaDataService" />
+
+      <!--METERS SERVICE-->
+      <endpoint address="http://counters.ab2ls.ch/Meters.Wcf.Test.Host/RawdataService.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IRawDataService" contract="RawDataService.IRawDataService" name="BasicHttpBinding_IRawDataService" />
+      <endpoint address="http://localhost:30381/RawDataService.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IRawDataService" contract="ServiceReferenceLocale.IRawDataService" name="BasicHttpBinding_IRawDataService" />
+
+      <!-- RTS SERVICE -->
+      <endpoint address="http://localhost:8088/realtimeservice/" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IRealTimeService" contract="Bombardier.FleetMonitor.RTS.WCF.Contracts.IRealTimeService" />
+
+      <!-- APPLICATIONDATA SERVICES-->
+      <endpoint address="http://localhost:50098/ConnectionStatusDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IConnectionStatusService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IConnectionStatusService" />
+      <endpoint address="http://localhost:50098/CounterDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ICounterService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.ICounterService" />
+      <endpoint address="http://localhost:50098/EnvironmentDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IEnvironmentsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IEnvironmentsService" />
+      <endpoint address="http://localhost:50098/EventDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IEventsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IEventsService" />
+      <endpoint address="http://localhost:50098/VersionDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IVersionDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IVersionDataService" />
+      <endpoint address="http://localhost:50098/HandoverService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IHandoverService" contract="Bombardier.FleetMonitor.Wcf.Contracts.ApplicationData.Services.IHandoverService" />
+      
+      <!-- SYSTEMDATA SERVICES-->
+      <endpoint address="http://localhost:29124/ExportRequestsService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IExportRequestsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IExportRequestsService" />
+      <endpoint address="http://localhost:29124/FilterDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IFilterDataService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IFilterDataService" />
+      <endpoint address="http://localhost:29124/InformUserDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IInformUserService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IInformUserService" />
+      <endpoint address="http://localhost:29124/UserService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IUserService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IUserService" />
+      <endpoint address="http://localhost:29124/ServicesStatusService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IServicesStatusService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IServicesStatusService" />
+      <endpoint address="http://localhost:29124/FileDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IFileService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IFileService" />      
+      <endpoint address="http://localhost:29124/ContactGroupService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IContactGroupService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IContactGroupService" />
+      <endpoint address="http://localhost:29124/ConfigService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IConfigService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IConfigService" />
+
+      <endpoint address="http://localhost:29124/FleetsService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IFleetsService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IFleetsService" />
+      <endpoint address="http://localhost:29124/ConnectionStatusConfigService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IConnectionStatusConfigService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IConnectionStatusConfigService" />
+      <endpoint address="http://localhost:29124/POIService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IPOIService" contract="Bombardier.FleetMonitor.Wcf.Contracts.SystemData.IPOIService" />
+
+      <endpoint address="http://localhost:55277/ContactsService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IContactsService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IContactsService" />
+      <endpoint address="http://localhost:55277/RulesMetadataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IRulesMetaDataService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IRulesMetaDataService" />
+      <endpoint address="http://localhost:55277/AlertService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlertService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IAlertService" />
+      <endpoint address="http://localhost:55277/AlertRoleService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlertRoleService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IAlertRoleService" />
+      <endpoint address="http://localhost:55277/AlertPolicyService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlertPolicyService" contract="Bombardier.FleetMonitor.AlertManagement.Wcf.Contracts.IAlertPolicyService" />
+      
+      
+      <!-- STREAMING SERVICE-->
+      <endpoint address="http://localhost:55212/StreamingService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IStreamingService" contract="Bombardier.FleetMonitor.RTS.WCF.Contracts.IStreamingService" />
+      <endpoint address="http://localhost:55212/WCAService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IWCA" contract="Bombardier.FleetMonitor.WCA.Services.Messaging.IService" />
+
+      <endpoint address="http://localhost:8088/rtsConfigurationservice" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IConfigurationService" contract="Bombardier.FleetMonitor.RTS.WCF.Contracts.IRtsConfigurationService" />
+
+      <!-- TSSP CONFIGURATION SERVICE-->
+      <endpoint address="http://localhost:14725/tsspConfigurationservice/" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="TSSPConfigurationService" contract="Bombardier.FleetMonitor.Welcomer.Tssp.Wcf.Contracts.ITsspConfigurationService" />
+
+      <!-- TELEDIA RETRO SERVICE -->
+      <endpoint address="http://localhost:6227/TelediaMsgQueueService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ITelediaMsgQueueService" contract="Bombardier.FleetMonitor.Wcf.Contracts.TelediaRetro.ITelediaMsgQueueService" />
+
+      <endpoint address="http://10.0.0.104/Bombardier/Transport/Orbiflo/Common/FileRepositoryService/Service.svc" binding="wsHttpBinding" bindingConfiguration="WSHttpBinding_IFileRepository" contract="Http.Bombardier.Transport.Orbiflo.Common.FileRepository.Common.IFileRepository" name="WSHttpBinding_IFileRepository">
+        <identity>
+          <dns value="FileRepository_WcaServer" />
+        </identity>
+      </endpoint>
+      <endpoint address="net.pipe://10.0.0.104/Bombardier/Transport/Orbiflo/Common/FileRepositoryService/Service.svc" binding="netNamedPipeBinding" bindingConfiguration="NetNamedPipeBinding_IFileRepository" contract="Http.Bombardier.Transport.Orbiflo.Common.FileRepository.Common.IFileRepository" name="NetNamedPipeBinding_IFileRepository">
+        <identity>
+          <dns value="FileRepository_WcaServer" />
+        </identity>
+      </endpoint>
+
+      <!-- CSSDataRecorder SERVICE-->
+      <endpoint address="http://localhost:60717/CssDataRecorderService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ICssDataRecorderService" contract="Bombardier.FleetMonitor.CSSDataRecorder.Wcf.Contracts.ICssDataRecorderService" />
+      <endpoint address="http://localhost:60717/CssDataRecorderSignalService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ICssDataRecorderSignalService" contract="Bombardier.FleetMonitor.CSSDataRecorder.Wcf.Contracts.ICssDataRecorderSignalService" />
+      <endpoint address="http://localhost:60717/SymtreeService.svc" binding="wsHttpBinding" bindingConfiguration="WSHttpBinding_ISymtreeService" name="WSHttpBinding_ISymtreeService" contract="Bombardier.FleetMonitor.CSSDataRecorder.Wcf.Contracts.ISymtreeService" />
+      <endpoint address="http://localhost:60717/SymtreeSignalService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ISymtreeSignalService" contract="Bombardier.FleetMonitor.CSSDataRecorder.Wcf.Contracts.ISymtreeSignalService" />
+
+      <!-- Smart Client -->
+      <endpoint address="http://localhost:34205/MetaDataService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_ISmartClientMetaDataService" contract="Bombardier.FleetMonitor.SmartClient.Wcf.Contracts.IMetaDataService" />
+      <endpoint address="http://localhost:34205/AlarmHistoryService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlarmHistoryService" contract="Bombardier.FleetMonitor.SmartClient.Wcf.Contracts.IAlarmHistoryService" />
+      <endpoint address="http://localhost:34205/AlarmHistoryExportService.svc" binding="basicHttpBinding" bindingConfiguration="FMBasicHttpBinding" name="BasicHttpBinding_IAlarmHistoryExportService" contract="Bombardier.FleetMonitor.SmartClient.Wcf.Contracts.IAlarmHistoryExportService" />
+
+    </client>
+  </system.serviceModel>
+
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Http" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Nhibernate" publicKeyToken="aa95f207798dfdb4" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.0.4000" newVersion="4.0.0.4000" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Razor" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" publicKeyToken="30ad4fe6b2a6aeed" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-7.0.0.0" newVersion="7.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="log4net" publicKeyToken="669e0ddf0bb1aa2a" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-1.2.14.0" newVersion="1.2.15.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Cors" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <!--<dependentAssembly>
+        <assemblyIdentity name="Iesi.Collections" publicKeyToken="aa95f207798dfdb4" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Castle.Core" publicKeyToken="407dd0808d44fbdc" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.3.3.58" newVersion="3.3.3.58" />
+      </dependentAssembly>-->
+      <dependentAssembly>
+        <assemblyIdentity name="System.IdentityModel.Tokens.Jwt" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.20622.1351" newVersion="4.0.20622.1351" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+</configuration>
+
+
+
+
+eventsMetaDataService.svc.cs
+using Bombardier.FleetMonitor.Common.Utilities.LoggerHandler;
+using Bombardier.FleetMonitor.Dto.MetaData;
+using Bombardier.FleetMonitor.Dto.MetaData.Filters;
+using Bombardier.FleetMonitor.Models.MetaData;
+using Bombardier.FleetMonitor.Repositories.MetaData;
+using Bombardier.FleetMonitor.Repositories.SystemData;
+using Bombardier.FleetMonitor.Wcf.Contracts.MetaData.Services;
+using Common.OfficeHelper;
+using log4net;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+
+namespace Bombardier.FleetMonitor.Wcf.MetaData
+{
+    public class EventsMetaDataService : ISystemLogger, IEventsMetaDataService
+    {
+        private IEventMetaDataRepository eventMetaDataRepository;
+        private IWbsRepository wbsRepository;
+        private IPriorityRepository priorityRepository;
+        private IImportStatusesRepository importStatusesRepository;
+
+        public ILog Logger
+        {
+            get
+            {
+                return log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            }
+        }
+
+        public EventsMetaDataService(IEventMetaDataRepository eventMetaDataRepository, IWbsRepository wbsRepository, IPriorityRepository priorityRepository, IImportStatusesRepository importStatusesRepository)
+        {
+            this.eventMetaDataRepository = eventMetaDataRepository;
+            this.wbsRepository = wbsRepository;
+            this.priorityRepository = priorityRepository;
+            this.importStatusesRepository = importStatusesRepository;
+
+            Logger.Debug("EventsMetaDataService created");
+        }
+
+        public List<string> GetEventNames(string fleet) =>
+            this.SafeExecute(() =>
+        {
+            var eventNames = eventMetaDataRepository.GetEventNames(fleet);
+
+            if (eventNames == null || !eventNames.Any())
+            {
+                //throw new Exception("No data found.");
+                return new List<string>();
+            }
+
+            return eventNames.ToList();
+        });
+
+        public IList<string> GetEventNamesByNameContent(string fleet, string nameContent, int maxCount) =>
+             this.SafeExecute(() => eventMetaDataRepository.GetEventNamesByNameContent(fleet, nameContent, maxCount));
+
+        public List<string> GetEventNamesByProcessor(string fleet, List<string> selectedProcessor) =>
+            this.SafeExecute(() =>
+            {
+                var eventNames = eventMetaDataRepository.GetEventNamesByProcessor(fleet, selectedProcessor);
+                if (eventNames == null || !eventNames.Any())
+                    return new List<string>();
+
+                return eventNames.ToList();
+            });
+
+        public IList<EventMetaDto> GetFleetEvents(string fleet) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetFleetEvents(fleet));
+        public IList<EventMetaDto> GetFleetPrjVersionEvents(string fleet, string prjVersion, string lang, bool subSysAll, List<string> selectedSubsystem, int skip, int take) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetFleetPrjVersionEvents(fleet, prjVersion, lang, subSysAll, selectedSubsystem, skip, take));
+
+        public IList<EventNameDto> GetEventsList(string fleet, string proc, string subsys, bool allTheAssociated, List<string> wbsIds, string name, string description, 
+                                                    string faultcode, StringComparisonOperator filterMode, int? diagConfId) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetEventsList(fleet, proc, subsys, allTheAssociated, wbsIds, name, description, faultcode, filterMode, diagConfId));
+
+        public IList<EventNameDto> GetEventsListByNames(string fleet, List<string> evNameList) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetEventsListByNames(fleet, evNameList));
+
+        public EventNameDtoPaged GetFleetPrjVersionEventsIncCount(string fleet, string prjVersion, string lang, bool subSysAll, List<string> selectedSubsystem, int skip, int take) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetFleetPrjVersionEventsIncCount(fleet, prjVersion, lang, subSysAll, selectedSubsystem, skip, take));
+
+        public IList<string> GetBaselinesbyFleet(string fleet) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetBaselinesbyFleet(fleet));
+
+        public IList<MetaDataTranslationDto> GetEventTranslations(int resourceKeyId, int? longDescriptionResourceKeyId) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetEventTranslations(resourceKeyId, longDescriptionResourceKeyId));
+
+        public void SaveWBS(List<WbsLookUp> wbs, string fleetname)
+        {
+            this.SafeExecute(() =>
+            { 
+                Logger.Debug($"SaveWBS for fleet {fleetname}");
+
+                string importName = fleetname + " " + DateTime.UtcNow.ToString("u");
+
+                try
+                {
+                    importStatusesRepository.SetNewImport(importName, "WBS Import", $"Fleet: {fleetname}");
+                    importStatusesRepository.SetImportStarted(importName);
+
+                   // wbsRepository.SaveWBS(wbs, fleetname);
+
+                    importStatusesRepository.SetImportCompleted(importName);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error($"Error importing the WBS for the fleet {fleetname}", exc);
+                    importStatusesRepository.SetError(importName, exc.Message);
+                    throw exc;
+                }
+            });
+        }
+
+        public void SaveWBSFromBuffer(byte[] buffer, string fleet)
+        {
+            this.SafeExecute(() =>
+            {
+                Logger.Debug($"SaveWBS for fleet {fleet}");
+
+                string importName = fleet + " " + DateTime.UtcNow.ToString("u");
+
+                try
+                {
+                    Logger.Debug($"SaveWBS for fleet {fleet} SetNewImport");
+
+                    importStatusesRepository.SetNewImport(importName, "WBS Import", $"Fleet: {fleet}");
+
+                    Logger.Debug($"SaveWBS for fleet {fleet} SetImportStarted");
+                    importStatusesRepository.SetImportStarted(importName);
+
+                    Logger.Debug($"SaveWBS for fleet {fleet} ReadWorkSheet");
+                    var wbs = ExcelHelper.ReadWorkSheet<WbsLookUp>(buffer, "WBSStructure");
+
+                    wbsRepository.SaveWBS(wbs, fleet);
+
+                    Logger.Debug($"SaveWBS for fleet {fleet} SetImportCompleted");
+                    importStatusesRepository.SetImportCompleted(importName);
+                }
+                catch(Exception exc)
+                {
+                    Logger.Debug($"SaveWBS for fleet {fleet} set error");
+                    Logger.Error($"Error importing the WBS for the fleet {fleet}", exc);
+                    importStatusesRepository.SetError(importName, exc.Message);
+                }
+            });
+        }
+
+        public IList<WbsLookUpDto> GetWbs(string fleetName,int skip, int take) =>
+            this.SafeExecute(() => wbsRepository.GetWbs(fleetName,skip,take));
+
+        public void UpdateWbs(WbsLookUp wbs) =>
+            this.SafeExecute(() => wbsRepository.UpdateWbs(wbs));
+
+        public void CreateWbs(WbsLookUpDto wbs) =>
+            this.SafeExecute(() => wbsRepository.CreateWbs(wbs));
+
+        public void DeleteWBS(string wbsID) =>
+            this.SafeExecute(() => wbsRepository.DeleteWbs(wbsID));
+
+        public void SaveAssociationData(List<WbsEventsAssociationDto> WbsAssociation, string fleetName, bool includeAllBaseLines, bool eventsButNotcounters)
+        {
+            this.SafeExecute(() =>
+            {
+                Logger.Debug($"SaveAssociationData for fleet {fleetName}");
+
+                string importName = fleetName + " " + DateTime.UtcNow.ToString("u");
+
+                try
+                {
+                    importStatusesRepository.SetNewImport(importName, "WBS Association", $"Fleet: {fleetName} Events: {eventsButNotcounters}");
+                    importStatusesRepository.SetImportStarted(importName);
+
+                    wbsRepository.SaveAssociationWbs(WbsAssociation, fleetName, false, eventsButNotcounters, false);
+
+                    importStatusesRepository.SetImportCompleted(importName);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error($"Error associating the WBS for the fleet {fleetName}", exc);
+                    importStatusesRepository.SetError(importName, exc.Message);
+                }
+            });
+        }
+
+        public void SaveAssociationDataFromBuffer(byte[] buffer, string fleetName, bool includeAllBaseLines, bool eventsButNotcounters, bool eventsByName)            
+        {
+            this.SafeExecute(() =>
+            {
+                Logger.Debug($"SaveAssociationData for fleet {fleetName}");
+
+                string importName = fleetName + " " + DateTime.UtcNow.ToString("u");
+
+                try
+                {
+                    importStatusesRepository.SetNewImport(importName, "WBS Association", $"Fleet: {fleetName} Events: {eventsButNotcounters}");
+
+                    List<WbsEventsAssociationDto> associations;
+                    if (eventsButNotcounters)
+                    {
+                        if (eventsByName)
+                            associations = ExcelHelper.ReadWorkSheet<WbsEventsAssociationDto>(buffer, "WBSEventsByName");
+                        else
+                            associations = ExcelHelper.ReadWorkSheet<WbsEventsAssociationDto>(buffer, "WBSEventsByDescription");
+                    }
+                    else if (eventsByName)
+                        associations = ExcelHelper.ReadWorkSheet<WbsEventsAssociationDto>(buffer, "WBSCountersByName");
+                    else
+                        associations = ExcelHelper.ReadWorkSheet<WbsEventsAssociationDto>(buffer, "WBSCountersByDescription");
+
+                    wbsRepository.SaveAssociationWbs(associations, fleetName, false, eventsButNotcounters, eventsByName);
+
+                    importStatusesRepository.SetImportCompleted(importName);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error($"Error associating the WBS for the fleet {fleetName}", exc);
+                    importStatusesRepository.SetError(importName, exc.Message);
+                }
+            });
+        }
+    
+        public List<WbsLookUpDto> GetWbsNames(string fleet) =>
+            this.SafeExecute(() => wbsRepository.GetWbsNames(fleet));
+
+        public List<wbsEventsSelector> GetWbsEvents(string fleet, List<string> selectedWbs) =>
+            this.SafeExecute(() => wbsRepository.GetWbsEvents(fleet, selectedWbs));
+
+        public IList<EventNameDto> GetFleetEventsMeta(string fleet) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetFleetEventsMeta(fleet));
+
+        public IList<EventMetaDto> GetFleetEventsMetaByProc(string fleet, string processor) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetFleetEventsMetaByProc(fleet, processor));
+
+        public IList<ProcessDto> GetProcessorForManualEvents(string fleet) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetProcessorForManualEvents(fleet));
+
+        public IList<EventMetaDto> GetFleetManualEventsMeta(string fleet) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetFleetManualEventsMeta(fleet, string.Empty, string.Empty));
+
+        public IList<EventMetaDto> GetFleetManualEventsMetaByProc(string fleet, string processor) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetFleetManualEventsMeta(fleet, processor, string.Empty));
+
+        public EventMetaDto GetFleetManualEventMetaByName(string fleet, string eventName) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetFleetManualEventsMeta(fleet, string.Empty, eventName).FirstOrDefault());
+
+        public IList<EnvironmentSignalsDto> GetEnvironmentMeta(int diagConfigId, string procName, string eventName) =>
+            this.SafeExecute(() => eventMetaDataRepository.GetEnvironmentMeta(diagConfigId, procName, eventName));
+
+        public List<PriorityDto> GetAllPriority(string fleet, int? diagConfigId = null) =>
+            this.SafeExecute(() => priorityRepository.GetAllPriority(fleet, diagConfigId));
+
+    }
+}
+
+
+
+(UST484) addition of Event Chart Distribution Bar Graphs with Category Type = Car, and Stack Types = Wbs & Subsystem into the existing Categories and Stacks

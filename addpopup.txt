@@ -1,0 +1,156 @@
+<input type="url" name="url" id="weburl" 
+  class="form-control oditek-form" placeholder="Add Website URL" 
+  ng-model="url" ng-keypress="clearField('weburl');"/>
+
+
+---------------------------------------------------------------------------------------------------------
+
+<form>
+    <div class="busyPanelContainer">
+        <busy-panel ng-show="loadingPanel"></busy-panel>
+
+        <div class="modal-header">
+            <h3 class="modal-title">
+                {{'tssp.TsspSubscriber.CreateNewSubscriber'| translate}}
+            </h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="verysmall no-scroll">
+                <label for="fleet" style="width:auto">{{'tssp.TsspSubscriber.FleetName'| translate}}:</label>
+                <label class="small">{{standardFiltersFactory.fleet.Name}}</label>
+            </div>
+
+            <div id="singleConsistSelector" class="panel-collapse collapse in">
+                    <div class="filter-group">
+                        <label for="consitName">{{'common.consist'| translate}}:</label>
+                        <select data-ng-model="standardFiltersFactory.singleConsist" data-ng-options="c.Name as c.Name for c in standardFiltersFactory.fleet.Consists"></select>
+                    </div>
+            </div>
+
+            <div class="mid no-scroll">
+                <label for="clientReference" style="width:60%">{{'tssp.TsspSubscriber.clientReference'| translate}}</label>
+                <input type="text" id="clientReference" allow-pattern="(\d|[a-z|_.-])" maxlength="64" ng-model="clientReference" placeholder="{{'portalWeb.ManageFleetView.ConsistName'| translate}}"
+                       required validationMessage="Enter {0}" class="k-textbox" style="width:100%" />
+            </div>
+
+            <div class="form-row">
+                <label>{{'tssp.TsspSubscriber.groupSubscriptionUri'|translate}} </label>
+                <input type="text" name="groupSubscription" data-ng-model="groupSubscription" max-characters="256" allow-pattern="(\d|[a-z])" />
+            </div>
+
+            <div class="form-row">
+                <label>{{'tssp.TsspSubscriber.publishingUri'|translate}} </label>
+                <input type="text" name="publishingUri" data-ng-model="publishingUri" max-characters="256" allow-pattern="(\d|[a-z])" />
+            </div>
+
+            <div class="verysmall no-scroll">
+                <label class="fixed-bigWidth">{{'tssp.TsspSubscriber.refreshRate'| translate}}</label>
+                <input type="number" ng-model="refreshRate" class="fixed" number-validation="true" min="0" max="60" />s
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-warning" ng-click="cancel()">{{'tssp.TsspSubscriber.Cancel'| translate}}</button>
+            <button class="btn btn-primary" ng-click="createNew()">{{'tssp.TsspSubscriber.OK'| translate}}</button>
+        </div>
+    </div>
+</form>
+
+
+__________________________________________________________________________________________________________________________
+
+<div id="singleConsistSelector" class="panel-collapse collapse in">
+                <div class="form-row">
+                    <label for="consitName">{{'common.consist'| translate}}:</label>
+                    <select data-ng-model="standardFiltersFactory.singleConsist" data-ng-options="c.Name as c.Name for c in standardFiltersFactory.fleet.Consists"></select>
+                </div>
+            </div>
+
+
+
+____________________________________________________________________________________________________________________________
+
+
+<form name="subscribeTemplate">
+    <div class="busyPanelContainer">
+        <busy-panel ng-show="loadingPanel"></busy-panel>
+
+        <div class="modal-header">
+            <h3 class="modal-title">
+                {{'tssp.TsspSubscriber.CreateNewSubscriber'| translate}}
+            </h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-row">
+                <label for="fleet" style="width:auto">{{'tssp.TsspSubscriber.FleetName'| translate}}:</label>
+                <label class="small">{{standardFiltersFactory.fleet.Name}}</label>
+            </div>
+
+           
+                <div class="form-row">
+                    <label >{{'common.consist'| translate}}:</label>
+                    <select data-ng-model="standardFiltersFactory.singleConsist" data-ng-options="c.Name as c.Name for c in standardFiltersFactory.fleet.Consists"></select>
+                </div>
+          
+
+            <div class="form-row">
+                <label>{{'tssp.TsspSubscriber.groupSubscriptionUri'|translate}} </label>
+                <input type="url" placeholder="Add Group Subscription URL" name="groupSubscription" 
+                       ng-model="url.text" required data-ng-model="groupSubscription" max-characters="256" allow-pattern="(\d|[a-z])" />
+
+                <div role="alert">
+                    <span class="error" ng-show="subscribeTemplate.groupSubscription.$error.required">
+                        Required!
+                    </span>
+                    <span class="error" ng-show="subscribeTemplate.groupSubscription.$error.url">
+                        Not valid url!
+                    </span>
+                </div>
+                <tt>text = {{url.text}}</tt><br />
+                <tt>subscribeTemplate.groupSubscription.$valid = {{subscribeTemplate.groupSubscription.$valid}}</tt><br />
+                <tt>subscribeTemplate.groupSubscription.$error = {{subscribeTemplate.groupSubscription.$error}}</tt><br />
+                <tt>subscribeTemplate.$valid = {{subscribeTemplate.$valid}}</tt><br />
+                <tt>subscribeTemplate.$error.required = {{!!subscribeTemplate.$error.required}}</tt><br />
+                <tt>subscribeTemplate.$error.url = {{!!subscribeTemplate.$error.url}}</tt><br />
+            </div>
+
+            <div class="form-row">
+                <label>{{'tssp.TsspSubscriber.publishingUri'|translate}} </label>
+                <input type="url" name="publishingUri" placeholder="Add Publishing URL" data-ng-model="publishingUri" max-characters="256" 
+                       ng-model="url.text" required allow-pattern="(\d|[a-z])" />
+
+                <div role="alert">
+                    <span class="error" ng-show="subscribeTemplate.publishingUri.$error.required">
+                        Required!
+                    </span>
+                    <span class="error" ng-show="subscribeTemplate.publishingUri.$error.url">
+                        Not valid url!
+                    </span>
+                </div>
+                <tt>text = {{url.text}}</tt><br />
+                <tt>subscribeTemplate.publishingUri.$valid = {{subscribeTemplate.publishingUri.$valid}}</tt><br />
+                <tt>subscribeTemplate.publishingUri.$error = {{subscribeTemplate.publishingUri.$error}}</tt><br />
+                <tt>subscribeTemplate.$valid = {{subscribeTemplate.$valid}}</tt><br />
+                <tt>subscribeTemplate.$error.required = {{!!subscribeTemplate.$error.required}}</tt><br />
+                <tt>subscribeTemplate.$error.url = {{!!subscribeTemplate.$error.url}}</tt><br />
+            </div>
+
+            <div class="form-row">
+                <label>
+                    {{'tssp.TsspSubscriber.refreshRate'| translate}}
+                    <input type="number" ng-model="refreshRate" class="fixed" number-validation="true" min="0" max="60" />
+                </label>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-warning" ng-click="cancel()">{{'tssp.TsspSubscriber.Cancel'| translate}}</button>
+            <button class="btn btn-primary" ng-click="createNew()">{{'tssp.TsspSubscriber.OK'| translate}}</button>
+        </div>
+    </div>
+</form>
+

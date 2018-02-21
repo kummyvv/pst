@@ -1,0 +1,26 @@
+Lesons Learnt:
+24th Jan 2017
+
+How to add customized events and raise: Thanks Bunny
+
+View.cs:
+public event EventHandler FetchData;
+
+
+Raise/call it in:
+private void ultraButton1_Click(object sender, EventArgs e)
+{
+            if (FetchData != null)
+                FetchData(this, null);
+            
+}
+
+
+Presenter.cs:
+m_View.FetchData += new EventHandler(displayData);
+
+public void displayData(object sender, EventArgs e)
+{
+//code goes here
+ 
+}

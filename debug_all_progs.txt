@@ -1,0 +1,43 @@
+culture: userDataFactory.Locale,
+        TimeZone: userDataFactory.TimeZone,
+
+
+
+{{formatDate(dataItem.FMWelcomerReceiveTime)}}
+
+
+
+$scope.formatDate = function (date) {
+        return dateTimeConvertionService.convertUTCtoUserFormat(date);
+    };
+
+
+
+//dateFiltersFactory.controlStartTime = dateTimeConvertionService.convertUserToLocalTimeZone(moment(soldtime).tz(userDataFactory.TimeZone).format());
+            //$scope.dateFiltersFactory.startTime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.controlStartTime);
+
+
+    $scope.SoldTimeOptions = {
+        interval: 10
+    };
+
+
+
+msg text created at 17:58 IST, start Date = 14/06/2017 01:00 and EndTime = 30/06/2017 02:00
+
+scheduledMessageService.getMessages().then(function (data) {
+
+            for (i = 0; i < data.length; i++) {
+                data[i].CreationTime = dateTimeConvertionService.convertUTCtoUserTimeZone(data[i].CreationTime);
+
+                if (data[i].StartTime !== null)
+                    data[i].StartTime = dateTimeConvertionService.convertUTCtoUserTimeZone(data[i].StartTime);
+
+                if (data[i].EndTime !== null)
+                    data[i].EndTime = dateTimeConvertionService.convertUTCtoUserTimeZone(data[i].EndTime);
+            }
+
+            $scope.grid.dataSource.data(data);
+        }).finally(function () {
+            busyService.hide();
+        });;

@@ -1,0 +1,46 @@
+using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using System.Web.Http.Controllers;
+
+namespace Bombardier.FleetMonitor.WebApi.Service
+{
+    public class ControllersInstaller : IWindsorInstaller
+    {
+        public void Install(IWindsorContainer container, IConfigurationStore store)
+        {
+            container.Register(Classes.FromThisAssembly().BasedOn<IHttpController>().LifestylePerWebRequest());
+        }
+    }
+}
+
+
+
+IWindsorInstaller
+#region Assembly Castle.Windsor, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc
+// D:\Kumar\ust711_July\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll
+#endregion
+
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+
+namespace Castle.MicroKernel.Registration
+{
+    //
+    // Summary:
+    //     The contract to install components in the container.
+    public interface IWindsorInstaller
+    {
+        //
+        // Summary:
+        //     Performs the installation in the Castle.Windsor.IWindsorContainer.
+        //
+        // Parameters:
+        //   container:
+        //     The container.
+        //
+        //   store:
+        //     The configuration store.
+        void Install(IWindsorContainer container, IConfigurationStore store);
+    }
+}

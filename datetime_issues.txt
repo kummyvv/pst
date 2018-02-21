@@ -1,0 +1,19 @@
+eventDetailController
+kendo.toString(kendo.parseDate(d.StartTime, 'yyyy-MM-ddTHH:mm:ss'), 'G', userDataFactory.Locale);
+
+ starttime = dateTimeConvertionService.convertUTCTimestampToUserFormat(dateFiltersFactory.startTime);
+        starttime = dateTimeConvertionService.convertToUserFormat(dateFiltersFactory.startTime);
+        starttime = dateTimeConvertionService.convertUTCtoUserFormat(dateFiltersFactory.startTime);
+        starttime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.startTime);
+        starttime = dateTimeConvertionService.convertUTCtoUserTimeZone(dateFiltersFactory.startTime);
+        starttime = dateTimeConvertionService.convertUTCTimestampToUserTimeZone(dateFiltersFactory.startTime);
+
+        starttime = dateTimeConvertionService.ConvertUTCDateTimeToKendo(dateFiltersFactory.startTime);
+        starttime = dateTimeConvertionService.convertDateToUserFormat(dateFiltersFactory.startTime);
+
+
+
+
+
+
+$scope.data

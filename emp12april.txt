@@ -1,0 +1,17 @@
+   at Bombardier.FleetMonitor.WebApi.Service.Controllers.ConnectionStatusController.GetConnectionStatusInfo(String fleet) in D:\Kumar\FleetMonitor\Main\Dev\Code\Bombardier.FleetMonitor.WebApi.ApplicationData\Controllers\ConnectionStatusController.cs:line 143
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+
+
+
+
+Server method called ../api/ConnectionStatus/getConnectionStatusInfo?fleet=AC3K1_10
+
+
+
+   at Bombardier.FleetMonitor.WebApi.Service.Controllers.ConnectionStatusController.GetConnectionStatusInfo(String fleet)
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)

@@ -1,0 +1,298 @@
+eventsExportAdditionalFiltersController
+searchEnv
+envSelectorByNameDescrController
+
+
+envSelectorByEventController
+
+    $scope.searchEnvs = function (eventsArray) {
+        $scope.loadingEnvs = true;
+
+        environmentsService.getEnvironmentNames(standardFiltersFactory.fleet.Name, eventsArray.toString()).then(function (data) {
+            var envArray = data.map(function (item) {
+                return {
+                    checked: false,
+                    Name: item.Name,
+                    Description: item.Description
+                };
+            });
+
+            $scope.addNewEnv(envArray);
+            $scope.envGrid.dataSource.data($scope.envsList);
+
+            var checkedEnv = $scope.envsList.filter(function (item) {
+                return item.checked;
+            });
+
+            $scope.allEnvs = $scope.envsList.length === checkedEnv.length && $scope.envsList.length > 0;
+
+            // forgive me
+            $('#chkAllEnv').prop('checked', $scope.allEnvs);
+        }).finally(function () {
+            $scope.loadingEnvs = false;
+        });
+    };
+
+
+GetEnvironmentNames
+showListTemplateController
+
+$scope.showEnv = function () {
+        $modal.open({
+            animation: true,
+            templateUrl: '../app/Templates/showListTemplate.html',
+            controller: 'showListTemplateController',
+            size: 'lg',
+            resolve: {
+                dataList: function () {
+                    return $scope.envSignalsSelected;
+                }
+            }
+        });
+    };
+
+$scope.envSignalsSelected = [];
+
+*******************************************
+
+
+<div class="modal-header">
+    <h3 class="modal-title">{{'portalWeb.ScheduledMessage.ShowScheduleMsg'|translate}}</h3>
+</div>
+
+<div class="modal-body">
+    <kendo-grid id="grid" options="grid" class="main-grid" style="height:auto;overflow-y: visible">
+    </kendo-grid>
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" ng-click="cancel()" class="btn btn-warning">{{'portalWeb.ScheduledMessage.Cancel'|translate}}</button>
+</div>
+
+******************************************
+
+ShowMessageAfterLoginController.js
+
+
+app.controller("ShowMessageAfterLoginController", function ($scope, $timeout, $http, $rootScope, $modal, $modalInstance, standardFiltersFactory, $translate, userDataFactory, dateTimeConvertionService, scheduledMessageService, notificationService, currentPageFactory, pageOptionFactory, busyService, $translate) {
+    $scope.timeoutPromise;
+    $scope.cancelTimeout = false;
+
+    currentPageFactory.showPageOptions = true;
+    currentPageFactory.pageSize = 25;
+    $scope.standardFiltersFactory = standardFiltersFactory;
+    $scope.userDataFactory = userDataFactory;
+    var loadingData = false;
+    var currentFilters = null;
+    $scope.loadingPanel = false;
+
+    var dataSourceX = new kendo.data.DataSource({
+        serverSorting: false,
+        pageSize: 25
+    });
+
+    $scope.grid = {
+        dataSource: dataSourceX,
+        resizable: true,
+        sortable: true,
+        scrollable: false,
+        reorderable: true,
+        filterable: true,
+
+        columns: [
+
+           {
+               hidden: true,
+               field: "ScheduleMessageId",
+               title: $translate.instant('portalWeb.ScheduledMessage.GUID'),
+               width: "auto",
+
+           },
+           {
+               field: "StartTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.StartTime'),
+               template: "#= kendo.toString(kendo.parseDate(StartTime, 'yyyy-MM-ddTHH:mm:ss'), 'G', '" + userDataFactory.Locale + "') #",
+               width: "auto",
+
+           },
+           {
+               field: "EndTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.EndTime'),
+               template: "#= kendo.toString(kendo.parseDate(EndTime, 'yyyy-MM-ddTHH:mm:ss'), 'G', '" + userDataFactory.Locale + "') #",
+               width: "auto",
+
+           },
+           {
+               field: "Text",
+               title: $translate.instant('portalWeb.ScheduledMessage.Text'),
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "Author",
+               title: $translate.instant('portalWeb.ScheduledMessage.Author'),
+               type: "number",
+               filterable: false,
+               width: "auto",
+
+           },
+           {
+               field: "CreationTime",
+               title: $translate.instant('portalWeb.ScheduledMessage.CreationTime'),
+               template: "#= kendo.toString(kendo.parseDate(CreationTime, 'yyyy-MM-ddTHH:mm:ss'), 'G', '" + userDataFactory.Locale + "') #",
+               width: "auto",
+
+           }
+
+        ]
+    };
+
+    $scope.$on('LoadData', function (event, args) {
+        $scope.loadData();
+    });
+
+
+    
+
+    $scope.loadData = function () {
+
+        busyService.show();
+
+        scheduledMessageService.getScheduledMessages(userDataFactory.username).then(function (data) {
+            $scope.grid.dataSource.data(data);
+        }).finally(function () {
+            busyService.hide();
+        });;
+
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.close(false);
+    };
+
+    //// Default load data
+    $scope.loadData(true);
+
+});
+
+
+*****************************************************************
+
+<div class="modal-header">
+    <h3 class="modal-title">{{'portalWeb.ScheduledMessage.ShowScheduleMsg'|translate}}</h3>
+</div>
+********************************************************************
+
+<style>
+            table, td {
+                border: 1px solid grey;
+                border-collapse: collapse;
+                padding: 5px;
+            }
+        </style>
+
+        <table>
+            <tr ng-repeat="x in dataList.data">
+                <td ng-if="$odd" style="background-color:#f1f1f1">
+                    Message: {{ x.Text }}
+                </td>
+                <td ng-if="$even">
+                    Author: {{ x.Author }}
+                </td>
+                <td ng-if="$odd" style="background-color:#beabab">
+                    CreationTime: {{ x.CreationTime }}
+                </td>
+                <td ng-if="$even">
+                    Start Time: {{ x.StartTime }}
+                </td>
+                <td ng-if="$odd" style="background-color:#f1f1f1">
+                    End Time:
+
+                    {{ x.EndTime }}
+                </td>
+                <br />
+                <br />
+            </tr>
+        </table>
+
+
+*********************************************************************
+
+<table style="width:100%">
+            <tr>
+                <th>Message</th>
+                <th>Author</th>
+                <th>CreationTime</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+            <tr ng-repeat="x in dataList.data">
+                <td ng-if="$odd" style="background-color:#f1f1f1">
+                     {{ x.Text }}
+                </td>
+                <td ng-if="$even">
+                    {{ x.Author }}
+                </td>
+                <td ng-if="$odd" style="background-color:#f1f1f1">
+                     {{ x.CreationTime }}
+                </td>
+                <td ng-if="$even">
+                     {{x.StartTime}}
+                </td>
+                <td ng-if="$odd" style="background-color:#f1f1f1">
+                    {{ x.EndTime }}
+                </td>
+                <br />
+                <br />
+            </tr>
+        </table>
+
+
+********************************************
+var endDate = promise.EndTime;
+                        endDate = "_" + endDate.replace(":", "-");
+                        endDate = endDate.replace("T", "-");
+                        promise.EndTime = endDate;
+
+
+
+var changeTimeZoneOffsetToLocal = function (dateValue) {
+        var localTimeZoneOffset = moment().format().slice(19, 25);
+        var userTimeZoneOffset = dateValue.slice(19, 25);
+        var replacedDateValue = dateValue.replace(userTimeZoneOffset, localTimeZoneOffset);
+        return replacedDateValue;
+    }
+
+    float:left;
+border-bottom:1px solid black;
+
+
+
+
+dateFiltersFactory.controlStartTime = dateTimeConvertionService.convertUserToLocalTimeZone($scope.dateFiltersFactory.startTime);
+
+dateFiltersFactory.startTime = dateTimeConvertionService.convertToUTC(dateFiltersFactory.controlStartTime);
+
+
+
+this.dateFiltersFactory.startTime = dataItem.SoldTime;
+
+postResp[i].StartDate = dateTimeConvertionService.convertUTCtoUserTimeZone(postResp[i].StartDate);
+
+ $scope.dateFiltersFactory.startTime = $scope.dateFiltersFactory.singleDate;
+        $scope.dateFiltersFactory.endTime = moment($scope.dateFiltersFactory.startTime).tz(userDataFactory.TimeZone).add('hours', 23).add('minutes', 59).add('seconds', 59).format();
+
+        dateFiltersFactory.controlStartTime = dateTimeConvertionService.convertUserToLocalTimeZone($scope.dateFiltersFactory.startTime);
+        dateFiltersFactory.endDateMin = dateFiltersFactory.controlStartTime;
+        dateFiltersFactory.controlEndTime = dateTimeConvertionService.convertUserToLocalTimeZone($scope.dateFiltersFactory.endTime);
+
+        $scope.dateFiltersFactory.startTime = moment.utc($scope.dateFiltersFactory.startTime).format(dateFiltersFactory.longDateFormat);
+        $scope.dateFiltersFactory.endTime = moment.utc($scope.dateFiltersFactory.endTime).format(dateFiltersFactory.longDateFormat);
+    }
+
+
+******************************
+
+$scope.dateFiltersFactory.getCurrentDateTime = false;

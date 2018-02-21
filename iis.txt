@@ -1,0 +1,95 @@
+Steps
+Open IIS, select your server and double click on "Server Certificates" in the bottom section. ...
+Select your site.
+Bind your site to port 80 using the http protocol.
+Remove all other bindings.
+Bind your site to port 443 using the https protocol.
+Open a command prompt netsh http show sslcert.
+
+
+https://www.youtube.com/watch?v=BYwOMuBDhPU
+
+
+
+1)            Install OpenSSL (https://slproweb.com/products/Win32OpenSSL.html) – select the option to install the binaries in the OpenSSL bin folder
+2)            Copy the text in Appendix A into a batch file and execute it in the OpenSSL bin folder. Enter a password (you decide) twice when prompted. This creates a localhost.pfx
+3)            Run the mmc application, and load the Certificates add-in (select Local Computer)
+4)            Import the newly created .pfx into the Trusted Root Certificate Authority folder (mark the key as exportable)
+5)            Import the newly created .pfx into the Local Computer folder (mark the key as exportable)
+6)            Change Portal.Web and Security.IdServer.Web project properties in Visual Studio to run under Local IIS (make sure to change the Start URL and Project URL)
+7)            Change all config files as describe in Appendix B
+8)            Change host binding in InetMgr.exe to use the newly installed SSL certificate
+9)            Restart IIS
+10)          Browse https://localhost/Portal.Web in Chrome and IE - ensure neither show security errors
+11)          If errors found, clean cache, reboot, try again
+ 
+Appendix A
+ 
+@echo off
+SET HOSTNAME=localhost
+SET DOT=com
+SET COUNTRY=UK
+SET STATE=DE
+SET CITY=Derby
+SET ORGANIZATION=IT
+SET ORGANIZATION_UNIT=IT Department
+SET EMAIL=webmaster@%HOSTNAME%.%DOT%
+ 
+(
+echo [req]
+echo default_bits = 2048
+echo prompt = no
+echo default_md = sha256
+echo x509_extensions = v3_req
+echo distinguished_name = dn
+echo:
+echo [dn]
+echo C = %COUNTRY%
+echo ST = %STATE%
+echo L = %CITY%
+echo O = %ORGANIZATION%
+echo OU = %ORGANIZATION_UNIT%
+echo emailAddress = %EMAIL%
+echo CN = %HOSTNAME%
+echo:
+echo [v3_req]
+echo subjectAltName = @alt_names
+echo:
+echo [alt_names]
+echo DNS.1 = %HOSTNAME%
+)>%HOSTNAME%.cnf
+ 
+openssl req -new -x509 -newkey rsa:2048 -sha256 -nodes -keyout %HOSTNAME%.key -days 3560 -out %HOSTNAME%.crt -config %HOSTNAME%.cnf
+openssl pkcs12 -export -out %HOSTNAME%.pfx -inkey %HOSTNAME%.key -in %HOSTNAME%.crt
+ 
+Appendix B
+ 
+fleetmonitor.client.json
+ 
+{
+  "Enabled": true,
+  "ClientId": "fleetmonitor",
+  "ClientName": "FleetMonitor",
+  "RequireConsent": false,
+  "AllowRememberConsent": true,
+  "Flow": 1,
+  "RedirectUris": [ "https://localhost/Portal.Web/loginPrompt.html", "https://localhost/Portal.Web/silent-renew.html" ],
+  "PostLogoutRedirectUris": [ "https://localhost/Portal.Web/index.html" ],
+  "RequireSignOutPrompt": false,
+  "AllowAccessToAllScopes": false,
+  "AllowedScopes": [ "openid", "profile", "email", "webapi" ],
+  "AccessTokenLifetime": 28800,
+  "Claims": [],
+  "AllowedCorsOrigins": [ "https://localhost" ]
+}
+ 
+Portal.Web Web.config
+ 
+    <client authority="https://localhost/Security.IdServer.Web/"
+        internalAuthority="https://localhost/Security.IdServer.Web/"
+        id="fleetmonitor"
+        responseType="id_token token"
+        scope="openid profile email webapi"
+        loginPage="/Portal.Web/loginPrompt.html"
+        logoutRedirect="/Portal.Web/index.html" />  
+ 
